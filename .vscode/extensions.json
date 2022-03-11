@@ -1,0 +1,15 @@
+{
+	"recommendations": [
+		"mikestead.dotenv",
+		"editorconfig.editorconfig",
+		"streetsidesoftware.code-spell-checker",
+		"dbaeumer.vscode-eslint",
+		"tamasfe.even-better-toml",
+		"mhutchie.git-graph",
+		"codezombiech.gitignore",
+		"eg2.vscode-npm-script",
+		"christian-kohler.npm-intellisense",
+		"christian-kohler.path-intellisense",
+		"stylelint.vscode-stylelint"
+	]
+}
