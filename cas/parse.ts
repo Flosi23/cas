@@ -128,6 +128,16 @@ function isSubtraction(expr: string): Expression | null {
 	});
 }
 
-export default function isExpression(expr: string): Expression | null {
+function isExpression(expr: string): Expression | null {
 	return isAddition(expr) || isSubtraction(expr) || isTerm(expr);
+}
+
+export default function parseExpression(expr: string): Expression {
+	const tree = isExpression(expr);
+
+	if (!tree) {
+		throw new Error("Invalid Expression!");
+	}
+
+	return tree;
 }
