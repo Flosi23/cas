@@ -13,7 +13,7 @@ export default extendTheme(
 	{ config },
 	{
 		colors: {
-			brand: theme.colors.blue,
+			brand: theme.colors.pink,
 		},
 	},
 	withDefaultColorScheme({

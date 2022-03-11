@@ -12,10 +12,14 @@ import {
 	TabPanels,
 	Tab,
 	TabPanel,
+	HStack,
+	Button,
 } from "@chakra-ui/react";
 
 export default function Index() {
 	const { colorMode, toggleColorMode } = useColorMode();
+	const gradient =
+		"linear(to-l, var(--chakra-colors-brand-700), var(--chakra-colors-brand-400))";
 
 	return (
 		<Box px="20vw" my={5}>
@@ -29,20 +33,23 @@ export default function Index() {
 			</Flex>
 			<VStack mt={5} mb={14} w="100%" spacing={12}>
 				<Text
-					bgGradient="linear(to-l, var(--chakra-colors-brand-700), var(--chakra-colors-brand-400))"
+					bgGradient={gradient}
 					bgClip="text"
 					textAlign="center"
 					fontWeight="extrabold"
 					fontSize="6xl">
 					Computer Algebra System
 				</Text>
-				<Input
-					variant="filled"
-					placeholder="Expression... (e.g 2 + 4)"
-					fontWeight="bold"
-					focusBorderColor="brand.500"
-					size="lg"
-				/>
+				<HStack w="100%">
+					<Input
+						variant="filled"
+						placeholder="Expression... (e.g 2 + 4)"
+						fontWeight="bold"
+						focusBorderColor="brand.500"
+						size="lg"
+					/>
+					<Button size="lg">Calculate</Button>
+				</HStack>
 			</VStack>
 			<Tabs align="center" variant="soft-rounded">
 				<TabList>
