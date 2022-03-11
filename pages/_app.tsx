@@ -4,7 +4,6 @@ import { CacheProvider, EmotionCache } from "@emotion/react";
 import Head from "next/head";
 import theme from "$/app/theme";
 import createEmotionCache from "$app/createEmotionCache";
-import Nav from "$app/layout/Nav";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -28,9 +27,7 @@ export default function App({
 				/>
 			</Head>
 			<ChakraProvider theme={theme}>
-				<Nav>
-					<Component {...pageProps} />
-				</Nav>
+				<Component {...pageProps} />
 			</ChakraProvider>
 		</CacheProvider>
 	);

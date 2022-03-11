@@ -1,5 +1,64 @@
-import { Box } from "@chakra-ui/react";
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import {
+	Box,
+	Text,
+	Input,
+	VStack,
+	Flex,
+	IconButton,
+	useColorMode,
+	Tabs,
+	TabList,
+	TabPanels,
+	Tab,
+	TabPanel,
+} from "@chakra-ui/react";
 
 export default function Index() {
-	return <Box />;
+	const { colorMode, toggleColorMode } = useColorMode();
+
+	return (
+		<Box px="20vw" my={5}>
+			<Flex justifyContent="space-between" w="100%" alignItems="center">
+				<IconButton
+					variant="outline"
+					aria-label="Toggle color mode"
+					icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+					onClick={toggleColorMode}
+				/>
+			</Flex>
+			<VStack mt={5} mb={14} w="100%" spacing={12}>
+				<Text
+					bgGradient="linear(to-l, var(--chakra-colors-brand-700), var(--chakra-colors-brand-400))"
+					bgClip="text"
+					textAlign="center"
+					fontWeight="extrabold"
+					fontSize="6xl">
+					Computer Algebra System
+				</Text>
+				<Input
+					variant="filled"
+					placeholder="Expression... (e.g 2 + 4)"
+					fontWeight="bold"
+					focusBorderColor="brand.500"
+					size="lg"
+				/>
+			</VStack>
+			<Tabs align="center" variant="soft-rounded">
+				<TabList>
+					<Tab mx={2}>Results</Tab>
+					<Tab mx={2}>Expression Tree</Tab>
+				</TabList>
+
+				<TabPanels>
+					<TabPanel>
+						<p>Results</p>
+					</TabPanel>
+					<TabPanel>
+						<p>Expression Tree</p>
+					</TabPanel>
+				</TabPanels>
+			</Tabs>
+		</Box>
+	);
 }
