@@ -1,28 +1,30 @@
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import {
-	Box,
 	Text,
 	Input,
 	VStack,
 	Flex,
 	IconButton,
 	useColorMode,
-	Tabs,
-	TabList,
-	TabPanels,
-	Tab,
-	TabPanel,
 	HStack,
 	Button,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { trpc } from "$/lib/trpc";
+import Container from "$app/layout/Container";
+import Results from "$app/layout/Results";
 
 export default function Index() {
 	const { colorMode, toggleColorMode } = useColorMode();
-	const gradient =
-		"linear(to-l, var(--chakra-colors-brand-700), var(--chakra-colors-brand-400))";
+	const [expr, setExpr] = useState("");
+	const treeMutation = trpc.useMutation(["tree"]);
+
+	function handleCalc() {
+		treeMutation.mutate({ expr });
+	}
 
 	return (
-		<Box px="20vw" my={5}>
+		<Container>
 			<Flex justifyContent="space-between" w="100%" alignItems="center">
 				<IconButton
 					variant="outline"
@@ -33,7 +35,7 @@ export default function Index() {
 			</Flex>
 			<VStack mt={5} mb={14} w="100%" spacing={12}>
 				<Text
-					bgGradient={gradient}
+					bgGradient="linear(to-l, var(--chakra-colors-brand-700), var(--chakra-colors-brand-400))"
 					bgClip="text"
 					textAlign="center"
 					fontWeight="extrabold"
@@ -42,30 +44,26 @@ export default function Index() {
 				</Text>
 				<HStack w="100%">
 					<Input
+						onChange={(e) => {
+							setExpr(e.target.value);
+						}}
 						variant="filled"
 						placeholder="Expression... (e.g 2 + 4)"
 						fontWeight="bold"
 						focusBorderColor="brand.500"
 						size="lg"
 					/>
-					<Button size="lg">Calculate</Button>
+					<Button
+						size="lg"
+						isLoading={treeMutation.isLoading}
+						onClick={() => {
+							handleCalc();
+						}}>
+						Calculate
+					</Button>
 				</HStack>
 			</VStack>
-			<Tabs align="center" variant="soft-rounded">
-				<TabList>
-					<Tab mx={2}>Results</Tab>
-					<Tab mx={2}>Expression Tree</Tab>
-				</TabList>
-
-				<TabPanels>
-					<TabPanel>
-						<p>Results</p>
-					</TabPanel>
-					<TabPanel>
-						<p>Expression Tree</p>
-					</TabPanel>
-				</TabPanels>
-			</Tabs>
-		</Box>
+			{treeMutation.data && <Results tree={treeMutation.data} />}
+		</Container>
 	);
 }

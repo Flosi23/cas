@@ -2,8 +2,11 @@
 	"cSpell.words": [
         "autofix",
         "Chakra",
+        "codepaths",
         "linebreak",
-        "Parens"
+        "Parens",
+        "trpc",
+        "tsbuildinfo"
     ],
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
