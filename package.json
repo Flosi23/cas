@@ -30,10 +30,16 @@
 		"@emotion/cache": "^11.7.1",
 		"@emotion/react": "^11.8.2",
 		"@emotion/styled": "^11.8.1",
+		"@trpc/client": "^9.20.1",
+		"@trpc/next": "^9.20.1",
+		"@trpc/react": "^9.20.1",
+		"@trpc/server": "^9.20.1",
 		"framer-motion": "^6.2.8",
 		"next": "12.1.0",
 		"react": "17.0.2",
-		"react-dom": "17.0.2"
+		"react-dom": "17.0.2",
+		"react-query": "^3.34.16",
+		"zod": "^3.13.4"
 	},
 	"devDependencies": {
 		"@types/node": "17.0.21",
