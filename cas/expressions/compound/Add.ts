@@ -1,6 +1,3 @@
-import Operator from './Operator';
+import Operator from "./Operator";
 
-export default class Add extends Operator {
-
-
-}
+export default class Add extends Operator {}

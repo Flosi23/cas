@@ -1,14 +1,12 @@
 {
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
-    },
-    "eslint.validate": [
-      "typescript"
-    ],
-    "cSpell.words": [
+	"cSpell.words": [
         "autofix",
         "Chakra",
-        "linebreak"
-    ]
-   }
-  
+        "linebreak",
+        "Parens"
+    ],
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	},
+	"eslint.validate": ["typescript"]
+}

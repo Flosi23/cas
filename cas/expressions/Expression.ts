@@ -1,3 +1,1 @@
-export default class Expression {
-
-}
+export default class Expression {}

@@ -39,8 +39,8 @@
 			"$pages": ["pages"],
 			"$types/*": ["types/*"],
 			"$types": ["types"],
-      "$cas": ["cas"],
-      "$cas/*": ["cas/*"],
+			"$cas": ["cas"],
+			"$cas/*": ["cas/*"],
 			"$/*": ["*"],
 			"$": ["."]
 		} /* Specify a set of entries that re-map imports to additional lookup locations. */,

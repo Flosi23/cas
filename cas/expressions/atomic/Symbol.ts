@@ -1,10 +1,10 @@
-import Expression from '../Expression';
+import Expression from "../Expression";
 
 export default class Symbol extends Expression {
-    public value: string;
+	public value: string;
 
-    constructor(value: string) {
-      super();
-      this.value = value;
-    }
+	constructor(value: string) {
+		super();
+		this.value = value;
+	}
 }

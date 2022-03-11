@@ -1,10 +1,10 @@
-import Expression from '../Expression';
+import Expression from "../Expression";
 
 export default class Integer extends Expression {
-    public value : number;
+	public value: number;
 
-    constructor(value: number) {
-      super();
-      this.value = value;
-    }
+	constructor(value: number) {
+		super();
+		this.value = value;
+	}
 }

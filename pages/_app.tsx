@@ -25,9 +25,9 @@ export default function App({
 					content="initial-scale=1, width=device-width"
 				/>
 			</Head>
-				<ChakraProvider>
-						<Component {...pageProps} />
-				</ChakraProvider>
+			<ChakraProvider>
+				<Component {...pageProps} />
+			</ChakraProvider>
 		</CacheProvider>
 	);
 }
