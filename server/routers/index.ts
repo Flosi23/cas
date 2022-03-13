@@ -13,7 +13,9 @@ export const appRouter = trpc
 	.mutation("tree", {
 		input: z.object({ expr: z.string() }),
 		resolve({ input }) {
-			return parseExpression(input.expr.trim().replace(/\s/g, ""));
+			const exp = parseExpression(input.expr.trim().replace(/\s/g, ""));
+			exp.setDisplayValue();
+			return exp;
 		},
 	});
 

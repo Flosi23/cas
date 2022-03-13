@@ -7,4 +7,8 @@ export default class Integer extends Expression {
 		super();
 		this.value = value;
 	}
+
+	setDisplayValue(): void {
+		this.displayValue = this.value.toString();
+	}
 }

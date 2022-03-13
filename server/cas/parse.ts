@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import type Expression from "./expressions/Expression";
+import type Operator from "./expressions/compound/Operator";
 import Integer from "./expressions/atomic/Integer";
 import Symbol from "./expressions/atomic/Symbol";
 import Add from "./expressions/compound/Add";
@@ -11,8 +12,8 @@ import Sub from "./expressions/compound/Sub";
 function tryOperator(
 	expr: string,
 	operator: string,
-	callback: (left: string, right: string) => Expression | null,
-): Expression | null {
+	callback: (left: string, right: string) => Operator | null,
+): Operator | null {
 	if (expr.startsWith("(") && expr.endsWith(")")) {
 		return null;
 	}
@@ -56,11 +57,11 @@ function hasParentheses(expr: string): Expression | null {
 	return null;
 }
 
-function isFactor(expr: string): Expression | null {
+function isFactor(expr: string): Expression | Operator | null {
 	return hasParentheses(expr) || isInteger(expr) || isSymbol(expr);
 }
 
-function isP(expr: string): Expression | null {
+function isP(expr: string): Operator | null {
 	return tryOperator(expr, "^", (left, right) => {
 		const leftExpr = isFactor(left);
 		if (!leftExpr) return null;
@@ -72,11 +73,11 @@ function isP(expr: string): Expression | null {
 	});
 }
 
-function isPower(expr: string): Expression | null {
+function isPower(expr: string): Expression | Operator | null {
 	return isP(expr) || isFactor(expr);
 }
 
-function isMultiplication(expr: string): Expression | null {
+function isMultiplication(expr: string): Operator | null {
 	return tryOperator(expr, "*", (left, right) => {
 		const leftExpr = isTerm(left);
 		if (!leftExpr) return null;
@@ -88,7 +89,7 @@ function isMultiplication(expr: string): Expression | null {
 	});
 }
 
-function isDivision(expr: string): Expression | null {
+function isDivision(expr: string): Operator | null {
 	return tryOperator(expr, "/", (left, right) => {
 		const leftExpr = isTerm(left);
 		if (!leftExpr) return null;
@@ -100,11 +101,11 @@ function isDivision(expr: string): Expression | null {
 	});
 }
 
-function isTerm(expr: string): Expression | null {
+function isTerm(expr: string): Expression | Operator | null {
 	return isMultiplication(expr) || isDivision(expr) || isPower(expr);
 }
 
-function isAddition(expr: string): Expression | null {
+function isAddition(expr: string): Operator | null {
 	return tryOperator(expr, "+", (left, right) => {
 		const leftExpr = isExpression(left);
 		if (!leftExpr) return null;
@@ -116,7 +117,7 @@ function isAddition(expr: string): Expression | null {
 	});
 }
 
-function isSubtraction(expr: string): Expression | null {
+function isSubtraction(expr: string): Operator | null {
 	return tryOperator(expr, "-", (left, right) => {
 		const leftExpr = isExpression(left);
 		if (!leftExpr) return null;
@@ -128,11 +129,11 @@ function isSubtraction(expr: string): Expression | null {
 	});
 }
 
-function isExpression(expr: string): Expression | null {
+function isExpression(expr: string): Operator | Expression | null {
 	return isAddition(expr) || isSubtraction(expr) || isTerm(expr);
 }
 
-export default function parseExpression(expr: string): Expression {
+export default function parseExpression(expr: string): Operator | Expression {
 	const tree = isExpression(expr);
 
 	if (!tree) {

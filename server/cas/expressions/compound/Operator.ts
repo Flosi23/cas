@@ -12,4 +12,12 @@ export default class Operator extends Expression {
 
 		this.children = children;
 	}
+
+	setDisplayValue(): void {
+		this.children.forEach((c) => c.setDisplayValue());
+	}
+}
+
+export function isOperator(object: any): object is Operator {
+	return "children" in object;
 }
