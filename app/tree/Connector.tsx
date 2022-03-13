@@ -1,14 +1,17 @@
 import { Box } from "@chakra-ui/react";
 
 export default function Connector({
-	width,
+	nodeWidth,
+	spacing,
 	height,
 	type,
 }: {
-	width: number;
+	spacing: number;
+	nodeWidth: number;
 	type: number;
 	height: number;
 }) {
+	const width = nodeWidth / 2 + spacing;
 	const arcRad = height / 2;
 	const lineWidth = width - arcRad;
 
@@ -83,7 +86,9 @@ export default function Connector({
 
 	return (
 		<Box
+			position="absolute"
 			width="max-content"
+			left={type < 0 ? `-${spacing}px` : "50%"}
 			marginLeft={type < 0 ? "auto" : "initial"}
 			marginRight={type > 0 ? "auto" : "initial"}>
 			{svg}
