@@ -1,16 +1,5 @@
 import type Expression from "$cas/expressions/Expression";
-import { chdir } from "process";
-import {
-	Box,
-	Center,
-	Flex,
-	Grid,
-	GridItem,
-	Text,
-	VStack,
-} from "@chakra-ui/react";
-import { over } from "lodash";
-import { useState } from "react";
+import { Box, Center, Text } from "@chakra-ui/react";
 import Operator, { isOperator } from "$cas/expressions/compound/Operator";
 import Connector from "./Connector";
 
@@ -27,33 +16,31 @@ export default function TreeNode({ node }: { node: Expression | Operator }) {
 		return i < mid ? -1 : 1;
 	};
 
+	const getDepth = (parentNode: Expression): number => {
+		if (isOperator(parentNode)) {
+			return Math.max(
+				...parentNode.children.map((child) => getDepth(child) + 1),
+			);
+		}
+		return 1;
+	};
+
 	const getOverlaps = (parentNode: Operator): number => {
 		let overlaps = 0;
-		const currentNode = parentNode;
-		const children = 0;
+		let secondChildren = 0;
 
 		parentNode.children.forEach((child) => {
-			if (isOperator(child)) {
-				secondChildren += child.children.length;
-			}
+			secondChildren += isOperator(child) ? child.children.length : 0;
 		});
 
-		if (secondChildren >= parentNode.children.length * 2) {
-			overlaps += 1;
+		if (secondChildren > parentNode.children.length) {
+			overlaps = getDepth(parentNode) - 3;
 		}
-
-		parentNode.children.forEach((child) => {
-			if (isOperator(child)) {
-				overlaps += getOverlaps(child);
-			}
-		});
 
 		return overlaps;
 	};
 
 	const calcSpacing = (parentNode: Operator): number => {
-		const secondChildren = 0;
-
 		let hGap = 0;
 
 		hGap += getOverlaps(parentNode) * width;
@@ -80,7 +67,8 @@ export default function TreeNode({ node }: { node: Expression | Operator }) {
 				h={`${height}px`}
 				borderRadius="lg">
 				<Text fontWeight="bold" fontSize="lg">
-					{node.displayValue}
+					{node.displayValue} O:{" "}
+					{isOperator(node) ? getOverlaps(node) : 0}
 				</Text>
 			</Center>
 

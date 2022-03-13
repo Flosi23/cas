@@ -14,10 +14,6 @@ function tryOperator(
 	operator: string,
 	callback: (left: string, right: string) => Operator | null,
 ): Operator | null {
-	if (expr.startsWith("(") && expr.endsWith(")")) {
-		return null;
-	}
-
 	for (
 		let i = expr.indexOf(operator);
 		i !== -1;
