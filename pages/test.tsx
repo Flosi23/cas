@@ -1,5 +1,5 @@
-import TestConnector from "$app/tree/TestConnector";
+import Connector from "$app/tree/Connector";
 
 export default function Test() {
-	return <TestConnector nodeWidth={500} height={100} type={0} spacing={0} />;
+	return <Connector nodeWidth={500} height={100} type={1} spacing={0} />;
 }

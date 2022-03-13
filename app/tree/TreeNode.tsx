@@ -1,5 +1,5 @@
 import type Expression from "$cas/expressions/Expression";
-import { Box, Center, Text } from "@chakra-ui/react";
+import { Box, Center, ScaleFade, Text } from "@chakra-ui/react";
 import Operator, { isOperator } from "$cas/expressions/compound/Operator";
 import Connector from "./Connector";
 
@@ -41,7 +41,7 @@ export default function TreeNode({ node }: { node: Expression | Operator }) {
 	};
 
 	const calcSpacing = (parentNode: Operator): number => {
-		let hGap = 0;
+		let hGap = 30;
 
 		hGap += getOverlaps(parentNode) * width;
 
@@ -61,14 +61,14 @@ export default function TreeNode({ node }: { node: Expression | Operator }) {
 	return (
 		<Box position="relative">
 			<Center
+				className="node"
 				border="2px"
 				borderColor="brand.500"
 				w={`${width}px`}
 				h={`${height}px`}
 				borderRadius="lg">
 				<Text fontWeight="bold" fontSize="lg">
-					{node.displayValue} O:{" "}
-					{isOperator(node) ? getOverlaps(node) : 0}
+					{node.displayValue}
 				</Text>
 			</Center>
 

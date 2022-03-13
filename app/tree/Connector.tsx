@@ -13,7 +13,7 @@ export default function TestConnector({
 }) {
 	const width = nodeWidth / 2 + spacing;
 	const arcRad = height / 2;
-	const lineWidth = width - arcRad;
+	const lineWidth = width - 2 * arcRad;
 
 	const strokeColor = "var(--chakra-colors-brand-500)";
 
@@ -23,11 +23,17 @@ export default function TestConnector({
 		</svg>
 	);
 
+	<path
+		d={`M 0, ${height} A ${arcRad} ${arcRad} 0 0 1  ${arcRad}, ${arcRad} H ${lineWidth} A ${arcRad} ${arcRad} 0 0 0 ${width}, 0`}
+	/>;
+
 	if (type < 0) {
 		svg = (
 			<svg width={`${width}`} height={`${height}`}>
 				<path
-					d={`M 0, ${height} A ${arcRad} ${arcRad} 0 0 1  ${arcRad}, ${arcRad} H ${lineWidth} A ${arcRad} ${arcRad} 0 0 0 ${width}, 0`}
+					d={`M ${width} 0 A ${arcRad} ${arcRad} 0 0 1 ${
+						width - arcRad
+					} ${arcRad} h -${lineWidth} a ${arcRad} ${arcRad} 0 0 0 0, ${height}`}
 				/>
 			</svg>
 		);
@@ -37,7 +43,7 @@ export default function TestConnector({
 		svg = (
 			<svg width={`${width}`} height={`${height}`}>
 				<path
-					d={`M 0, 0 A ${arcRad},${arcRad} 0 0 0 ${arcRad},${arcRad} H ${lineWidth} A ${arcRad},${arcRad} 0 0 1 ${width},${height}`}
+					d={`M 0, 0 A ${arcRad},${arcRad} 0 0 0 ${arcRad},${arcRad} h ${lineWidth} A ${arcRad},${arcRad} 0 0 1 ${width},${height}`}
 				/>
 			</svg>
 		);
@@ -55,7 +61,7 @@ export default function TestConnector({
 					path {
 						stroke-dasharray: 450;
 						stroke-dashoffset: 450;
-						animation: draw 2s linear forwards;
+						animation: draw 0.2s linear forwards;
 						stroke-width: 2;
 						fill: none;
 						stroke: ${strokeColor};
