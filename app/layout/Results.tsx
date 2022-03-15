@@ -16,7 +16,7 @@ export default function Results({ tree }: { tree: Expression }) {
 				</TabPanel>
 				<TabPanel>
 					<Box my={10} w="min-content">
-						<TreeNode node={tree} />
+						<TreeNode depth={0} node={tree} />
 					</Box>
 				</TabPanel>
 			</TabPanels>

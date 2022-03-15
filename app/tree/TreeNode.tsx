@@ -1,9 +1,15 @@
 import type Expression from "$cas/expressions/Expression";
-import { Box, Center, ScaleFade, Text } from "@chakra-ui/react";
+import { Box, Center, Text } from "@chakra-ui/react";
 import Operator, { isOperator } from "$cas/expressions/compound/Operator";
 import Connector from "./Connector";
 
-export default function TreeNode({ node }: { node: Expression | Operator }) {
+export default function TreeNode({
+	node,
+	depth,
+}: {
+	node: Expression | Operator;
+	depth: number;
+}) {
 	const width = 80;
 	const height = 50;
 	const vGap = 30;
@@ -72,10 +78,29 @@ export default function TreeNode({ node }: { node: Expression | Operator }) {
 				</Text>
 			</Center>
 
+			<style jsx>{`
+				.node {
+					opacity: 0;
+					animation: changeOpac 0.5s linear forwards;
+					animation-delay: ${depth * 0.5}s;
+				}
+
+				@keyframes changeOpac {
+					from {
+						opacity: 0;
+					}
+					to {
+						opacity: 1;
+					}
+				}
+			`}</style>
+
 			{isOperator(node) &&
 				node.children.map((child, i) => (
+					// eslint-disable-next-line react/no-array-index-key
 					<Box key={i}>
 						<Connector
+							depth={depth}
 							spacing={calcSpacing(node)}
 							height={vGap}
 							nodeWidth={width}
@@ -87,7 +112,7 @@ export default function TreeNode({ node }: { node: Expression | Operator }) {
 							left={`${
 								i * width - width / 2 + spacing(i, node)
 							}px`}>
-							<TreeNode node={child} />
+							<TreeNode depth={depth + 1} node={child} />
 						</Box>
 					</Box>
 				))}

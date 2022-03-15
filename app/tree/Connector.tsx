@@ -4,10 +4,12 @@ export default function TestConnector({
 	nodeWidth,
 	spacing,
 	height,
+	depth,
 	type,
 }: {
 	spacing: number;
 	nodeWidth: number;
+	depth: number;
 	type: number;
 	height: number;
 }) {
@@ -19,7 +21,7 @@ export default function TestConnector({
 
 	let svg = (
 		<svg width={`${width}`} height={`${height}`}>
-			<path d={`M 0,0 V ${height}`} />
+			<path className="connector" d={`M 0,0 V ${height}`} />
 		</svg>
 	);
 
@@ -31,6 +33,7 @@ export default function TestConnector({
 		svg = (
 			<svg width={`${width}`} height={`${height}`}>
 				<path
+					className="connector"
 					d={`M ${width} 0 A ${arcRad} ${arcRad} 0 0 1 ${
 						width - arcRad
 					} ${arcRad} h -${lineWidth} a ${arcRad} ${arcRad} 0 0 0 0, ${height}`}
@@ -43,6 +46,7 @@ export default function TestConnector({
 		svg = (
 			<svg width={`${width}`} height={`${height}`}>
 				<path
+					className="connector"
 					d={`M 0, 0 A ${arcRad},${arcRad} 0 0 0 ${arcRad},${arcRad} h ${lineWidth} A ${arcRad},${arcRad} 0 0 1 ${width},${height}`}
 				/>
 			</svg>
@@ -56,12 +60,14 @@ export default function TestConnector({
 			left={type < 0 ? `-${spacing}px` : "50%"}
 			marginLeft={type < 0 ? "auto" : "initial"}
 			marginRight={type > 0 ? "auto" : "initial"}>
+			{svg}
 			<style global jsx>
 				{`
-					path {
+					.connector {
 						stroke-dasharray: 450;
 						stroke-dashoffset: 450;
-						animation: draw 0.2s linear forwards;
+						animation: draw 0.5s linear forwards;
+						animation-delay: ${depth * 0.5}s;
 						stroke-width: 2;
 						fill: none;
 						stroke: ${strokeColor};
@@ -74,7 +80,6 @@ export default function TestConnector({
 					}
 				`}
 			</style>
-			{svg}
 		</Box>
 	);
 }
