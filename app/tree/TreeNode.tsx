@@ -1,5 +1,5 @@
 import type Expression from "$cas/expressions/Expression";
-import { Box, Center, Text } from "@chakra-ui/react";
+import { Box, Center, Text, keyframes } from "@chakra-ui/react";
 import Operator, { isOperator } from "$cas/expressions/compound/Operator";
 import Connector from "./Connector";
 
@@ -13,6 +13,8 @@ export default function TreeNode({
 	const width = 80;
 	const height = 50;
 	const vGap = 30;
+	const nodeAnimDuration = 0.1;
+	const pathAnimDuration = 0.2;
 
 	const getType = (i: number, children: number) => {
 		const mid = (children - 1) / 2;
@@ -64,42 +66,39 @@ export default function TreeNode({
 		return 0;
 	};
 
+	const changeOpacity = keyframes`
+		from { opacity: 0; }
+		to { opacity: 1; }
+	`;
+
 	return (
 		<Box position="relative">
 			<Center
 				className="node"
 				border="2px"
+				opacity="0"
 				borderColor="brand.500"
 				w={`${width}px`}
 				h={`${height}px`}
-				borderRadius="lg">
+				borderRadius="lg"
+				style={{
+					animationDelay: `${
+						depth * (pathAnimDuration + nodeAnimDuration)
+					}s`,
+				}}
+				animation={`${changeOpacity} ${nodeAnimDuration}s linear forwards`}>
 				<Text fontWeight="bold" fontSize="lg">
 					{node.displayValue}
 				</Text>
 			</Center>
-
-			<style jsx>{`
-				.node {
-					opacity: 0;
-					animation: changeOpac 0.5s linear forwards;
-					animation-delay: ${depth * 0.5}s;
-				}
-
-				@keyframes changeOpac {
-					from {
-						opacity: 0;
-					}
-					to {
-						opacity: 1;
-					}
-				}
-			`}</style>
 
 			{isOperator(node) &&
 				node.children.map((child, i) => (
 					// eslint-disable-next-line react/no-array-index-key
 					<Box key={i}>
 						<Connector
+							nodeAnimDuration={nodeAnimDuration}
+							pathAnimDuration={pathAnimDuration}
 							depth={depth}
 							spacing={calcSpacing(node)}
 							height={vGap}

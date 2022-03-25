@@ -1,39 +1,85 @@
 import { Box } from "@chakra-ui/react";
 
+function Path({
+	d,
+	depth,
+	nodeAnimDuration,
+	pathAnimDuration,
+}: {
+	d: string;
+	depth: number;
+	nodeAnimDuration: number;
+	pathAnimDuration: number;
+}) {
+	return (
+		<>
+			<path
+				strokeDashoffset="100"
+				strokeWidth={2}
+				fill="none"
+				stroke="var(--chakra-colors-brand-500)"
+				strokeDasharray="100"
+				d={d}
+			/>
+			<style jsx>
+				{`
+					path {
+						animation: drawPath ${pathAnimDuration}s linear forwards;
+						animation-delay: ${depth *
+							(nodeAnimDuration + pathAnimDuration) +
+						nodeAnimDuration}s;
+					}
+
+					@keyframes drawPath {
+						to {
+							stroke-dashoffset: 0;
+						}
+					}
+				`}
+			</style>
+		</>
+	);
+}
+
 export default function TestConnector({
 	nodeWidth,
 	spacing,
 	height,
 	depth,
 	type,
+	nodeAnimDuration,
+	pathAnimDuration,
 }: {
 	spacing: number;
 	nodeWidth: number;
 	depth: number;
 	type: number;
 	height: number;
+	nodeAnimDuration: number;
+	pathAnimDuration: number;
 }) {
 	const width = nodeWidth / 2 + spacing;
 	const arcRad = height / 2;
 	const lineWidth = width - 2 * arcRad;
 
-	const strokeColor = "var(--chakra-colors-brand-500)";
-
 	let svg = (
 		<svg width={`${width}`} height={`${height}`}>
-			<path className="connector" d={`M 0,0 V ${height}`} />
+			<Path
+				pathAnimDuration={pathAnimDuration}
+				nodeAnimDuration={nodeAnimDuration}
+				depth={depth}
+				d={`M 0,0 V ${height}`}
+			/>
 		</svg>
 	);
-
-	<path
-		d={`M 0, ${height} A ${arcRad} ${arcRad} 0 0 1  ${arcRad}, ${arcRad} H ${lineWidth} A ${arcRad} ${arcRad} 0 0 0 ${width}, 0`}
-	/>;
 
 	if (type < 0) {
 		svg = (
 			<svg width={`${width}`} height={`${height}`}>
-				<path
-					className="connector"
+				<Path
+					pathAnimDuration={pathAnimDuration}
+					nodeAnimDuration={nodeAnimDuration}
+					depth={depth}
 					d={`M ${width} 0 A ${arcRad} ${arcRad} 0 0 1 ${
 						width - arcRad
 					} ${arcRad} h -${lineWidth} a ${arcRad} ${arcRad} 0 0 0 0, ${height}`}
@@ -45,8 +91,10 @@ export default function TestConnector({
 	if (type > 0) {
 		svg = (
 			<svg width={`${width}`} height={`${height}`}>
-				<path
-					className="connector"
+				<Path
+					pathAnimDuration={pathAnimDuration}
+					nodeAnimDuration={nodeAnimDuration}
+					depth={depth}
 					d={`M 0, 0 A ${arcRad},${arcRad} 0 0 0 ${arcRad},${arcRad} h ${lineWidth} A ${arcRad},${arcRad} 0 0 1 ${width},${height}`}
 				/>
 			</svg>
@@ -61,25 +109,6 @@ export default function TestConnector({
 			marginLeft={type < 0 ? "auto" : "initial"}
 			marginRight={type > 0 ? "auto" : "initial"}>
 			{svg}
-			<style global jsx>
-				{`
-					.connector {
-						stroke-dasharray: 450;
-						stroke-dashoffset: 450;
-						animation: draw 0.5s linear forwards;
-						animation-delay: ${depth * 0.5}s;
-						stroke-width: 2;
-						fill: none;
-						stroke: ${strokeColor};
-					}
-
-					@keyframes draw {
-						to {
-							stroke-dashoffset: 0;
-						}
-					}
-				`}
-			</style>
 		</Box>
 	);
 }
