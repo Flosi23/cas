@@ -1,9 +1,12 @@
+import type ExprType from "./ExprType";
+import type Operator from "./compound/Operator";
+
 export default abstract class Expression {
-	displayValue: string;
+	public parent: Operator | null;
+
+	public abstract type: ExprType;
 
 	constructor() {
-		this.displayValue = "";
+		this.parent = null;
 	}
-
-	abstract setDisplayValue(): void;
 }

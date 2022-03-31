@@ -25,10 +25,6 @@ export default function TestConnector({
 		</svg>
 	);
 
-	<path
-		d={`M 0, ${height} A ${arcRad} ${arcRad} 0 0 1  ${arcRad}, ${arcRad} H ${lineWidth} A ${arcRad} ${arcRad} 0 0 0 ${width}, 0`}
-	/>;
-
 	if (type < 0) {
 		svg = (
 			<svg width={`${width}`} height={`${height}`}>

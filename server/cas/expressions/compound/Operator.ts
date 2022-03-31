@@ -1,7 +1,10 @@
+import type ExprType from "../ExprType";
 import Expression from "../Expression";
 
-export default class Operator extends Expression {
+export default abstract class Operator extends Expression {
 	public children: Expression[];
+
+	public abstract override type: ExprType;
 
 	constructor(children: Expression[]) {
 		super();
@@ -11,13 +14,10 @@ export default class Operator extends Expression {
 		}
 
 		this.children = children;
+		// set new parent of children
+		for (let i = 0; i < this.children.length; i += 1) {
+			const child = this.children[i];
+			if (child) child.parent = this;
+		}
 	}
-
-	setDisplayValue(): void {
-		this.children.forEach((c) => c.setDisplayValue());
-	}
-}
-
-export function isOperator(object: any): object is Operator {
-	return "children" in object;
 }

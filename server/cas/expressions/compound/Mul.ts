@@ -1,8 +1,6 @@
+import ExprType from "../ExprType";
 import Operator from "./Operator";
 
 export default class Mul extends Operator {
-	override setDisplayValue(): void {
-		super.setDisplayValue();
-		this.displayValue = "*";
-	}
+	public type = ExprType.Mul;
 }
