@@ -1,11 +1,6 @@
-import type ExprType from "../ExprType";
 import Expression from "../Expression";
 
 export default abstract class Operator extends Expression {
-	public children: Expression[];
-
-	public abstract override type: ExprType;
-
 	constructor(children: Expression[]) {
 		super();
 

@@ -11,3 +11,8 @@ export default class Symbol extends Expression {
 		this.value = value;
 	}
 }
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function isSymbol(expr: Expression): expr is Symbol {
+	return expr.type === ExprType.Symbol;
+}

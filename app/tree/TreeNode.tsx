@@ -1,13 +1,12 @@
-import type Expression from "$cas/expressions/Expression";
+import type DisplayExpression from "$/server/display/DisplayExpression";
 import { Box, Center, Text } from "@chakra-ui/react";
-import Operator, { isOperator } from "$cas/expressions/compound/Operator";
 import Connector from "./Connector";
 
 export default function TreeNode({
 	node,
 	depth,
 }: {
-	node: Expression | Operator;
+	node: DisplayExpression;
 	depth: number;
 }) {
 	const width = 80;
@@ -22,21 +21,18 @@ export default function TreeNode({
 		return i < mid ? -1 : 1;
 	};
 
-	const getDepth = (parentNode: Expression): number => {
-		if (isOperator(parentNode)) {
-			return Math.max(
-				...parentNode.children.map((child) => getDepth(child) + 1),
-			);
-		}
-		return 1;
+	const getDepth = (parentNode: DisplayExpression): number => {
+		return Math.max(
+			...parentNode.children.map((child) => getDepth(child) + 1),
+		);
 	};
 
-	const getOverlaps = (parentNode: Operator): number => {
+	const getOverlaps = (parentNode: DisplayExpression): number => {
 		let overlaps = 0;
 		let secondChildren = 0;
 
 		parentNode.children.forEach((child) => {
-			secondChildren += isOperator(child) ? child.children.length : 0;
+			secondChildren += child.children.length;
 		});
 
 		if (secondChildren > parentNode.children.length) {
@@ -46,7 +42,7 @@ export default function TreeNode({
 		return overlaps;
 	};
 
-	const calcSpacing = (parentNode: Operator): number => {
+	const calcSpacing = (parentNode: DisplayExpression): number => {
 		let hGap = 30;
 
 		hGap += getOverlaps(parentNode) * width;
@@ -54,7 +50,7 @@ export default function TreeNode({
 		return hGap;
 	};
 
-	const spacing = (i: number, parentNode: Operator): number => {
+	const spacing = (i: number, parentNode: DisplayExpression): number => {
 		const type = getType(i, parentNode.children.length);
 
 		const eqSpacing = calcSpacing(parentNode);
@@ -95,27 +91,24 @@ export default function TreeNode({
 				}
 			`}</style>
 
-			{isOperator(node) &&
-				node.children.map((child, i) => (
-					// eslint-disable-next-line react/no-array-index-key
-					<Box key={i}>
-						<Connector
-							depth={depth}
-							spacing={calcSpacing(node)}
-							height={vGap}
-							nodeWidth={width}
-							type={getType(i, node.children.length)}
-						/>
-						<Box
-							marginTop={`${vGap}px`}
-							position="absolute"
-							left={`${
-								i * width - width / 2 + spacing(i, node)
-							}px`}>
-							<TreeNode depth={depth + 1} node={child} />
-						</Box>
+			{node.children.map((child, i) => (
+				// eslint-disable-next-line react/no-array-index-key
+				<Box key={i}>
+					<Connector
+						depth={depth}
+						spacing={calcSpacing(node)}
+						height={vGap}
+						nodeWidth={width}
+						type={getType(i, node.children.length)}
+					/>
+					<Box
+						marginTop={`${vGap}px`}
+						position="absolute"
+						left={`${i * width - width / 2 + spacing(i, node)}px`}>
+						<TreeNode depth={depth + 1} node={child} />
 					</Box>
-				))}
+				</Box>
+			))}
 		</Box>
 	);
 }

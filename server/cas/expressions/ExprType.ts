@@ -4,7 +4,7 @@ enum ExprType {
 	Add,
 	Div,
 	Mul,
-	Pow,
+	Power,
 	Sub,
 }
 

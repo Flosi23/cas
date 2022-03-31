@@ -11,3 +11,7 @@ export default class Integer extends Expression {
 		this.value = value;
 	}
 }
+
+export function isInt(expr: Expression): expr is Integer {
+	return expr.type === ExprType.Int;
+}
