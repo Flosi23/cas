@@ -2,6 +2,7 @@ import * as trpc from "@trpc/server";
 import { z } from "zod";
 import parseExpression from "$cas/parse";
 import { exprToDisplayExpr } from "../display/DisplayExpression";
+import { getRow } from "../display/tree";
 
 /**
  * Create your application's root router
@@ -15,7 +16,8 @@ export const appRouter = trpc
 		input: z.object({ expr: z.string() }),
 		resolve({ input }) {
 			const exp = parseExpression(input.expr.trim().replace(/\s/g, ""));
-			return exprToDisplayExpr(exp);
+			const dExp = exprToDisplayExpr(exp);
+			return dExp;
 		},
 	});
 

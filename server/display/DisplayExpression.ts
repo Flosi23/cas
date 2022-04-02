@@ -10,11 +10,17 @@ import { isSub } from "$cas/expressions/compound/Sub";
 export default class DisplayExpression {
 	public displayValue: string;
 
+	public xUnits: number;
+
+	public yUnits: number;
+
 	public children: DisplayExpression[];
 
-	constructor(displayValue: string, children: DisplayExpression[]) {
+	constructor(displayValue: string) {
 		this.displayValue = displayValue;
-		this.children = children;
+		this.children = [];
+		this.xUnits = 0;
+		this.yUnits = 0;
 	}
 }
 
@@ -30,8 +36,7 @@ function getDisplayValue(expr: Expression): string {
 }
 
 export function exprToDisplayExpr(expr: Expression): DisplayExpression {
-	return new DisplayExpression(
-		getDisplayValue(expr),
-		expr.children.map((child) => exprToDisplayExpr(child)),
-	);
+	const dExpr = new DisplayExpression(getDisplayValue(expr));
+	dExpr.children = expr.children.map((child) => exprToDisplayExpr(child));
+	return dExpr;
 }
