@@ -23,6 +23,11 @@ export default class DisplayExpression {
 		this.parent = parent;
 	}
 
+	shift(x: number) {
+		this.xUnits += x;
+		this.children.forEach((child) => child.shift(x));
+	}
+
 	getRow(row: number, depth = 0): DisplayExpression[] {
 		if (row === depth) {
 			return [this];
