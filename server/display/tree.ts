@@ -1,22 +1,19 @@
 import type Expression from "$cas/expressions/Expression";
-import type DisplayExpression from "./DisplayExpression";
 import { exprToDisplayExpr } from "./DisplayExpression";
 import { FrontendExpression, toFrontExpr } from "./FrontendExpression";
 
-export function getRow(
-	expr: DisplayExpression,
-	row: number,
-	depth = 0,
-): DisplayExpression[] {
-	if (row === depth) {
-		return [expr];
-	}
-	const newDepth = depth + 1;
-	return expr.children.flatMap((child) => getRow(child, row, newDepth));
-}
-
 export function calcTreeSpacing(expr: Expression): FrontendExpression {
 	const dExpr = exprToDisplayExpr(expr);
+
+	dExpr.setDefaultCoordinates();
+
+	for (let i = 0; i <= dExpr.getMaxDepth(); i += 1) {
+		const row = dExpr.getRow(i);
+
+		for (let j = 0; j < row.length; j++) {
+			// get father of group
+		}
+	}
 
 	return toFrontExpr(dExpr);
 }

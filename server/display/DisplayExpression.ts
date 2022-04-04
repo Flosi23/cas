@@ -22,6 +22,35 @@ export default class DisplayExpression {
 		this.displayValue = displayValue;
 		this.parent = parent;
 	}
+
+	getRow(row: number, depth = 0): DisplayExpression[] {
+		if (row === depth) {
+			return [this];
+		}
+		const newDepth = depth + 1;
+		return this.children.flatMap((child) => child.getRow(row, newDepth));
+	}
+
+	getMaxDepth(depth = 0): number {
+		if (this.children.length === 0) {
+			return depth;
+		}
+		const newDepth = depth + 1;
+		return Math.max(
+			...this.children.map((child) => child.getMaxDepth(newDepth)),
+		);
+	}
+
+	setDefaultCoordinates() {
+		for (let i = 0; i <= this.getMaxDepth(); i += 1) {
+			const row = this.getRow(i);
+
+			for (let j = 0; j < row.length; j += 1) {
+				row[j]!.xUnits = j;
+				row[j]!.yUnits = i;
+			}
+		}
+	}
 }
 
 function getDisplayValue(expr: Expression): string {
