@@ -32,8 +32,45 @@ export function calcTreeSpacing(expr: Expression): FrontendExpression {
 		}
 
 		// only calculate the position of the parent nodes if the row has a parent row
-		if (i > 0) {
+		if (parents.length > 0) {
 			const parentRow = dExpr.getRow(i - 1);
+
+			const leftParentIndex = parentRow.indexOf(parents[0]!);
+			// positions left of the parents
+			for (let j = leftParentIndex - 1; j >= 0; j -= 1) {
+				parentRow[j]!.xUnits =
+					parents[0]!.xUnits - (leftParentIndex - j);
+			}
+
+			// positions between the parents
+			parents.reduceRight((previous, current) => {
+				const previousIndex = parentRow.indexOf(previous);
+				const currentIndex = parentRow.indexOf(current);
+
+				for (
+					let j = currentIndex + 1;
+					j >= 0 && j < previousIndex;
+					j += 1
+				) {
+					const x =
+						(previous.xUnits - current.xUnits) /
+						(previousIndex - currentIndex);
+
+					parentRow[j]!.xUnits =
+						current.xUnits + (j - currentIndex) * x;
+				}
+
+				return current;
+			}, parents.at(-1)!);
+
+			// positions right of the parents
+			const rightParentIndex = parentRow.indexOf(parents.at(-1)!);
+
+			for (let j = rightParentIndex + 1; j < parentRow.length; j += 1) {
+				parentRow[j]!.xUnits =
+					parentRow[rightParentIndex]!.xUnits +
+					(j - rightParentIndex);
+			}
 		}
 	}
 
