@@ -7,8 +7,8 @@ export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
 	const height = 50;
 	const hGap = 20;
 	const vGap = 30;
-	const nodeAnimDuration = 0.1;
-	const pathAnimDuration = 0.2;
+	const nodeAnimDuration = 0.05;
+	const pathAnimDuration = 0.1;
 
 	const getType = (i: number, children: number) => {
 		const mid = (children - 1) / 2;
@@ -16,6 +16,14 @@ export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
 		if (i === mid) return 0;
 
 		return i < mid ? -1 : 1;
+	};
+
+	const calcLeft = (n: FrontendExpressionTree) => {
+		return n.xUnits * width + hGap * n.xUnits;
+	};
+
+	const calcTop = (n: FrontendExpressionTree) => {
+		return n.yUnits * height + vGap * n.yUnits;
 	};
 
 	const changeOpacity = keyframes`
@@ -30,8 +38,8 @@ export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
 				opacity="0"
 				borderColor="brand.500"
 				position="absolute"
-				top={`${node.yUnits * height + vGap * node.yUnits}px`}
-				left={`${node.xUnits * width + hGap * node.xUnits}px`}
+				top={`${calcTop(node)}px`}
+				left={`${calcLeft(node)}px`}
 				w={`${width}px`}
 				h={`${height}px`}
 				borderRadius="lg"
@@ -48,7 +56,23 @@ export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
 
 			{node.children.map((child, i) => (
 				// eslint-disable-next-line react/no-array-index-key
-				<TreeNode node={child} key={i} />
+				<Box key={i}>
+					<Connector
+						depth={node.yUnits}
+						type={getType(i, node.children.length)}
+						height={vGap}
+						top={calcTop(node) + height}
+						left={
+							getType(i, node.children.length) >= 0
+								? calcLeft(node) + width / 2
+								: calcLeft(child) + width / 2
+						}
+						width={Math.abs(calcLeft(node) - calcLeft(child))}
+						nodeAnimDuration={nodeAnimDuration}
+						pathAnimDuration={pathAnimDuration}
+					/>
+					<TreeNode node={child} />
+				</Box>
 			))}
 		</Box>
 	);

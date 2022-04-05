@@ -15,7 +15,7 @@ export default function Results({ tree }: { tree: FrontendExpressionTree }) {
 					<p>Results</p>
 				</TabPanel>
 				<TabPanel>
-					<Box my={10} w="min-content" position="relative">
+					<Box my={10} position="relative">
 						<TreeNode node={tree} />
 					</Box>
 				</TabPanel>
