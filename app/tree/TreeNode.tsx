@@ -1,17 +1,12 @@
-import type DisplayExpression from "$/server/display/DisplayExpression";
+import type { FrontendExpression } from "$/server/display/FrontendExpression";
 import { Box, Center, Text } from "@chakra-ui/react";
 import Connector from "./Connector";
 
-export default function TreeNode({
-	node,
-	depth,
-}: {
-	node: DisplayExpression;
-	depth: number;
-}) {
+export default function TreeNode({ node }: { node: FrontendExpression }) {
 	const width = 80;
 	const height = 50;
-	const vGap = 30;
+	const vGap = 20;
+	const hGap = 20;
 
 	const getType = (i: number, children: number) => {
 		const mid = (children - 1) / 2;
@@ -21,51 +16,15 @@ export default function TreeNode({
 		return i < mid ? -1 : 1;
 	};
 
-	const getDepth = (parentNode: DisplayExpression): number => {
-		return Math.max(
-			...parentNode.children.map((child) => getDepth(child) + 1),
-		);
-	};
-
-	const getOverlaps = (parentNode: DisplayExpression): number => {
-		let overlaps = 0;
-		let secondChildren = 0;
-
-		parentNode.children.forEach((child) => {
-			secondChildren += child.children.length;
-		});
-
-		if (secondChildren > parentNode.children.length) {
-			overlaps = getDepth(parentNode) - 3;
-		}
-
-		return overlaps;
-	};
-
-	const calcSpacing = (parentNode: DisplayExpression): number => {
-		let hGap = 30;
-
-		hGap += getOverlaps(parentNode) * width;
-
-		return hGap;
-	};
-
-	const spacing = (i: number, parentNode: DisplayExpression): number => {
-		const type = getType(i, parentNode.children.length);
-
-		const eqSpacing = calcSpacing(parentNode);
-
-		if (type === -1) return -eqSpacing;
-		if (type === 1) return eqSpacing;
-		return 0;
-	};
-
 	return (
-		<Box position="relative">
+		<Box>
 			<Center
 				className="node"
 				border="2px"
 				borderColor="brand.500"
+				position="absolute"
+				top={`${node.yUnits * height + vGap * node.yUnits}px`}
+				left={`${node.xUnits * width + hGap * node.xUnits}px`}
 				w={`${width}px`}
 				h={`${height}px`}
 				borderRadius="lg">
@@ -78,7 +37,7 @@ export default function TreeNode({
 				.node {
 					opacity: 0;
 					animation: changeOpac 0.5s linear forwards;
-					animation-delay: ${depth * 0.5}s;
+					animation-delay: ${node.yUnits * 0.5}s;
 				}
 
 				@keyframes changeOpac {
@@ -93,21 +52,7 @@ export default function TreeNode({
 
 			{node.children.map((child, i) => (
 				// eslint-disable-next-line react/no-array-index-key
-				<Box key={i}>
-					<Connector
-						depth={depth}
-						spacing={calcSpacing(node)}
-						height={vGap}
-						nodeWidth={width}
-						type={getType(i, node.children.length)}
-					/>
-					<Box
-						marginTop={`${vGap}px`}
-						position="absolute"
-						left={`${i * width - width / 2 + spacing(i, node)}px`}>
-						<TreeNode depth={depth + 1} node={child} />
-					</Box>
-				</Box>
+				<TreeNode node={child} key={i} />
 			))}
 		</Box>
 	);
