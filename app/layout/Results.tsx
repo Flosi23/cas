@@ -1,8 +1,8 @@
-import type DisplayExpression from "$/server/display/DisplayExpression";
 import { Tabs, Tab, TabList, TabPanel, TabPanels, Box } from "@chakra-ui/react";
+import type { FrontendExpressionTree } from "$tree";
 import TreeNode from "$app/tree/TreeNode";
 
-export default function Results({ tree }: { tree: DisplayExpression }) {
+export default function Results({ tree }: { tree: FrontendExpressionTree }) {
 	return (
 		<Tabs align="center" variant="soft-rounded">
 			<TabList>

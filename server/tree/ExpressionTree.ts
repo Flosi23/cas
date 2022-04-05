@@ -7,18 +7,18 @@ import { isMul } from "$cas/expressions/compound/Mul";
 import { isPower } from "$cas/expressions/compound/Power";
 import { isSub } from "$cas/expressions/compound/Sub";
 
-export default class DisplayExpression {
+export default class ExpressionTree {
 	public displayValue: string;
 
 	public xUnits = 0;
 
 	public yUnits = 0;
 
-	public parent: DisplayExpression | null;
+	public parent: ExpressionTree | null;
 
-	public children: DisplayExpression[] = [];
+	public children: ExpressionTree[] = [];
 
-	constructor(displayValue: string, parent: DisplayExpression | null) {
+	constructor(displayValue: string, parent: ExpressionTree | null) {
 		this.displayValue = displayValue;
 		this.parent = parent;
 	}
@@ -28,7 +28,7 @@ export default class DisplayExpression {
 		this.children.forEach((child) => child.shift(x));
 	}
 
-	getRow(row: number, depth = 0): DisplayExpression[] {
+	getRow(row: number, depth = 0): ExpressionTree[] {
 		if (row === depth) {
 			return [this];
 		}
@@ -71,9 +71,9 @@ function getDisplayValue(expr: Expression): string {
 
 export function exprToDisplayExpr(
 	expr: Expression,
-	parent: DisplayExpression | null = null,
-): DisplayExpression {
-	const dExpr = new DisplayExpression(getDisplayValue(expr), parent);
+	parent: ExpressionTree | null = null,
+): ExpressionTree {
+	const dExpr = new ExpressionTree(getDisplayValue(expr), parent);
 	dExpr.children = expr.children.map((child) =>
 		exprToDisplayExpr(child, dExpr),
 	);

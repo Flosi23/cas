@@ -1,8 +1,8 @@
-import type { FrontendExpression } from "$/server/display/FrontendExpression";
 import { Box, Center, Text } from "@chakra-ui/react";
+import type { FrontendExpressionTree } from "$tree";
 import Connector from "./Connector";
 
-export default function TreeNode({ node }: { node: FrontendExpression }) {
+export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
 	const width = 80;
 	const height = 50;
 	const vGap = 20;

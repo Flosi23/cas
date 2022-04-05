@@ -39,6 +39,7 @@
 			"$pages": ["pages"],
 			"$cas": ["server/cas"],
 			"$cas/*": ["server/cas/*"],
+			"$tree" : ["server/tree"],
 			"$routers": ["server/routers"],
 			"$routers/*": ["server/routers/*"],
 			"$/*": ["*"],

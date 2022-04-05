@@ -1,9 +1,9 @@
 import type Expression from "$cas/expressions/Expression";
 import { groupByToArray } from "$lib/array";
-import { exprToDisplayExpr } from "./DisplayExpression";
-import { FrontendExpression, toFrontExpr } from "./FrontendExpression";
+import { exprToDisplayExpr } from "./ExpressionTree";
+import FrontendExpressionTree, { toFrontExpr } from "./FrontendExpressionTree";
 
-export function calcTreeSpacing(expr: Expression): FrontendExpression {
+export function calcTreeSpacing(expr: Expression): FrontendExpressionTree {
 	const dExpr = exprToDisplayExpr(expr);
 
 	dExpr.setDefaultCoordinates();
