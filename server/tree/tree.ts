@@ -21,9 +21,10 @@ export function calcTreeSpacing(expr: Expression): FrontendExpressionTree {
 
 			parents.push(parent);
 			// the position in the middle of the group
-			const delta = (group.at(-1)!.xUnits - group.at(0)!.xUnits) / 2;
+			const delta =
+				(group[group.length - 1]!.xUnits - group[0]!.xUnits) / 2;
 
-			parent.xUnits = group.at(0)!.xUnits + delta;
+			parent.xUnits = group[0]!.xUnits + delta;
 
 			if (j + 1 < groups.length) {
 				const parentOfGroupOne = parent;
@@ -43,7 +44,7 @@ export function calcTreeSpacing(expr: Expression): FrontendExpressionTree {
 						2 -
 						group.length * 0.5 -
 						nextGroupSize * 0.5 +
-						group.at(-1)!.xUnits -
+						group[group.length - 1]!.xUnits -
 						groups[j + 1]![0]!.xUnits,
 					0,
 				);
@@ -84,10 +85,12 @@ export function calcTreeSpacing(expr: Expression): FrontendExpressionTree {
 				}
 
 				return current;
-			}, parents.at(-1)!);
+			}, parents[parents.length - 1]!);
 
 			// positions right of the parents
-			const rightParentIndex = parentRow.indexOf(parents.at(-1)!);
+			const rightParentIndex = parentRow.indexOf(
+				parents[parents.length - 1]!,
+			);
 
 			for (let j = rightParentIndex + 1; j < parentRow.length; j += 1) {
 				parentRow[j]!.xUnits =
