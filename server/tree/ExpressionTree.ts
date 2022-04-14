@@ -56,6 +56,10 @@ export default class ExpressionTree {
 			}
 		}
 	}
+
+	center() {
+		this.shift(0 - this.xUnits);
+	}
 }
 
 function getDisplayValue(expr: Expression): string {

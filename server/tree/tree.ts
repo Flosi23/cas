@@ -25,9 +25,32 @@ export function calcTreeSpacing(expr: Expression): FrontendExpressionTree {
 
 			parent.xUnits = group.at(0)!.xUnits + delta;
 
-			// move next group delta in x direction
 			if (j + 1 < groups.length) {
-				groups[j + 1]!.forEach((ele) => ele.shift(delta));
+				const parentOfGroupOne = parent;
+				const parentOfGroupTwo = groups[j + 1]![0]!.parent!;
+
+				const parentRow = dExpr.getRow(i - 1);
+
+				const indexParentOne = parentRow.indexOf(parentOfGroupOne);
+				const indexParentTwo = parentRow.indexOf(parentOfGroupTwo);
+
+				const nodesBetween = Math.abs(indexParentTwo - indexParentOne);
+
+				const nextGroupSize = groups[j + 1]!.length;
+
+				const moveDelta = Math.max(
+					nodesBetween +
+						2 -
+						group.length * 0.5 -
+						nextGroupSize * 0.5 +
+						group.at(-1)!.xUnits -
+						groups[j + 1]![0]!.xUnits,
+					0,
+				);
+
+				groups[j + 1]!.forEach((child) => {
+					child.shift(moveDelta);
+				});
 			}
 		}
 
@@ -74,5 +97,6 @@ export function calcTreeSpacing(expr: Expression): FrontendExpressionTree {
 		}
 	}
 
+	dExpr.center();
 	return toFrontExpr(dExpr);
 }

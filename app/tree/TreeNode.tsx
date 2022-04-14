@@ -1,14 +1,28 @@
-import { Box, Center, Text, keyframes } from "@chakra-ui/react";
+import {
+	Box,
+	Center,
+	Text,
+	keyframes,
+	useColorModeValue,
+} from "@chakra-ui/react";
 import type { FrontendExpressionTree } from "$tree";
 import Connector from "./Connector";
 
 export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
 	const width = 80;
 	const height = 50;
-	const hGap = 20;
-	const vGap = 30;
+	const hGap = 10;
+	const vGap = 20;
 	const nodeAnimDuration = 0.05;
 	const pathAnimDuration = 0.1;
+
+	const calcLeft = (n: FrontendExpressionTree) => {
+		return n.xUnits * width + hGap * n.xUnits - width / 2;
+	};
+
+	const calcTop = (n: FrontendExpressionTree) => {
+		return n.yUnits * height + vGap * n.yUnits;
+	};
 
 	const getType = (i: number, children: number) => {
 		const mid = (children - 1) / 2;
@@ -16,14 +30,6 @@ export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
 		if (i === mid) return 0;
 
 		return i < mid ? -1 : 1;
-	};
-
-	const calcLeft = (n: FrontendExpressionTree) => {
-		return n.xUnits * width + hGap * n.xUnits;
-	};
-
-	const calcTop = (n: FrontendExpressionTree) => {
-		return n.yUnits * height + vGap * n.yUnits;
 	};
 
 	const changeOpacity = keyframes`
@@ -36,7 +42,7 @@ export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
 				className="node"
 				border="2px"
 				opacity="0"
-				borderColor="brand.500"
+				borderColor={useColorModeValue("brand.500", "brand.300")}
 				position="absolute"
 				top={`${calcTop(node)}px`}
 				left={`${calcLeft(node)}px`}

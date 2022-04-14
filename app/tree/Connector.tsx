@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, useColorModeValue } from "@chakra-ui/react";
 
 function Path({
 	d,
@@ -15,13 +15,15 @@ function Path({
 	nodeAnimDuration: number;
 	pathAnimDuration: number;
 }) {
+	const strokeColor = useColorModeValue("brand-500", "brand-300");
+
 	return (
 		<>
 			<path
 				strokeDashoffset={width + 2 * arcRad}
 				strokeWidth={2}
 				fill="none"
-				stroke="var(--chakra-colors-brand-500)"
+				stroke={`var(--chakra-colors-${strokeColor})`}
 				strokeDasharray={width + 2 * arcRad}
 				d={d}
 			/>

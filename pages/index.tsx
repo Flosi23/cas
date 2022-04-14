@@ -47,6 +47,7 @@ export default function Index() {
 						onChange={(e) => {
 							setExpr(e.target.value);
 						}}
+						value={expr}
 						variant="filled"
 						placeholder="Expression... (e.g 2 + 4)"
 						fontWeight="bold"

@@ -1,6 +1,6 @@
-import { Tabs, Tab, TabList, TabPanel, TabPanels, Box } from "@chakra-ui/react";
+import { Tabs, Tab, TabList, TabPanel, TabPanels } from "@chakra-ui/react";
 import type { FrontendExpressionTree } from "$tree";
-import TreeNode from "$app/tree/TreeNode";
+import TreeWrapper from "$app/tree/TreeWrapper";
 
 export default function Results({ tree }: { tree: FrontendExpressionTree }) {
 	return (
@@ -15,9 +15,7 @@ export default function Results({ tree }: { tree: FrontendExpressionTree }) {
 					<p>Results</p>
 				</TabPanel>
 				<TabPanel>
-					<Box my={10} position="relative">
-						<TreeNode node={tree} />
-					</Box>
+					<TreeWrapper rootNode={tree} />
 				</TabPanel>
 			</TabPanels>
 		</Tabs>
