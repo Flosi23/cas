@@ -1,20 +1,28 @@
-import type Expression from "$cas/expressions/Expression";
-import { Box, Center, Text, keyframes } from "@chakra-ui/react";
-import Operator, { isOperator } from "$cas/expressions/compound/Operator";
+import {
+	Box,
+	Center,
+	Text,
+	keyframes,
+	useColorModeValue,
+} from "@chakra-ui/react";
+import type { FrontendExpressionTree } from "$tree";
 import Connector from "./Connector";
 
-export default function TreeNode({
-	node,
-	depth,
-}: {
-	node: Expression | Operator;
-	depth: number;
-}) {
+export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
 	const width = 80;
 	const height = 50;
-	const vGap = 30;
-	const nodeAnimDuration = 0.1;
-	const pathAnimDuration = 0.2;
+	const hGap = 10;
+	const vGap = 20;
+	const nodeAnimDuration = 0.05;
+	const pathAnimDuration = 0.1;
+
+	const calcLeft = (n: FrontendExpressionTree) => {
+		return n.xUnits * width + hGap * n.xUnits - width / 2;
+	};
+
+	const calcTop = (n: FrontendExpressionTree) => {
+		return n.yUnits * height + vGap * n.yUnits;
+	};
 
 	const getType = (i: number, children: number) => {
 		const mid = (children - 1) / 2;
@@ -24,66 +32,26 @@ export default function TreeNode({
 		return i < mid ? -1 : 1;
 	};
 
-	const getDepth = (parentNode: Expression): number => {
-		if (isOperator(parentNode)) {
-			return Math.max(
-				...parentNode.children.map((child) => getDepth(child) + 1),
-			);
-		}
-		return 1;
-	};
-
-	const getOverlaps = (parentNode: Operator): number => {
-		let overlaps = 0;
-		let secondChildren = 0;
-
-		parentNode.children.forEach((child) => {
-			secondChildren += isOperator(child) ? child.children.length : 0;
-		});
-
-		if (secondChildren > parentNode.children.length) {
-			overlaps = getDepth(parentNode) - 3;
-		}
-
-		return overlaps;
-	};
-
-	const calcSpacing = (parentNode: Operator): number => {
-		let hGap = 30;
-
-		hGap += getOverlaps(parentNode) * width;
-
-		return hGap;
-	};
-
-	const spacing = (i: number, parentNode: Operator): number => {
-		const type = getType(i, parentNode.children.length);
-
-		const eqSpacing = calcSpacing(parentNode);
-
-		if (type === -1) return -eqSpacing;
-		if (type === 1) return eqSpacing;
-		return 0;
-	};
-
 	const changeOpacity = keyframes`
 		from { opacity: 0; }
 		to { opacity: 1; }
 	`;
-
 	return (
-		<Box position="relative">
+		<Box>
 			<Center
 				className="node"
 				border="2px"
 				opacity="0"
-				borderColor="brand.500"
+				borderColor={useColorModeValue("brand.500", "brand.300")}
+				position="absolute"
+				top={`${calcTop(node)}px`}
+				left={`${calcLeft(node)}px`}
 				w={`${width}px`}
 				h={`${height}px`}
 				borderRadius="lg"
 				style={{
 					animationDelay: `${
-						depth * (pathAnimDuration + nodeAnimDuration)
+						node.yUnits * (pathAnimDuration + nodeAnimDuration)
 					}s`,
 				}}
 				animation={`${changeOpacity} ${nodeAnimDuration}s linear forwards`}>
@@ -92,29 +60,26 @@ export default function TreeNode({
 				</Text>
 			</Center>
 
-			{isOperator(node) &&
-				node.children.map((child, i) => (
-					// eslint-disable-next-line react/no-array-index-key
-					<Box key={i}>
-						<Connector
-							nodeAnimDuration={nodeAnimDuration}
-							pathAnimDuration={pathAnimDuration}
-							depth={depth}
-							spacing={calcSpacing(node)}
-							height={vGap}
-							nodeWidth={width}
-							type={getType(i, node.children.length)}
-						/>
-						<Box
-							marginTop={`${vGap}px`}
-							position="absolute"
-							left={`${
-								i * width - width / 2 + spacing(i, node)
-							}px`}>
-							<TreeNode depth={depth + 1} node={child} />
-						</Box>
-					</Box>
-				))}
+			{node.children.map((child, i) => (
+				// eslint-disable-next-line react/no-array-index-key
+				<Box key={i}>
+					<Connector
+						depth={node.yUnits}
+						type={getType(i, node.children.length)}
+						height={vGap}
+						top={calcTop(node) + height}
+						left={
+							getType(i, node.children.length) >= 0
+								? calcLeft(node) + width / 2
+								: calcLeft(child) + width / 2
+						}
+						width={Math.abs(calcLeft(node) - calcLeft(child))}
+						nodeAnimDuration={nodeAnimDuration}
+						pathAnimDuration={pathAnimDuration}
+					/>
+					<TreeNode node={child} />
+				</Box>
+			))}
 		</Box>
 	);
 }

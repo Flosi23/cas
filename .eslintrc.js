@@ -64,6 +64,7 @@ const config = {
 			{ allowEmptyCatch: true },
 		] /* airbnb: added allowEmptyCatch option */,
 		"no-import-assign": "warn" /* airbnb: not enabled yet */,
+		"no-param-reassign": "off",
 		"no-void": [
 			"error",
 			{ allowAsStatement: true },

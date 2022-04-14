@@ -1,24 +1,30 @@
-import { Box } from "@chakra-ui/react";
+import { Box, useColorModeValue } from "@chakra-ui/react";
 
 function Path({
 	d,
 	depth,
+	width,
+	arcRad,
 	nodeAnimDuration,
 	pathAnimDuration,
 }: {
 	d: string;
 	depth: number;
+	width: number;
+	arcRad: number;
 	nodeAnimDuration: number;
 	pathAnimDuration: number;
 }) {
+	const strokeColor = useColorModeValue("brand-500", "brand-300");
+
 	return (
 		<>
 			<path
-				strokeDashoffset="100"
+				strokeDashoffset={width + 2 * arcRad}
 				strokeWidth={2}
 				fill="none"
-				stroke="var(--chakra-colors-brand-500)"
-				strokeDasharray="100"
+				stroke={`var(--chakra-colors-${strokeColor})`}
+				strokeDasharray={width + 2 * arcRad}
 				d={d}
 			/>
 			<style jsx>
@@ -42,29 +48,32 @@ function Path({
 }
 
 export default function TestConnector({
-	nodeWidth,
-	spacing,
+	left,
+	top,
+	width,
 	height,
 	depth,
 	type,
 	nodeAnimDuration,
 	pathAnimDuration,
 }: {
-	spacing: number;
-	nodeWidth: number;
+	top: number;
+	left: number;
+	width: number;
 	depth: number;
 	type: number;
 	height: number;
 	nodeAnimDuration: number;
 	pathAnimDuration: number;
 }) {
-	const width = nodeWidth / 2 + spacing;
 	const arcRad = height / 2;
 	const lineWidth = width - 2 * arcRad;
 
 	let svg = (
 		<svg width={`${width}`} height={`${height}`}>
 			<Path
+				arcRad={arcRad}
+				width={width}
 				pathAnimDuration={pathAnimDuration}
 				nodeAnimDuration={nodeAnimDuration}
 				depth={depth}
@@ -77,6 +86,8 @@ export default function TestConnector({
 		svg = (
 			<svg width={`${width}`} height={`${height}`}>
 				<Path
+					arcRad={arcRad}
+					width={width}
 					pathAnimDuration={pathAnimDuration}
 					nodeAnimDuration={nodeAnimDuration}
 					depth={depth}
@@ -92,6 +103,8 @@ export default function TestConnector({
 		svg = (
 			<svg width={`${width}`} height={`${height}`}>
 				<Path
+					arcRad={arcRad}
+					width={width}
 					pathAnimDuration={pathAnimDuration}
 					nodeAnimDuration={nodeAnimDuration}
 					depth={depth}
@@ -103,11 +116,10 @@ export default function TestConnector({
 
 	return (
 		<Box
+			top={`${top}px`}
 			position="absolute"
 			width="max-content"
-			left={type < 0 ? `-${spacing}px` : "50%"}
-			marginLeft={type < 0 ? "auto" : "initial"}
-			marginRight={type > 0 ? "auto" : "initial"}>
+			left={`${left}px`}>
 			{svg}
 		</Box>
 	);

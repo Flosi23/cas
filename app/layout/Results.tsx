@@ -1,8 +1,8 @@
-import type Expression from "$/server/cas/expressions/Expression";
-import { Tabs, Tab, TabList, TabPanel, TabPanels, Box } from "@chakra-ui/react";
-import TreeNode from "$app/tree/TreeNode";
+import { Tabs, Tab, TabList, TabPanel, TabPanels } from "@chakra-ui/react";
+import type { FrontendExpressionTree } from "$tree";
+import TreeWrapper from "$app/tree/TreeWrapper";
 
-export default function Results({ tree }: { tree: Expression }) {
+export default function Results({ tree }: { tree: FrontendExpressionTree }) {
 	return (
 		<Tabs align="center" variant="soft-rounded">
 			<TabList>
@@ -15,9 +15,7 @@ export default function Results({ tree }: { tree: Expression }) {
 					<p>Results</p>
 				</TabPanel>
 				<TabPanel>
-					<Box my={10} w="min-content">
-						<TreeNode depth={0} node={tree} />
-					</Box>
+					<TreeWrapper rootNode={tree} />
 				</TabPanel>
 			</TabPanels>
 		</Tabs>

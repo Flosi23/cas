@@ -1,8 +1,6 @@
 import Expression from "../Expression";
 
-export default class Operator extends Expression {
-	public children: Expression[];
-
+export default abstract class Operator extends Expression {
 	constructor(children: Expression[]) {
 		super();
 
@@ -11,13 +9,9 @@ export default class Operator extends Expression {
 		}
 
 		this.children = children;
+		// set new parent of children
+		for (let i = 0; i < this.children.length; i += 1) {
+			this.children[i]!.parent = this;
+		}
 	}
-
-	setDisplayValue(): void {
-		this.children.forEach((c) => c.setDisplayValue());
-	}
-}
-
-export function isOperator(object: any): object is Operator {
-	return "children" in object;
 }
