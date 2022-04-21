@@ -1,5 +1,5 @@
 import type Expression from "./Expression";
-import type Integer from "./atomic/Integer";
+import type Int from "./atomic/Int";
 import type Symbol from "./atomic/Symbol";
 import type Difference from "./compound/Difference";
 import type Fraction from "./compound/Fraction";
@@ -22,11 +22,11 @@ export function isFraction(expr: Expression): expr is Fraction {
 	return expr.type === ExprType.Fraction;
 }
 
-export function isInt(expr: Expression): expr is Integer {
+export function isInt(expr: Expression): expr is Int {
 	return expr.type === ExprType.Int;
 }
 
-export function isConstant(expr: Expression): expr is Integer | Fraction {
+export function isConstant(expr: Expression): expr is Int | Fraction {
 	return isInt(expr) || isFraction(expr);
 }
 

@@ -18,11 +18,11 @@ export default abstract class Expression {
 			return false;
 		}
 
-		for (let i = 0; i < this.children.length; i += 1) {
-			if (i >= expr.children.length) {
-				return false;
-			}
+		if (expr.children.length !== this.children.length) {
+			return false;
+		}
 
+		for (let i = 0; i < this.children.length; i += 1) {
 			if (!this.children[i]!.equals(expr.children[i]!)) {
 				return false;
 			}

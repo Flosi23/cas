@@ -1,21 +1,21 @@
 import ExprType from "../ExprType";
-import Integer from "../atomic/Integer";
+import Int from "../atomic/Int";
 import Operator from "./Operator";
 
 export default class Fraction extends Operator {
-	public declare children: Integer[];
+	public declare children: Int[];
 
 	public type = ExprType.Fraction;
 
-	constructor(numerator: Integer, denominator: Integer) {
+	constructor(numerator: Int, denominator: Int) {
 		super([numerator, denominator]);
 	}
 
-	public numerator(): Integer {
+	public numerator(): Int {
 		return this.children[0]!;
 	}
 
-	public denominator(): Integer {
-		return this.children[1] ?? new Integer(1);
+	public denominator(): Int {
+		return this.children[1] ?? new Int(1);
 	}
 }

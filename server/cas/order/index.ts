@@ -1,5 +1,5 @@
 import type Expression from "$cas/expressions/Expression";
-import Integer from "$cas/expressions/atomic/Integer";
+import Int from "$cas/expressions/atomic/Int";
 import Fraction from "$cas/expressions/compound/Fraction";
 import Power from "$cas/expressions/compound/Power";
 import Product from "$cas/expressions/compound/Product";
@@ -24,8 +24,8 @@ export function uSmallerV(u: Expression, v: Expression): boolean {
 		In order to simplify the comparison between integers and fractions, every Integer is converted
 		to a fraction
 		*/
-		const uFrac = isInt(u) ? new Fraction(u, new Integer(1)) : u;
-		const vFrac = isInt(v) ? new Fraction(v, new Integer(1)) : v;
+		const uFrac = isInt(u) ? new Fraction(u, new Int(1)) : u;
+		const vFrac = isInt(v) ? new Fraction(v, new Int(1)) : v;
 
 		// 2/3 < 4/5 --> 2 * 5 < 4 * 3
 		return (
@@ -39,17 +39,15 @@ export function uSmallerV(u: Expression, v: Expression): boolean {
 	}
 	if ((isProduct(u) && isProduct(v)) || (isSum(u) && isSum(v))) {
 		/**
-		 * Begin at the end of the array and compare the indexes of them.
-		 * If they are equal, go to the next index, otherwise return whether the child of U is smaller
-		 * than the child of V
-		 * if every index of u was compared with l (for loop finished) --> it means that v is longer
-		 * than u --> v is bigger --> return false
+		 * Begin at the end of the arrays and compare the indexes of them.
+		 * If they are equal, go to the next index,
+		 * if every index was compared, and they are all equal compare the length of the expressions
 		 */
-		for (let i = 1; i <= u.children.length; i += 1) {
-			if (i > v.children.length) {
-				return true;
-			}
-
+		for (
+			let i = 1;
+			i <= Math.min(v.children.length, u.children.length);
+			i += 1
+		) {
 			const uIndex = u.children.length - i;
 			const vIndex = v.children.length - i;
 
@@ -57,7 +55,9 @@ export function uSmallerV(u: Expression, v: Expression): boolean {
 				return uSmallerV(u.children[uIndex]!, v.children[vIndex]!);
 			}
 		}
-		return false;
+		//
+
+		return u.children.length < v.children.length;
 	}
 	if (isPower(u) && isPower(v)) {
 		// compare powers using their base unless the base is equal

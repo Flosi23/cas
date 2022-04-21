@@ -1,6 +1,6 @@
 import type Expression from "../Expression";
 import ExprType from "../ExprType";
-import Integer from "../atomic/Integer";
+import Int from "../atomic/Int";
 import Operator from "./Operator";
 
 export default class Power extends Operator {
@@ -19,6 +19,6 @@ export default class Power extends Operator {
 	 * is the first element of the children array
 	 */
 	public exponent(): Expression {
-		return this.children[1] ?? new Integer(1);
+		return this.children[1] ?? new Int(1);
 	}
 }

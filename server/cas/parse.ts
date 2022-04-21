@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import type Expression from "./expressions/Expression";
 import type Operator from "./expressions/compound/Operator";
-import Integer from "./expressions/atomic/Integer";
+import Int from "./expressions/atomic/Int";
 import Symbol from "./expressions/atomic/Symbol";
 import Difference from "./expressions/compound/Difference";
 import Division from "./expressions/compound/Division";
@@ -34,7 +34,7 @@ function tryOperator(
 
 function isInteger(expr: string): Expression | null {
 	if (expr.match(/^\d+$/gm)) {
-		return new Integer(parseInt(expr, 10));
+		return new Int(parseInt(expr, 10));
 	}
 	return null;
 }
