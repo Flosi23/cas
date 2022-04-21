@@ -3,6 +3,8 @@ import { groupByToArray } from "$lib/array";
 import { exprToDisplayExpr } from "./ExpressionTree";
 import FrontendExpressionTree, { toFrontExpr } from "./FrontendExpressionTree";
 
+// this tree doesn't work: 2*3/x-(1+4)*34-(x+2*x)-(7+2)-(6/2*x)
+
 export function calcTreeSpacing(expr: Expression): FrontendExpressionTree {
 	const dExpr = exprToDisplayExpr(expr);
 

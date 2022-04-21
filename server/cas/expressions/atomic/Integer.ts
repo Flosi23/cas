@@ -1,4 +1,4 @@
-import ExprType from "../ExprType";
+import ExprType, { isInt } from "../ExprType";
 import Expression from "../Expression";
 
 export default class Integer extends Expression {
@@ -10,8 +10,11 @@ export default class Integer extends Expression {
 		super();
 		this.value = value;
 	}
-}
 
-export function isInt(expr: Expression): expr is Integer {
-	return expr.type === ExprType.Int;
+	override equals(expr: Expression): boolean {
+		if (isInt(expr) && expr.value !== this.value) {
+			return false;
+		}
+		return super.equals(expr);
+	}
 }

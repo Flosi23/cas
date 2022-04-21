@@ -30,6 +30,7 @@ const config = {
 	root: true,
 	rules: {
 		"@typescript-eslint/no-non-null-assertion": "off",
+		"@typescript-eslint/no-use-before-define": "off",
 		"@typescript-eslint/prefer-readonly-parameter-types": "off",
 		"import/order": [
 			"warn",
@@ -65,6 +66,7 @@ const config = {
 		] /* airbnb: added allowEmptyCatch option */,
 		"no-import-assign": "warn" /* airbnb: not enabled yet */,
 		"no-param-reassign": "off",
+		"no-use-before-define": "off",
 		"no-void": [
 			"error",
 			{ allowAsStatement: true },

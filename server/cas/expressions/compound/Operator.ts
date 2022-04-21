@@ -4,8 +4,8 @@ export default abstract class Operator extends Expression {
 	constructor(children: Expression[]) {
 		super();
 
-		if (children.length < 2) {
-			throw new Error("An Operator must have at least 2 children");
+		if (children.length < 1) {
+			throw new Error("Operator must have at least ONE child");
 		}
 
 		this.children = children;

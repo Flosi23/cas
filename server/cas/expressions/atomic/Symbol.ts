@@ -10,6 +10,13 @@ export default class Symbol extends Expression {
 		super();
 		this.value = value;
 	}
+
+	override equals(expr: Expression): boolean {
+		if (isSymbol(expr) && expr.value !== this.value) {
+			return false;
+		}
+		return super.equals(expr);
+	}
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types

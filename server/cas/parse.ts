@@ -3,11 +3,11 @@ import type Expression from "./expressions/Expression";
 import type Operator from "./expressions/compound/Operator";
 import Integer from "./expressions/atomic/Integer";
 import Symbol from "./expressions/atomic/Symbol";
-import Add from "./expressions/compound/Add";
-import Div from "./expressions/compound/Div";
-import Mul from "./expressions/compound/Mul";
+import Difference from "./expressions/compound/Difference";
+import Division from "./expressions/compound/Division";
 import Power from "./expressions/compound/Power";
-import Sub from "./expressions/compound/Sub";
+import Product from "./expressions/compound/Product";
+import Sum from "./expressions/compound/Sum";
 
 function tryOperator(
 	expr: string,
@@ -81,7 +81,7 @@ function isMultiplication(expr: string): Operator | null {
 		const rightExpr = isPower(right);
 		if (!rightExpr) return null;
 
-		return new Mul([leftExpr, rightExpr]);
+		return new Product([leftExpr, rightExpr]);
 	});
 }
 
@@ -93,7 +93,7 @@ function isDivision(expr: string): Operator | null {
 		const rightExpr = isTerm(right);
 		if (!rightExpr) return null;
 
-		return new Div([leftExpr, rightExpr]);
+		return new Division([leftExpr, rightExpr]);
 	});
 }
 
@@ -109,7 +109,7 @@ function isAddition(expr: string): Operator | null {
 		const rightExpr = isTerm(right);
 		if (!rightExpr) return null;
 
-		return new Add([leftExpr, rightExpr]);
+		return new Sum([leftExpr, rightExpr]);
 	});
 }
 
@@ -121,7 +121,7 @@ function isSubtraction(expr: string): Operator | null {
 		const rightExpr = isExpression(right);
 		if (!rightExpr) return null;
 
-		return new Sub([leftExpr, rightExpr]);
+		return new Difference([leftExpr, rightExpr]);
 	});
 }
 

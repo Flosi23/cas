@@ -1,11 +1,14 @@
 import type Expression from "$cas/expressions/Expression";
-import { isInt } from "$cas/expressions/atomic/Integer";
-import { isSymbol } from "$cas/expressions/atomic/Symbol";
-import { isAdd } from "$cas/expressions/compound/Add";
-import { isDiv } from "$cas/expressions/compound/Div";
-import { isMul } from "$cas/expressions/compound/Mul";
-import { isPower } from "$cas/expressions/compound/Power";
-import { isSub } from "$cas/expressions/compound/Sub";
+import {
+	isInt,
+	isSymbol,
+	isDifference,
+	isDivision,
+	isPower,
+	isProduct,
+	isSum,
+	isFraction,
+} from "$cas/expressions/ExprType";
 
 export default class ExpressionTree {
 	public displayValue: string;
@@ -65,11 +68,12 @@ export default class ExpressionTree {
 function getDisplayValue(expr: Expression): string {
 	if (isInt(expr)) return expr.value.toString();
 	if (isSymbol(expr)) return expr.value;
-	if (isAdd(expr)) return "+";
-	if (isSub(expr)) return "-";
-	if (isDiv(expr)) return "/";
-	if (isMul(expr)) return "*";
+	if (isSum(expr)) return "+";
+	if (isDifference(expr)) return "-";
+	if (isDivision(expr)) return "/";
+	if (isProduct(expr)) return "*";
 	if (isPower(expr)) return "^";
+	if (isFraction(expr)) return "Fraction";
 	return "";
 }
 

@@ -12,4 +12,22 @@ export default abstract class Expression {
 		this.children = [];
 		this.parent = null;
 	}
+
+	equals(expr: Expression): boolean {
+		if (expr.type !== this.type) {
+			return false;
+		}
+
+		for (let i = 0; i < this.children.length; i += 1) {
+			if (i >= expr.children.length) {
+				return false;
+			}
+
+			if (!this.children[i]!.equals(expr.children[i]!)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }
