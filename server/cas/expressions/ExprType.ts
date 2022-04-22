@@ -26,6 +26,17 @@ export function isInt(expr: Expression): expr is Int {
 	return expr.type === ExprType.Int;
 }
 
+export function isPositiveFraction(expr: Expression): expr is Fraction {
+	return (
+		isFraction(expr) &&
+		expr.numerator().value * expr.denominator().value > 0
+	);
+}
+
+export function isPositiveInt(expr: Expression): expr is Int {
+	return isInt(expr) && expr.value > 0;
+}
+
 export function isConstant(expr: Expression): expr is Int | Fraction {
 	return isInt(expr) || isFraction(expr);
 }

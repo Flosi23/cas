@@ -17,4 +17,8 @@ export default class Int extends Expression {
 		}
 		return super.equals(expr);
 	}
+
+	public multiply(number: Int) {
+		this.value *= number.value;
+	}
 }
