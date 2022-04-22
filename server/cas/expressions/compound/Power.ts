@@ -1,6 +1,5 @@
 import type Expression from "../Expression";
 import ExprType from "../ExprType";
-import Int from "../atomic/Int";
 import Operator from "./Operator";
 
 export default class Power extends Operator {
@@ -10,15 +9,15 @@ export default class Power extends Operator {
 	 * Returns the base of the Power. By convention, the base
 	 * is the first element of the children array
 	 */
-	public base(): Expression {
-		return this.children[0]!;
+	public base(): Expression | undefined {
+		return this.children[0];
 	}
 
 	/**
 	 * Returns the exponent of the Power. By convention, the exponent
 	 * is the first element of the children array
 	 */
-	public exponent(): Expression {
-		return this.children[1] ?? new Int(1);
+	public exponent(): Expression | undefined {
+		return this.children[1];
 	}
 }

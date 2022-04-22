@@ -1,5 +1,5 @@
+import type Int from "../atomic/Int";
 import ExprType from "../ExprType";
-import Int from "../atomic/Int";
 import Operator from "./Operator";
 
 export default class Fraction extends Operator {
@@ -24,6 +24,6 @@ export default class Fraction extends Operator {
 	 * second child
 	 */
 	public denominator(): Int {
-		return this.children[1] ?? new Int(1);
+		return this.children[1]!;
 	}
 }

@@ -11,7 +11,9 @@ export default abstract class Operator extends Expression {
 		this.children = children;
 		// set new parent of children
 		for (let i = 0; i < this.children.length; i += 1) {
-			this.children[i]!.parent = this;
+			if (this.children[i]) {
+				this.children[i]!.parent = this;
+			}
 		}
 	}
 }

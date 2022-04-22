@@ -1,9 +1,4 @@
 import type Expression from "$cas/expressions/Expression";
-import Int from "$cas/expressions/atomic/Int";
-import Fraction from "$cas/expressions/compound/Fraction";
-import Power from "$cas/expressions/compound/Power";
-import Product from "$cas/expressions/compound/Product";
-import Sum from "$cas/expressions/compound/Sum";
 import {
 	isSum,
 	isProduct,
@@ -11,9 +6,20 @@ import {
 	isInt,
 	isSymbol,
 	isConstant,
-} from "../expressions/ExprType";
+} from "$cas/expressions/ExprType";
+import Int from "$cas/expressions/atomic/Int";
+import Fraction from "$cas/expressions/compound/Fraction";
+import Power from "$cas/expressions/compound/Power";
+import Product from "$cas/expressions/compound/Product";
+import Sum from "$cas/expressions/compound/Sum";
 
-export function uSmallerV(u: Expression, v: Expression): boolean {
+export function uSmallerV(
+	u: Expression | undefined,
+	v: Expression | undefined,
+): boolean {
+	if (!u || !v) {
+		return !u;
+	}
 	// if U is a integer and V is not, it must be smaller than V
 	if (isConstant(u) && !isConstant(v)) {
 		return true;
@@ -48,11 +54,11 @@ export function uSmallerV(u: Expression, v: Expression): boolean {
 			i <= Math.min(v.children.length, u.children.length);
 			i += 1
 		) {
-			const uIndex = u.children.length - i;
-			const vIndex = v.children.length - i;
+			const uChild = u.children[u.children.length - i];
+			const vChild = v.children[v.children.length - i];
 
-			if (!u.children[uIndex]!.equals(v.children[vIndex]!)) {
-				return uSmallerV(u.children[uIndex]!, v.children[vIndex]!);
+			if (uChild && vChild && !uChild.equals(vChild)) {
+				return uSmallerV(uChild, vChild);
 			}
 		}
 		//
@@ -61,7 +67,10 @@ export function uSmallerV(u: Expression, v: Expression): boolean {
 	}
 	if (isPower(u) && isPower(v)) {
 		// compare powers using their base unless the base is equal
-		if (!u.base().equals(v.base())) {
+		const uBase = u.base();
+		const vBase = v.base();
+
+		if (uBase && vBase && !uBase.equals(vBase)) {
 			return uSmallerV(u.base(), v.base());
 		}
 		return uSmallerV(u.exponent(), v.exponent());
@@ -72,7 +81,7 @@ export function uSmallerV(u: Expression, v: Expression): boolean {
 	}
 	if (isPower(u) && (isSum(v) || isSymbol(v))) {
 		// the order is determined by viewing both expression as powers
-		return uSmallerV(u, new Power([v]));
+		return uSmallerV(u, new Power([v, new Int(1)]));
 	}
 	if (isSum(u) && isSymbol(v)) {
 		return uSmallerV(u, new Sum([v]));

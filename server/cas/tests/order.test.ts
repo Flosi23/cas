@@ -3,8 +3,8 @@ import Symbol from "$cas/expressions/atomic/Symbol";
 import Fraction from "$cas/expressions/compound/Fraction";
 import Product from "$cas/expressions/compound/Product";
 import Sum from "$cas/expressions/compound/Sum";
-import { uSmallerV } from "$cas/order";
 import parseExpression from "$cas/parse";
+import { uSmallerV } from "$cas/simplify/order";
 
 /*
 These tests are based on the table at page 109 of Mathematical Methods.
@@ -13,6 +13,15 @@ Only the diagonal, and everything above the diagonal is being tested since
 everything under the diagonal will be correct if the rest works
 due to Rule 13 --> u < v = !(v < u)
 */
+describe("U = Undefined || V = Undefined", () => {
+	test("U = Undefined, V = Expression --> undefined < expr", () => {
+		return expect(uSmallerV(undefined, new Int(2))).toBe(true);
+	});
+	test("U = Expression, V = Undefined --> expr > undefined", () => {
+		return expect(uSmallerV(new Int(2), undefined)).toBe(false);
+	});
+});
+
 describe("U = Constant", () => {
 	describe("V = Constant", () => {
 		test("Integers are ordered numerically --> 2 < 3", () => {

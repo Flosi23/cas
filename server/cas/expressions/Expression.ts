@@ -23,6 +23,11 @@ export default abstract class Expression {
 		}
 
 		for (let i = 0; i < this.children.length; i += 1) {
+			// if any of the children is undefined --> return false
+			if (!this.children[i] || !expr.children[i]) {
+				return false;
+			}
+
 			if (!this.children[i]!.equals(expr.children[i]!)) {
 				return false;
 			}
