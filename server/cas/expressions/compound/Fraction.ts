@@ -1,5 +1,5 @@
 import type Int from "../atomic/Int";
-import ExprType, { isInt } from "../ExprType";
+import ExprType from "../types";
 import Operator from "./Operator";
 
 export default class Fraction extends Operator {
@@ -25,14 +25,5 @@ export default class Fraction extends Operator {
 	 */
 	public denominator(): Int {
 		return this.children[1]!;
-	}
-
-	public multiply(number: Fraction | Int) {
-		if (isInt(number)) {
-			this.numerator().multiply(number);
-		} else {
-			this.numerator().multiply(number.numerator());
-			this.denominator().multiply(number.denominator());
-		}
 	}
 }

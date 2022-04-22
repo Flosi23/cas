@@ -6,7 +6,7 @@ import {
 	isInt,
 	isSymbol,
 	isConstant,
-} from "$cas/expressions/ExprType";
+} from "$cas/expressions/types";
 import Int from "$cas/expressions/atomic/Int";
 import Fraction from "$cas/expressions/compound/Fraction";
 import Power from "$cas/expressions/compound/Power";

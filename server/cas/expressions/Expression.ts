@@ -1,17 +1,12 @@
-import type ExprType from "./ExprType";
 import type Operator from "./compound/Operator";
+import type ExprType from "./types";
 
 export default abstract class Expression {
-	public parent: Operator | null;
+	public parent: Operator | null = null;
 
-	public children: Expression[];
+	public children: Expression[] = [];
 
 	public abstract type: ExprType;
-
-	constructor() {
-		this.children = [];
-		this.parent = null;
-	}
 
 	equals(expr: Expression | undefined): boolean {
 		if (!expr) {

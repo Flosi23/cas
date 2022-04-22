@@ -1,5 +1,5 @@
-import ExprType, { isInt } from "../ExprType";
 import Expression from "../Expression";
+import ExprType, { isInt } from "../types";
 
 export default class Int extends Expression {
 	public value: number;
@@ -20,9 +20,5 @@ export default class Int extends Expression {
 			return false;
 		}
 		return super.equals(expr);
-	}
-
-	public multiply(number: Int) {
-		this.value *= number.value;
 	}
 }

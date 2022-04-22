@@ -6,6 +6,7 @@ import type Fraction from "./compound/Fraction";
 import type Power from "./compound/Power";
 import type Product from "./compound/Product";
 import type Sum from "./compound/Sum";
+import type { RNE } from "./types/RNE";
 
 enum ExprType {
 	Int,
@@ -16,6 +17,14 @@ enum ExprType {
 	Power,
 	Difference,
 	Fraction,
+}
+
+export function isRNE(expr: Expression): expr is RNE {
+	return (
+		isFraction(expr) ||
+		isInt(expr) ||
+		expr.children.every((child) => isRNE(child))
+	);
 }
 
 export function isFraction(expr: Expression): expr is Fraction {

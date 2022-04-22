@@ -1,6 +1,6 @@
-import { isInt } from "$cas/expressions/ExprType";
 import Int from "$cas/expressions/atomic/Int";
 import Fraction from "$cas/expressions/compound/Fraction";
+import { isInt } from "$cas/expressions/types";
 
 export function simplifyNumber(
 	number: Fraction | Int,
@@ -29,7 +29,7 @@ export function simplifyNumber(
 		new Int(Math.abs(denominator) / gcd),
 	);
 
-	simpleFrac.multiply(denominator * numerator < 0 ? new Int(-1) : new Int(1));
+	simpleFrac.numerator().value *= denominator * numerator < 0 ? -1 : 1;
 
 	if (simpleFrac.denominator().value === 1) {
 		return simpleFrac.numerator();

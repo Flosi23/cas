@@ -1,5 +1,5 @@
-import ExprType from "../ExprType";
 import Expression from "../Expression";
+import ExprType from "../types";
 
 export default class Symbol extends Expression {
 	public value: string;

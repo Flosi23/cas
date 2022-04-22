@@ -1,5 +1,5 @@
 import type Expression from "../Expression";
-import ExprType from "../ExprType";
+import ExprType from "../types";
 import Operator from "./Operator";
 
 export default class Power extends Operator {

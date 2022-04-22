@@ -1,6 +1,6 @@
 import type Expression from "$cas/expressions/Expression";
 import type Product from "$cas/expressions/compound/Product";
-import { isInt, isProduct } from "$cas/expressions/ExprType";
+import { isInt, isProduct } from "$cas/expressions/types";
 import Int from "$cas/expressions/atomic/Int";
 
 export default function simplifyProduct(

@@ -1,13 +1,13 @@
 import type Expression from "$cas/expressions/Expression";
+import Int from "$cas/expressions/atomic/Int";
+import Power from "$cas/expressions/compound/Power";
 import {
 	isInt,
 	isPositiveFraction,
 	isPositiveInt,
 	isPower,
 	isProduct,
-} from "$cas/expressions/ExprType";
-import Int from "$cas/expressions/atomic/Int";
-import Power from "$cas/expressions/compound/Power";
+} from "$cas/expressions/types";
 
 export default function simplifyPower(power: Power): Expression | undefined {
 	const base = power.base();

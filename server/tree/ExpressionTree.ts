@@ -8,7 +8,7 @@ import {
 	isProduct,
 	isSum,
 	isFraction,
-} from "$cas/expressions/ExprType";
+} from "$cas/expressions/types";
 
 export default class ExpressionTree {
 	public displayValue: string;
