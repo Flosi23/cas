@@ -11,7 +11,11 @@ export default class Int extends Expression {
 		this.value = value;
 	}
 
-	override equals(expr: Expression): boolean {
+	override equals(expr: Expression | undefined): boolean {
+		if (!expr) {
+			return false;
+		}
+
 		if (isInt(expr) && expr.value !== this.value) {
 			return false;
 		}

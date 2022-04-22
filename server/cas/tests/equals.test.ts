@@ -1,5 +1,6 @@
 import Int from "$cas/expressions/atomic/Int";
 import Symbol from "$cas/expressions/atomic/Symbol";
+import Fraction from "$cas/expressions/compound/Fraction";
 import Sum from "$cas/expressions/compound/Sum";
 import parseExpression from "$cas/parse";
 
@@ -55,6 +56,13 @@ test("Expression has the same structure --> equal", () => {
 	const powerTwo = parseExpression("(2+4)^(2-3*x)");
 
 	return expect(powerOne.equals(powerTwo)).toBe(true);
+});
+
+test("Two fractions --> 4/3 = 4/3", () => {
+	const fractionOne = new Fraction(new Int(4), new Int(3));
+	const fractionTwo = new Fraction(new Int(4), new Int(3));
+
+	return expect(fractionOne.equals(fractionTwo)).toBe(true);
 });
 
 export {};

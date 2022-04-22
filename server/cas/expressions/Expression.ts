@@ -13,7 +13,11 @@ export default abstract class Expression {
 		this.parent = null;
 	}
 
-	equals(expr: Expression): boolean {
+	equals(expr: Expression | undefined): boolean {
+		if (!expr) {
+			return false;
+		}
+
 		if (expr.type !== this.type) {
 			return false;
 		}
@@ -28,7 +32,7 @@ export default abstract class Expression {
 				return false;
 			}
 
-			if (!this.children[i]!.equals(expr.children[i]!)) {
+			if (!this.children[i]!.equals(expr.children[i])) {
 				return false;
 			}
 		}

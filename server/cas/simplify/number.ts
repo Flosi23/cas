@@ -29,9 +29,11 @@ export function simplifyNumber(
 		new Int(Math.abs(denominator) / gcd),
 	);
 
-	simpleFrac.multiply(
-		denominator < 0 || numerator < 0 ? new Int(-1) : new Int(1),
-	);
+	simpleFrac.multiply(denominator * numerator < 0 ? new Int(-1) : new Int(1));
+
+	if (simpleFrac.denominator().value === 1) {
+		return simpleFrac.numerator();
+	}
 
 	return simpleFrac;
 }
