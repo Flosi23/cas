@@ -1,8 +1,8 @@
 import type Expression from "../Expression";
 import ExprType from "../types";
-import Operator from "./Operator";
+import BinaryOperator from "./BinaryOperator";
 
-export default class Power extends Operator {
+export default class Power extends BinaryOperator {
 	public type = ExprType.Power;
 
 	/**

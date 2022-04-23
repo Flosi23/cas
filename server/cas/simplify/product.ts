@@ -1,7 +1,7 @@
 import type Expression from "$cas/expressions/Expression";
 import type Product from "$cas/expressions/compound/Product";
-import { isInt, isProduct } from "$cas/expressions/types";
 import Int from "$cas/expressions/atomic/Int";
+import { isInt } from "$cas/expressions/types";
 
 export default function simplifyProduct(
 	product: Product,
@@ -15,7 +15,7 @@ export default function simplifyProduct(
 	return product;
 }
 
-function simplifyProductRec(product: Product) {
+/* function simplifyProductRec(product: Product) {
 	if (
 		product.children.length === 2 &&
 		!isProduct(product.children[0]!) &&
@@ -23,4 +23,4 @@ function simplifyProductRec(product: Product) {
 	) {
 		// none
 	}
-}
+} */

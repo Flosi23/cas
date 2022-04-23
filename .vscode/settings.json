@@ -3,6 +3,7 @@
         "autofix",
         "Chakra",
         "codepaths",
+        "exponentiate",
         "linebreak",
         "Parens",
         "trpc",

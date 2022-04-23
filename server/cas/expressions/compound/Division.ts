@@ -1,6 +1,6 @@
 import ExprType from "../types";
-import Operator from "./Operator";
+import BinaryOperator from "./BinaryOperator";
 
-export default class Division extends Operator {
+export default class Division extends BinaryOperator {
 	public type = ExprType.Division;
 }

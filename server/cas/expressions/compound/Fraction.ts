@@ -1,8 +1,8 @@
 import type Int from "../atomic/Int";
 import ExprType from "../types";
-import Operator from "./Operator";
+import BinaryOperator from "./BinaryOperator";
 
-export default class Fraction extends Operator {
+export default class Fraction extends BinaryOperator {
 	public declare children: Int[];
 
 	public type = ExprType.Fraction;
