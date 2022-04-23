@@ -83,13 +83,11 @@ describe("Binary Expressions", () => {
 
 		expect(expected.equals(result)).toBe(true);
 	});
-	test("Divison --> 4 / 5 = 4/5", () => {
+	test("Division --> 4 / 5 = 4/5", () => {
 		const expr = parseExpression("4/5");
 
 		const expected = new Fraction(new Int(4), new Int(5));
 		const result = simplifyRNE(expr);
-
-		console.log("result", result);
 
 		expect(expected.equals(result)).toBe(true);
 	});
