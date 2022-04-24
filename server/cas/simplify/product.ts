@@ -1,7 +1,8 @@
 import type Expression from "$cas/expressions/Expression";
 import type Product from "$cas/expressions/compound/Product";
 import Int from "$cas/expressions/atomic/Int";
-import { isInt } from "$cas/expressions/types";
+import { isInt, isFraction, isProduct, isPower } from "$cas/expressions/types";
+import simplifyRNE from "./RNE";
 
 export default function simplifyProduct(
 	product: Product,
@@ -15,12 +16,15 @@ export default function simplifyProduct(
 	return product;
 }
 
-/* function simplifyProductRec(product: Product) {
-	if (
-		product.children.length === 2 &&
-		!isProduct(product.children[0]!) &&
-		!isProduct(product.children[1]!)
-	) {
-		// none
+function simplifyProductRec(product: Product): Expression | undefined {
+	if (product.children.length === 2) {
+		const factorOne = product.children[0];
+		const factorTwo = product.children[1];
+
+		if (isProduct(factorOne)) {
+			console.log("factor", factorOne);
+		}
 	}
-} */
+
+	return undefined;
+}

@@ -1,17 +1,17 @@
 import type Expression from "$cas/expressions/Expression";
+import Int from "$cas/expressions/atomic/Int";
+import Fraction from "$cas/expressions/compound/Fraction";
+import Power from "$cas/expressions/compound/Power";
+import Product from "$cas/expressions/compound/Product";
+import Sum from "$cas/expressions/compound/Sum";
 import {
 	isSum,
 	isProduct,
 	isPower,
 	isInt,
 	isSymbol,
-	isConstant,
+	isRationalNumber,
 } from "$cas/expressions/types";
-import Int from "$cas/expressions/atomic/Int";
-import Fraction from "$cas/expressions/compound/Fraction";
-import Power from "$cas/expressions/compound/Power";
-import Product from "$cas/expressions/compound/Product";
-import Sum from "$cas/expressions/compound/Sum";
 
 export function uSmallerV(
 	u: Expression | undefined,
@@ -20,12 +20,12 @@ export function uSmallerV(
 	if (!u || !v) {
 		return !u;
 	}
-	// if U is a integer and V is not, it must be smaller than V
-	if (isConstant(u) && !isConstant(v)) {
+	// if U is a number and V is not, it must be smaller than V
+	if (isRationalNumber(u) && !isRationalNumber(v)) {
 		return true;
 	}
-	// if both are fractions or integers, their order is their value (numerical order)
-	if (isConstant(u) && isConstant(v)) {
+	// if both are rational numbers, their order is their value (numerical order)
+	if (isRationalNumber(u) && isRationalNumber(v)) {
 		/*
 		In order to simplify the comparison between integers and fractions, every Integer is converted
 		to a fraction

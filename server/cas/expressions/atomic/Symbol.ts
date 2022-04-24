@@ -1,5 +1,5 @@
 import Expression from "../Expression";
-import ExprType from "../types";
+import ExprType, { isSymbol } from "../types";
 
 export default class Symbol extends Expression {
 	public value: string;
@@ -20,9 +20,4 @@ export default class Symbol extends Expression {
 		}
 		return super.equals(expr);
 	}
-}
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function isSymbol(expr: Expression): expr is Symbol {
-	return expr.type === ExprType.Symbol;
 }
