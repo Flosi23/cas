@@ -3,7 +3,7 @@ import Operator from "../Operator";
 import { ExprType } from "../types";
 
 export default class Difference<
-	Child extends Expression = Expression,
-> extends Operator<Child> {
+	Operand extends Expression = Expression,
+> extends Operator<Operand> {
 	public readonly type = ExprType.Difference;
 }

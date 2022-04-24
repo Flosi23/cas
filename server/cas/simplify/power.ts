@@ -49,7 +49,7 @@ function simplifyIntegerPower(
 		// simplify with simplify product
 	}
 	if (isProduct(base)) {
-		base.operands.map((child) => simplifyIntegerPower(child, exponent));
+		base.operands.map((operand) => simplifyIntegerPower(operand, exponent));
 		// return simplify_product(base)
 	}
 	return new Power(base, exponent);

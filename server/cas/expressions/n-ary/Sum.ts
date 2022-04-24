@@ -1,9 +1,9 @@
 import type { Expression } from "../Expression";
-import ExprType from "$cas/expressions/types";
+import { ExprType } from "$cas/expressions/types";
 import Operator from "../Operator";
 
 export default class Sum<
-	Child extends Expression = Expression,
-> extends Operator<Child> {
+	Operand extends Expression = Expression,
+> extends Operator<Operand> {
 	public readonly type = ExprType.Sum;
 }

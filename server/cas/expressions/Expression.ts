@@ -26,6 +26,8 @@ export abstract class Expression {
 			return false;
 		}
 
+		let allChildrenEqual = true;
+
 		for (let i = 0; i < this.operands.length; i += 1) {
 			const thisChild = this.operands[i];
 			const exprChild = expr.operands[i];
@@ -34,21 +36,22 @@ export abstract class Expression {
 				return false;
 			}
 
-			if (thisChild.equals(expr.operands[i])) {
-				return true;
+			if (allChildrenEqual && !thisChild.equals(exprChild)) {
+				allChildrenEqual = false;
+				break;
 			}
 		}
 
-		return false;
+		return allChildrenEqual;
 	}
 }
 
 export abstract class GenericExpression<
-	Child extends Expression | never,
+	Operand extends Expression | never,
 > extends Expression {
-	protected override _operands: Child[] = [];
+	protected override _operands: Operand[] = [];
 
-	override get operands(): ReadonlyArray<Child> {
-		return this._operands as ReadonlyArray<Child>;
+	override get operands(): ReadonlyArray<Operand> {
+		return this._operands as ReadonlyArray<Operand>;
 	}
 }

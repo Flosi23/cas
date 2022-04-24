@@ -22,6 +22,6 @@ export default class Fraction extends BinaryOperator<Int> {
 	 * this is the second operand
 	 */
 	public denominator(): Int {
-		return this.operands[0]!;
+		return this.operands[1]!;
 	}
 }

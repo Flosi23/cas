@@ -54,11 +54,11 @@ export function uSmallerV(
 			i <= Math.min(v.operands.length, u.operands.length);
 			i += 1
 		) {
-			const uChild = u.operands[u.operands.length - i];
-			const vChild = v.operands[v.operands.length - i];
+			const uOperand = u.operands[u.operands.length - i];
+			const vOperand = v.operands[v.operands.length - i];
 
-			if (uChild && vChild && !uChild.equals(vChild)) {
-				return uSmallerV(uChild, vChild);
+			if (uOperand && vOperand && !uOperand.equals(vOperand)) {
+				return uSmallerV(uOperand, vOperand);
 			}
 		}
 		//
