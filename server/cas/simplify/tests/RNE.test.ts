@@ -1,9 +1,9 @@
 import Int from "$cas/expressions/atomic/Int";
-import Difference from "$cas/expressions/compound/Difference";
-import Fraction from "$cas/expressions/compound/Fraction";
-import Power from "$cas/expressions/compound/Power";
-import Product from "$cas/expressions/compound/Product";
-import Sum from "$cas/expressions/compound/Sum";
+import Fraction from "$cas/expressions/binary/Fraction";
+import Power from "$cas/expressions/binary/Power";
+import Difference from "$cas/expressions/n-ary/Difference";
+import Product from "$cas/expressions/n-ary/Product";
+import Sum from "$cas/expressions/n-ary/Sum";
 import parseExpression from "$cas/parse";
 import simplifyRNE from "../RNE";
 
@@ -27,15 +27,15 @@ describe("Fractions and Integers", () => {
 });
 describe("Invalid inputs", () => {
 	test("Negative exponent --> 2+3^-2 = undefined ", () => {
-		const expr = new Power([parseExpression("2+3"), new Int(-2)]);
+		const expr = new Power(parseExpression("2+3"), new Int(-2));
 
 		expect(simplifyRNE(expr)).toBe(undefined);
 	});
 	test("Non integer exponent --> 2^3/4 = undefined", () => {
-		const expr = new Power([
+		const expr = new Power(
 			new Int(2),
 			new Fraction(new Int(3), new Int(4)),
-		]);
+		);
 
 		expect(simplifyRNE(expr)).toBe(undefined);
 	});

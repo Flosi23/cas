@@ -1,10 +1,10 @@
-import Expression from "../Expression";
-import ExprType, { isSymbol } from "../types";
+import { Expression, GenericExpression } from "../Expression";
+import { ExprType, isSymbol } from "../types";
 
-export default class Symbol extends Expression {
+export default class Symbol extends GenericExpression<never> {
+	public readonly type: ExprType = ExprType.Symbol;
+
 	public value: string;
-
-	public type = ExprType.Symbol;
 
 	constructor(value: string) {
 		super();
@@ -12,12 +12,9 @@ export default class Symbol extends Expression {
 	}
 
 	override equals(expr: Expression | undefined): boolean {
-		if (!expr) {
-			return false;
+		if (isSymbol(expr) && expr.value === this.value) {
+			return true;
 		}
-		if (isSymbol(expr) && expr.value !== this.value) {
-			return false;
-		}
-		return super.equals(expr);
+		return false;
 	}
 }

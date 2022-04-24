@@ -1,12 +1,17 @@
-import type Operator from "./compound/Operator";
-import type ExprType from "./types";
+/* eslint-disable max-classes-per-file */
+import type { ExprType } from "$cas/expressions/types";
+import type Operator from "./Operator";
 
-export default abstract class Expression {
-	public parent: Operator | null = null;
+export abstract class Expression {
+	public parent: Operator<Expression> | null = null;
 
-	public children: Expression[] = [];
+	protected _operands: Expression[] = [];
 
-	public abstract type: ExprType;
+	get operands(): ReadonlyArray<Expression> {
+		return this._operands as ReadonlyArray<Expression>;
+	}
+
+	public abstract readonly type: ExprType;
 
 	equals(expr: Expression | undefined): boolean {
 		if (!expr) {
@@ -17,21 +22,33 @@ export default abstract class Expression {
 			return false;
 		}
 
-		if (expr.children.length !== this.children.length) {
+		if (expr.operands.length !== this.operands.length) {
 			return false;
 		}
 
-		for (let i = 0; i < this.children.length; i += 1) {
-			// if any of the children is undefined --> return false
-			if (!this.children[i] || !expr.children[i]) {
+		for (let i = 0; i < this.operands.length; i += 1) {
+			const thisChild = this.operands[i];
+			const exprChild = expr.operands[i];
+
+			if (!thisChild || !exprChild) {
 				return false;
 			}
 
-			if (!this.children[i]!.equals(expr.children[i])) {
-				return false;
+			if (thisChild.equals(expr.operands[i])) {
+				return true;
 			}
 		}
 
-		return true;
+		return false;
+	}
+}
+
+export abstract class GenericExpression<
+	Child extends Expression | never,
+> extends Expression {
+	protected override _operands: Child[] = [];
+
+	override get operands(): ReadonlyArray<Child> {
+		return this._operands as ReadonlyArray<Child>;
 	}
 }

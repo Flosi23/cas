@@ -1,5 +1,5 @@
 import Int from "$cas/expressions/atomic/Int";
-import Fraction from "$cas/expressions/compound/Fraction";
+import Fraction from "$cas/expressions/binary/Fraction";
 import { isInt, RationalNumber } from "$cas/expressions/types";
 
 export function simplifyRationalNumber(

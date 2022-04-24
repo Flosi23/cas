@@ -1,7 +1,7 @@
 import Int from "$cas/expressions/atomic/Int";
 import Symbol from "$cas/expressions/atomic/Symbol";
-import Fraction from "$cas/expressions/compound/Fraction";
-import Sum from "$cas/expressions/compound/Sum";
+import Fraction from "$cas/expressions/binary/Fraction";
+import Sum from "$cas/expressions/n-ary/Sum";
 import parseExpression from "$cas/parse";
 
 test("Integers 2 and 2 --> equal", () =>

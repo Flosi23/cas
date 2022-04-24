@@ -1,9 +1,9 @@
-import type Expression from "$cas/expressions/Expression";
+import type { Expression } from "$cas/expressions/Expression";
 import Int from "$cas/expressions/atomic/Int";
-import Fraction from "$cas/expressions/compound/Fraction";
-import Power from "$cas/expressions/compound/Power";
-import Product from "$cas/expressions/compound/Product";
-import Sum from "$cas/expressions/compound/Sum";
+import Fraction from "$cas/expressions/binary/Fraction";
+import Power from "$cas/expressions/binary/Power";
+import Product from "$cas/expressions/n-ary/Product";
+import Sum from "$cas/expressions/n-ary/Sum";
 import {
 	isSum,
 	isProduct,
@@ -51,11 +51,11 @@ export function uSmallerV(
 		 */
 		for (
 			let i = 1;
-			i <= Math.min(v.children.length, u.children.length);
+			i <= Math.min(v.operands.length, u.operands.length);
 			i += 1
 		) {
-			const uChild = u.children[u.children.length - i];
-			const vChild = v.children[v.children.length - i];
+			const uChild = u.operands[u.operands.length - i];
+			const vChild = v.operands[v.operands.length - i];
 
 			if (uChild && vChild && !uChild.equals(vChild)) {
 				return uSmallerV(uChild, vChild);
@@ -63,7 +63,7 @@ export function uSmallerV(
 		}
 		//
 
-		return u.children.length < v.children.length;
+		return u.operands.length < v.operands.length;
 	}
 	if (isPower(u) && isPower(v)) {
 		// compare powers using their base unless the base is equal
@@ -81,7 +81,7 @@ export function uSmallerV(
 	}
 	if (isPower(u) && (isSum(v) || isSymbol(v))) {
 		// the order is determined by viewing both expression as powers
-		return uSmallerV(u, new Power([v, new Int(1)]));
+		return uSmallerV(u, new Power(v, new Int(1)));
 	}
 	if (isSum(u) && isSymbol(v)) {
 		return uSmallerV(u, new Sum([v]));

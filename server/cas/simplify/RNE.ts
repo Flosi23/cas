@@ -1,4 +1,4 @@
-import type Expression from "$cas/expressions/Expression";
+import type { Expression } from "$cas/expressions/Expression";
 import Int from "$cas/expressions/atomic/Int";
 import {
 	isDifference,
@@ -38,8 +38,8 @@ function simplifyRneRec(
 		}
 		return expr;
 	}
-	if (expr.children.length === 1) {
-		const v = simplifyRneRec(expr.children[0]);
+	if (expr.operands.length === 1) {
+		const v = simplifyRneRec(expr.operands[0]);
 
 		if (!v) {
 			return undefined;
@@ -50,7 +50,7 @@ function simplifyRneRec(
 		}
 		return v;
 	}
-	if (expr.children.length === 2) {
+	if (expr.operands.length === 2) {
 		if (isPower(expr)) {
 			const base = simplifyRneRec(expr.base());
 			const exponent = expr.exponent();
@@ -60,8 +60,8 @@ function simplifyRneRec(
 			return exponentiate(base, exponent);
 		}
 
-		const operandOne = simplifyRneRec(expr.children[0]);
-		const operandTwo = simplifyRneRec(expr.children[1]);
+		const operandOne = simplifyRneRec(expr.operands[0]);
+		const operandTwo = simplifyRneRec(expr.operands[1]);
 
 		if (!operandOne || !operandTwo) {
 			return undefined;

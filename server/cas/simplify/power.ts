@@ -1,6 +1,6 @@
-import type Expression from "$cas/expressions/Expression";
+import type { Expression } from "$cas/expressions/Expression";
 import Int from "$cas/expressions/atomic/Int";
-import Power from "$cas/expressions/compound/Power";
+import Power from "$cas/expressions/binary/Power";
 import {
 	isInt,
 	isPositiveFraction,
@@ -49,8 +49,8 @@ function simplifyIntegerPower(
 		// simplify with simplify product
 	}
 	if (isProduct(base)) {
-		base.children.map((child) => simplifyIntegerPower(child, exponent));
+		base.operands.map((child) => simplifyIntegerPower(child, exponent));
 		// return simplify_product(base)
 	}
-	return new Power([base, exponent]);
+	return new Power(base, exponent);
 }

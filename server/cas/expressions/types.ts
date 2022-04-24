@@ -1,29 +1,25 @@
-import type Expression from "./Expression";
+import type { Expression } from "./Expression";
 import type Int from "./atomic/Int";
 import type Symbol from "./atomic/Symbol";
-import type Difference from "./compound/Difference";
-import type Division from "./compound/Division";
-import type Fraction from "./compound/Fraction";
-import type Power from "./compound/Power";
-import type Product from "./compound/Product";
-import type Sum from "./compound/Sum";
+import type Division from "./binary/Division";
+import type Fraction from "./binary/Fraction";
+import type Power from "./binary/Power";
+import type Difference from "./n-ary/Difference";
+import type Product from "./n-ary/Product";
+import type Sum from "./n-ary/Sum";
 
-enum ExprType {
+export enum ExprType {
 	Int,
-	Symbol,
-	Sum,
-	Division,
-	Product,
-	Power,
-	Difference,
 	Fraction,
+	Symbol,
+	Difference,
+	Sum,
+	Product,
+	Division,
+	Power,
 }
 
 export type RationalNumber = Int | Fraction;
-
-function isExpression(expr: Expression | undefined): expr is Expression {
-	return expr !== undefined;
-}
 
 export function isRationalNumber(
 	expr: Expression | undefined,
@@ -32,11 +28,11 @@ export function isRationalNumber(
 }
 
 export function isFraction(expr: Expression | undefined): expr is Fraction {
-	return isExpression(expr) && expr.type === ExprType.Fraction;
+	return expr?.type === ExprType.Fraction;
 }
 
 export function isInt(expr: Expression | undefined): expr is Int {
-	return isExpression(expr) && expr.type === ExprType.Int;
+	return expr?.type === ExprType.Int;
 }
 
 export function isPositiveFraction(
@@ -54,27 +50,27 @@ export function isPositiveInt(expr: Expression | undefined): expr is Int {
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function isSymbol(expr: Expression | undefined): expr is Symbol {
-	return isExpression(expr) && expr.type === ExprType.Symbol;
+	return expr?.type === ExprType.Symbol;
 }
 
 export function isDifference(expr: Expression | undefined): expr is Difference {
-	return isExpression(expr) && expr.type === ExprType.Difference;
+	return expr?.type === ExprType.Difference;
 }
 
 export function isDivision(expr: Expression | undefined): expr is Division {
-	return isExpression(expr) && expr.type === ExprType.Division;
+	return expr?.type === ExprType.Division;
 }
 
 export function isPower(expr: Expression | undefined): expr is Power {
-	return isExpression(expr) && expr.type === ExprType.Power;
+	return expr?.type === ExprType.Power;
 }
 
 export function isProduct(expr: Expression | undefined): expr is Product {
-	return isExpression(expr) && expr.type === ExprType.Product;
+	return expr?.type === ExprType.Product;
 }
 
 export function isSum(expr: Expression | undefined): expr is Sum {
-	return isExpression(expr) && expr.type === ExprType.Sum;
+	return expr?.type === ExprType.Sum;
 }
 
 export default ExprType;

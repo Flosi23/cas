@@ -1,11 +1,11 @@
 import Int from "../atomic/Int";
 import Symbol from "../atomic/Symbol";
-import Difference from "../compound/Difference";
-import Division from "../compound/Division";
-import Fraction from "../compound/Fraction";
-import Power from "../compound/Power";
-import Product from "../compound/Product";
-import Sum from "../compound/Sum";
+import Division from "../binary/Division";
+import Fraction from "../binary/Fraction";
+import Power from "../binary/Power";
+import Difference from "../n-ary/Difference";
+import Product from "../n-ary/Product";
+import Sum from "../n-ary/Sum";
 import {
 	isDifference,
 	isDivision,
@@ -39,7 +39,7 @@ describe("isFraction", () => {
 		expect(isFraction(new Fraction(new Int(2), new Int(5)))).toBe(true);
 	});
 	test("Power --> false", () => {
-		expect(isFraction(new Power([new Int(2), new Int(2)]))).toBe(false);
+		expect(isFraction(new Power(new Int(2), new Int(2)))).toBe(false);
 	});
 });
 describe("isSymbol", () => {
@@ -69,7 +69,7 @@ describe("isDivision", () => {
 		expect(isDivision(undefined)).toBe(false);
 	});
 	test("division --> true", () => {
-		expect(isDivision(new Division([new Int(4), new Int(5)]))).toBe(true);
+		expect(isDivision(new Division(new Int(4), new Int(5)))).toBe(true);
 	});
 	test("int --> false", () => {
 		expect(isDivision(new Int(3))).toBe(false);
@@ -80,7 +80,7 @@ describe("isPower", () => {
 		expect(isPower(undefined)).toBe(false);
 	});
 	test("power --> true", () => {
-		expect(isPower(new Power([new Int(3), new Int(1)]))).toBe(true);
+		expect(isPower(new Power(new Int(3), new Int(1)))).toBe(true);
 	});
 	test("int --> false", () => {
 		expect(isPower(new Int(2))).toBe(false);

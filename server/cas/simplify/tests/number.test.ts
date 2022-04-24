@@ -1,5 +1,5 @@
 import Int from "$cas/expressions/atomic/Int";
-import Fraction from "$cas/expressions/compound/Fraction";
+import Fraction from "$cas/expressions/binary/Fraction";
 import { simplifyRationalNumber } from "$cas/simplify/number";
 
 test("Integers are not changed --> 7 = 7", () => {

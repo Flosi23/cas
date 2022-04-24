@@ -1,8 +1,8 @@
 import Int from "$cas/expressions/atomic/Int";
 import Symbol from "$cas/expressions/atomic/Symbol";
-import Fraction from "$cas/expressions/compound/Fraction";
-import Product from "$cas/expressions/compound/Product";
-import Sum from "$cas/expressions/compound/Sum";
+import Fraction from "$cas/expressions/binary/Fraction";
+import Product from "$cas/expressions/n-ary/Product";
+import Sum from "$cas/expressions/n-ary/Sum";
 import parseExpression from "$cas/parse";
 import { uSmallerV } from "$cas/simplify/order";
 

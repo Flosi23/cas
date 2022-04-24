@@ -1,10 +1,10 @@
-import Expression from "../Expression";
-import ExprType, { isInt } from "../types";
+import { Expression, GenericExpression } from "../Expression";
+import { ExprType, isInt } from "../types";
 
-export default class Int extends Expression {
+export default class Int extends GenericExpression<never> {
+	public readonly type: ExprType = ExprType.Int;
+
 	public value: number;
-
-	public type = ExprType.Int;
 
 	constructor(value: number) {
 		super();
@@ -12,13 +12,9 @@ export default class Int extends Expression {
 	}
 
 	override equals(expr: Expression | undefined): boolean {
-		if (!expr) {
-			return false;
+		if (isInt(expr) && expr.value === this.value) {
+			return true;
 		}
-
-		if (isInt(expr) && expr.value !== this.value) {
-			return false;
-		}
-		return super.equals(expr);
+		return false;
 	}
 }

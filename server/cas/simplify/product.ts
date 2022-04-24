@@ -1,15 +1,19 @@
-import type Expression from "$cas/expressions/Expression";
-import type Product from "$cas/expressions/compound/Product";
+import type { Expression } from "$cas/expressions/Expression";
+import type Product from "$cas/expressions/n-ary/Product";
 import Int from "$cas/expressions/atomic/Int";
 import { isInt } from "$cas/expressions/types";
 
 export default function simplifyProduct(
 	product: Product,
 ): Expression | undefined {
-	if (!product.children.every((child) => child !== undefined)) {
+	if (!product.operands.every((operand) => operand !== undefined)) {
 		return undefined;
 	}
-	if (product.children.find((child) => isInt(child) && child.value === 0)) {
+	if (
+		product.operands.find(
+			(operand) => isInt(operand) && operand.value === 0,
+		)
+	) {
 		return new Int(0);
 	}
 	return product;
