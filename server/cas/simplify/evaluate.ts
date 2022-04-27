@@ -2,12 +2,19 @@ import Int from "$cas/expressions/atomic/Int";
 import Fraction from "$cas/expressions/binary/Fraction";
 import { isPositiveInt, RationalNumber, isInt } from "$cas/expressions/types";
 
+function toFraction(rn: RationalNumber): Fraction {
+	if (isInt(rn)) {
+		return new Fraction(rn, new Int(1));
+	}
+	return rn;
+}
+
 export function divide(
 	dividend: RationalNumber,
 	divisor: RationalNumber,
 ): Fraction {
-	dividend = isInt(dividend) ? new Fraction(dividend, new Int(1)) : dividend;
-	divisor = isInt(divisor) ? new Fraction(divisor, new Int(1)) : divisor;
+	dividend = toFraction(dividend);
+	divisor = toFraction(divisor);
 
 	return new Fraction(
 		new Int(dividend.numerator().value * divisor.denominator().value),
@@ -19,12 +26,8 @@ export function multiply(
 	factorOne: RationalNumber,
 	factorTwo: RationalNumber,
 ): Fraction {
-	factorOne = isInt(factorOne)
-		? new Fraction(factorOne, new Int(1))
-		: factorOne;
-	factorTwo = isInt(factorTwo)
-		? new Fraction(factorTwo, new Int(1))
-		: factorTwo;
+	factorOne = toFraction(factorOne);
+	factorTwo = toFraction(factorTwo);
 
 	return new Fraction(
 		new Int(factorOne.numerator().value * factorTwo.numerator().value),
@@ -36,12 +39,8 @@ export function add(
 	addendOne: RationalNumber,
 	addendTwo: RationalNumber,
 ): Fraction {
-	addendOne = isInt(addendOne)
-		? new Fraction(addendOne, new Int(1))
-		: addendOne;
-	addendTwo = isInt(addendTwo)
-		? new Fraction(addendTwo, new Int(1))
-		: addendTwo;
+	addendOne = toFraction(addendOne);
+	addendTwo = toFraction(addendTwo);
 
 	return new Fraction(
 		new Int(
@@ -56,9 +55,7 @@ export function subtract(
 	minuend: RationalNumber,
 	subtrahend: RationalNumber,
 ): Fraction {
-	subtrahend = isInt(subtrahend)
-		? new Fraction(subtrahend, new Int(1))
-		: subtrahend;
+	subtrahend = toFraction(subtrahend);
 
 	return add(
 		minuend,
@@ -73,7 +70,7 @@ export function exponentiate(
 	base: RationalNumber,
 	exponent: Int,
 ): Fraction | undefined {
-	base = isInt(base) ? new Fraction(base, new Int(1)) : base;
+	base = toFraction(base);
 
 	if (!isPositiveInt(exponent)) {
 		return undefined;
