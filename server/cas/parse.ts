@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import type { Expression } from "./expressions/Expression";
 import type Operator from "./expressions/Operator";
 import Int from "./expressions/atomic/Int";

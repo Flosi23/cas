@@ -1,4 +1,4 @@
-import type Expression from "$cas/expressions/Expression";
+import type { Expression } from "$cas/expressions/Expression";
 import { groupByToArray } from "$lib/array";
 import { exprToDisplayExpr } from "./ExpressionTree";
 import FrontendExpressionTree, { toFrontExpr } from "./FrontendExpressionTree";
