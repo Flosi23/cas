@@ -19,7 +19,10 @@ export enum ExprType {
 	Power,
 }
 
-export type RationalNumber = Int | Fraction;
+export interface RationalNumber extends Expression {
+	simplify(): RationalNumber | undefined;
+	toFraction(): Fraction;
+}
 
 export function isRationalNumber(
 	expr: Expression | undefined,

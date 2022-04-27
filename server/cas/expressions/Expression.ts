@@ -51,7 +51,7 @@ export abstract class GenericExpression<
 > extends Expression {
 	protected override _operands: Operand[] = [];
 
-	override get operands(): ReadonlyArray<Operand> {
-		return this._operands as ReadonlyArray<Operand>;
+	override get operands(): readonly Operand[] {
+		return this._operands;
 	}
 }

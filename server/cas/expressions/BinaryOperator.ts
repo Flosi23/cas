@@ -2,13 +2,17 @@ import type { Expression } from "./Expression";
 import Operator from "./Operator";
 
 export default abstract class BinaryOperator<
-	Operand extends Expression,
-> extends Operator<Operand> {
-	constructor(operands: Operand[]) {
-		super(operands);
+	OperandOne extends Expression,
+	OperandTwo extends Expression,
+> extends Operator<OperandOne | OperandTwo> {
+	protected override _operands: [OperandOne, OperandTwo];
 
-		if (operands.length !== 2) {
-			throw new Error("Operator must have 2 Operands");
-		}
+	override get operands(): readonly [OperandOne, OperandTwo] {
+		return this._operands;
+	}
+
+	constructor(operandOne: OperandOne, operandTwo: OperandTwo) {
+		super([operandOne, operandTwo]);
+		this._operands = [operandOne, operandTwo];
 	}
 }
