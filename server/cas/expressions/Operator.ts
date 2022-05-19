@@ -18,4 +18,15 @@ export default abstract class Operator<
 			}
 		}
 	}
+
+	setOperands(operands: (Operand | undefined)[]) {
+		this._operands = operands;
+
+		for (let i = 0; i < operands.length; i += 1) {
+			const operand = this.operands[i];
+			if (operand) {
+				operand.parent = this;
+			}
+		}
+	}
 }

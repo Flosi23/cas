@@ -5,10 +5,10 @@ import type Operator from "./Operator";
 export abstract class Expression {
 	public parent: Operator<Expression> | null = null;
 
-	protected _operands: Expression[] = [];
+	protected _operands: (Expression | undefined)[] = [];
 
-	get operands(): ReadonlyArray<Expression> {
-		return this._operands as ReadonlyArray<Expression>;
+	get operands(): readonly (Expression | undefined)[] {
+		return this._operands;
 	}
 
 	public abstract readonly type: ExprType;
@@ -49,9 +49,9 @@ export abstract class Expression {
 export abstract class GenericExpression<
 	Operand extends Expression | never,
 > extends Expression {
-	protected override _operands: Operand[] = [];
+	protected override _operands: (Operand | undefined)[] = [];
 
-	override get operands(): readonly Operand[] {
+	override get operands(): readonly (Operand | undefined)[] {
 		return this._operands;
 	}
 }
