@@ -13,6 +13,9 @@ export abstract class Expression {
 
 	public abstract readonly type: ExprType;
 
+	public abstract base(): Expression | undefined;
+	public abstract exponent(): Expression | undefined;
+
 	equals(expr: Expression | undefined): boolean {
 		if (!expr) {
 			return false;
@@ -51,7 +54,7 @@ export abstract class GenericExpression<
 > extends Expression {
 	protected override _operands: (Operand | undefined)[] = [];
 
-	override get operands(): readonly (Operand | undefined)[] {
+	override get operands(): (Operand | undefined)[] {
 		return this._operands;
 	}
 }

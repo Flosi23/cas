@@ -15,10 +15,10 @@ import {
 	isPositiveInt,
 	isPower,
 	isProduct,
-	isRationalNumber,
 	isSum,
 	isSymbol,
 } from "../types";
+import { isRationalNumber } from "../types/RNE";
 
 describe("isInt", () => {
 	test("undefined --> false", () => {

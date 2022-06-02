@@ -1,6 +1,7 @@
+import type { RationalNumber } from "$cas/expressions/types/RNE";
 import Int from "$cas/expressions/atomic/Int";
 import Fraction from "$cas/expressions/binary/Fraction";
-import { isPositiveInt, RationalNumber, isInt } from "$cas/expressions/types";
+import { isPositiveInt, isInt } from "$cas/expressions/types";
 
 function toFraction(rn: RationalNumber): Fraction {
 	if (isInt(rn)) {

@@ -7,10 +7,9 @@ import {
 	isInt,
 	isPower,
 	isProduct,
-	isRationalNumber,
 	isSum,
-	RationalNumber,
 } from "$cas/expressions/types";
+import { isRationalNumber, RationalNumber } from "$cas/expressions/types/RNE";
 import { add, divide, exponentiate, multiply, subtract } from "./evaluate";
 import { simplifyRationalNumber } from "./number";
 

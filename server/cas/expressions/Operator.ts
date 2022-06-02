@@ -3,7 +3,7 @@ import { Expression, GenericExpression } from "./Expression";
 export default abstract class Operator<
 	Operand extends Expression,
 > extends GenericExpression<Operand> {
-	constructor(operands: Operand[]) {
+	constructor(operands: (Operand | undefined)[]) {
 		super();
 
 		if (operands.length < 1) {

@@ -1,6 +1,7 @@
 import type { Expression } from "../Expression";
 import { ExprType } from "$cas/expressions/types";
 import BinaryOperator from "../BinaryOperator";
+import Int from "../atomic/Int";
 
 export default class Division<
 	Dividend extends Expression = Expression,
@@ -22,5 +23,14 @@ export default class Division<
 	 */
 	public divisor(): Divisor | undefined {
 		return this.operands[1];
+	}
+
+	public base(): Expression | undefined {
+		return this;
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	public exponent(): Expression | undefined {
+		return new Int(1);
 	}
 }

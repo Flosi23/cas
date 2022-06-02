@@ -7,7 +7,7 @@ export default abstract class BinaryOperator<
 > extends Operator<OperandOne | OperandTwo> {
 	protected override _operands: [OperandOne, OperandTwo];
 
-	override get operands(): readonly [OperandOne, OperandTwo] {
+	override get operands(): [OperandOne, OperandTwo] {
 		return this._operands;
 	}
 

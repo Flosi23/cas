@@ -17,4 +17,13 @@ export default class Int extends GenericExpression<never> {
 		}
 		return false;
 	}
+
+	public base(): Expression | undefined {
+		return this;
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	public exponent(): Expression | undefined {
+		return new Int(1);
+	}
 }

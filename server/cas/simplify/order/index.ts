@@ -10,8 +10,8 @@ import {
 	isPower,
 	isInt,
 	isSymbol,
-	isRationalNumber,
 } from "$cas/expressions/types";
+import { isRationalNumber } from "$cas/expressions/types/RNE";
 
 export function uSmallerV(
 	u: Expression | undefined,

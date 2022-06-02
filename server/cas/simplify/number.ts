@@ -1,6 +1,7 @@
+import type { RationalNumber } from "$cas/expressions/types/RNE";
 import Int from "$cas/expressions/atomic/Int";
 import Fraction from "$cas/expressions/binary/Fraction";
-import { isInt, RationalNumber } from "$cas/expressions/types";
+import { isInt } from "$cas/expressions/types";
 
 export function simplifyRationalNumber(
 	number: RationalNumber,

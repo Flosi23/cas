@@ -1,5 +1,6 @@
 import { Expression, GenericExpression } from "../Expression";
 import { ExprType, isSymbol } from "../types";
+import Int from "./Int";
 
 export default class Symbol extends GenericExpression<never> {
 	public readonly type: ExprType = ExprType.Symbol;
@@ -16,5 +17,14 @@ export default class Symbol extends GenericExpression<never> {
 			return true;
 		}
 		return false;
+	}
+
+	public base(): Expression | undefined {
+		return this;
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	public exponent(): Expression | undefined {
+		return new Int(1);
 	}
 }

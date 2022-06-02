@@ -9,7 +9,8 @@ import {
 	isPower,
 	isProduct,
 } from "$cas/expressions/types";
-import simplifyProduct from "./product";
+// eslint-disable-next-line import/no-cycle
+import simplifyProduct from "./n-ary/product";
 
 export default function simplifyPower(power: Power): Expression | undefined {
 	const base = power.base();

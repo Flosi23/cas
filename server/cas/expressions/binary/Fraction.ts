@@ -1,5 +1,6 @@
-import type Int from "../atomic/Int";
+import type { Expression } from "../Expression";
 import BinaryOperator from "../BinaryOperator";
+import Int from "../atomic/Int";
 import { ExprType } from "../types";
 
 export default class Fraction extends BinaryOperator<Int, Int> {
@@ -19,5 +20,14 @@ export default class Fraction extends BinaryOperator<Int, Int> {
 	 */
 	public denominator(): Int {
 		return this.operands[1]!;
+	}
+
+	public base(): Expression | undefined {
+		return this;
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	public exponent(): Expression | undefined {
+		return new Int(1);
 	}
 }

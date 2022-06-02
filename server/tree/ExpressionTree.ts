@@ -83,7 +83,7 @@ export function exprToDisplayExpr(
 ): ExpressionTree {
 	const dExpr = new ExpressionTree(getDisplayValue(expr), parent);
 	dExpr.children = expr.operands.map((operand) =>
-		exprToDisplayExpr(operand, dExpr),
+		exprToDisplayExpr(operand!, dExpr),
 	);
 	return dExpr;
 }

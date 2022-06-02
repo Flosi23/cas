@@ -1,12 +1,12 @@
-import type { Expression } from "./Expression";
-import type Int from "./atomic/Int";
-import type Symbol from "./atomic/Symbol";
-import type Division from "./binary/Division";
-import type Fraction from "./binary/Fraction";
-import type Power from "./binary/Power";
-import type Difference from "./n-ary/Difference";
-import type Product from "./n-ary/Product";
-import type Sum from "./n-ary/Sum";
+import type { Expression } from "../Expression";
+import type Int from "../atomic/Int";
+import type Symbol from "../atomic/Symbol";
+import type Division from "../binary/Division";
+import type Fraction from "../binary/Fraction";
+import type Power from "../binary/Power";
+import type Difference from "../n-ary/Difference";
+import type Product from "../n-ary/Product";
+import type Sum from "../n-ary/Sum";
 
 export enum ExprType {
 	Int,
@@ -19,16 +19,23 @@ export enum ExprType {
 	Power,
 }
 
-export type RationalNumber = Fraction | Int;
-
-export function isRationalNumber(
-	expr: Expression | undefined,
-): expr is RationalNumber {
-	return isFraction(expr) || isInt(expr);
-}
-
 export function isFraction(expr: Expression | undefined): expr is Fraction {
 	return expr?.type === ExprType.Fraction;
+}
+
+export function isOne(expr: Expression | undefined): expr is Int {
+	return (
+		(isFraction(expr) &&
+			expr.numerator().value / expr.denominator().value === 1) ||
+		(isInt(expr) && expr.value === 1)
+	);
+}
+
+export function isZero(expr: Expression | undefined): expr is Int {
+	return (
+		(isFraction(expr) && expr.numerator().value === 0) ||
+		(isInt(expr) && expr.value === 0)
+	);
 }
 
 export function isInt(expr: Expression | undefined): expr is Int {
