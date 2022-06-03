@@ -25,7 +25,7 @@ describe("Base is zero", () => {
 		const expected = new Int(0);
 		expect(result?.equals(expected)).toBe(true);
 	});
-	test("Exponent is a negative numver 0 ^ -1 --> undefined", () => {
+	test("Exponent is a negative number 0 ^ -1 --> undefined", () => {
 		const power = new Power(new Int(0), new Int(-1));
 		expect(simplifyPower(power)).toBe(undefined);
 	});
