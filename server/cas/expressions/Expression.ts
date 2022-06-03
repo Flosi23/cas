@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import type { ExprType } from "$cas/expressions/types";
 import type Operator from "./Operator";
+import type { RationalNumber } from "./types/RNE";
 
 export abstract class Expression {
 	public parent: Operator<Expression> | null = null;
@@ -15,6 +16,8 @@ export abstract class Expression {
 
 	public abstract base(): Expression | undefined;
 	public abstract exponent(): Expression | undefined;
+	public abstract factor(): RationalNumber;
+	public abstract rest(): Expression | undefined;
 
 	equals(expr: Expression | undefined): boolean {
 		if (!expr) {

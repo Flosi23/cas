@@ -84,7 +84,6 @@ test("(a * c * e) * (f * c^-1) --> a * e * f", () => {
 		new Product([new Symbol("f"), new Power(new Symbol("c"), new Int(-1))]),
 	]);
 	const result = simplifyProduct(product);
-	console.log("result", result);
 	const expected = new Product([
 		new Symbol("a"),
 		new Symbol("e"),

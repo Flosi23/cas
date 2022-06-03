@@ -3,139 +3,103 @@ import Int from "$cas/expressions/atomic/Int";
 import Power from "$cas/expressions/binary/Power";
 import Product from "$cas/expressions/n-ary/Product";
 import Sum from "$cas/expressions/n-ary/Sum";
-import { isZero, isOne, isProduct } from "$cas/expressions/types";
+import { isOne, isProduct, isZero } from "$cas/expressions/types";
 import { isRationalNumber } from "$cas/expressions/types/RNE";
 import simplifyRNE from "../RNE";
-import { uSmallerV } from "../order";
+import sort from "../order/sort";
 // eslint-disable-next-line import/no-cycle
 import simplifyPower from "../power";
-import mergeNaryExprs from "./merge";
+// eslint-disable-next-line import/no-cycle
 import simplifySum from "./sum";
 
 export default function simplifyProduct(
 	product: Product,
 ): Expression | undefined {
-	if (!product.operands.every((operand) => operand !== undefined)) {
-		return undefined;
-	}
-	if (product.operands.find((operand) => isZero(operand))) {
-		return new Int(0);
-	}
+	let { operands } = product;
 
-	if (product.operands.length === 1) {
-		return product.operands[0];
-	}
+	// Associative transformation (a * (b * c) --> a * b * c)
+	operands = operands.flatMap((operand) =>
+		isProduct(operand) ? operand.operands : operand,
+	);
 
-	const result = simplifyProductRec(product.operands as Expression[]);
-
-	if (!result) {
-		return undefined;
-	}
-
-	if (result.length === 0) {
-		return new Int(1);
-	}
-	if (result.length === 1) {
-		return result[0];
-	}
-
-	return new Product(result as Expression[]);
-}
-
-function simplifyProductRec(
-	operands: (Expression | undefined)[],
-): (Expression | undefined)[] | undefined {
-	if (operands.length === 1) {
-		return [operands[0]];
-	}
-	if (operands.length === 2) {
-		const factorOne = operands[0];
-		const factorTwo = operands[1];
-
-		if (!factorOne || !factorTwo) {
-			return undefined;
-		}
-
-		if (isRationalNumber(factorOne) && isRationalNumber(factorTwo)) {
-			const result = simplifyRNE(new Product([factorOne, factorTwo]));
+	for (let i = 0; i < operands.length; i += 1) {
+		for (let j = i + 1; j < operands.length; j += 1) {
+			const result = simplifyBinaryProduct([operands[i], operands[j]]);
 
 			if (!result) {
 				return undefined;
 			}
 
-			if (isOne(result)) {
-				return [];
+			if (result.length === 1) {
+				operands.splice(i, 1);
+				operands.splice(j - 1, 1);
+				operands.push(result[0]);
+				i = 0;
+				break;
 			}
-
-			return [result];
 		}
-		// If one of the two factors is 1, return the other one
-		if (isOne(factorOne)) {
-			return [factorTwo];
-		}
-		if (isOne(factorTwo)) {
-			return [factorOne];
-		}
-		if (factorOne.base()?.equals(factorTwo.base())) {
-			// simplify the sum of the exponents, then simplify the new power
-			const exponentSum = simplifySum(
-				new Sum([factorOne.exponent(), factorTwo.exponent()]),
-			);
-
-			if (!exponentSum) {
-				return undefined;
-			}
-
-			const power = simplifyPower(
-				new Power(factorOne.base()!, exponentSum),
-			);
-
-			if (isOne(power)) {
-				return [];
-			}
-
-			return [power];
-		}
-		if (uSmallerV(factorTwo, factorOne)) {
-			return simplifyProductRec([factorTwo, factorOne]);
-		}
-
-		if (isProduct(factorOne) && isProduct(factorTwo)) {
-			return mergeNaryExprs(
-				factorOne.operands,
-				factorTwo.operands,
-				simplifyProductRec,
-			);
-		}
-		if (isProduct(factorOne) && !isProduct(factorTwo)) {
-			return mergeNaryExprs(
-				factorOne.operands,
-				[factorTwo],
-				simplifyProductRec,
-			);
-		}
-		if (!isProduct(factorOne) && isProduct(factorTwo)) {
-			return mergeNaryExprs(
-				[factorOne],
-				factorTwo.operands,
-				simplifyProductRec,
-			);
-		}
-
-		return operands;
 	}
 
-	const firstOperand = operands.shift();
+	// Identity Transformation (U * 1 --> U)
+	operands = operands.filter((operand) => !isOne(operand));
 
-	const rest = simplifyProductRec(operands);
+	operands = sort(operands);
 
-	if (!rest) {
+	// Identity transformation (U * undefined --> undefined)
+	if (!operands.every((operand) => operand !== undefined)) {
 		return undefined;
 	}
 
-	if (isProduct(firstOperand)) {
-		return mergeNaryExprs(firstOperand.operands, rest, simplifyProductRec);
+	// Identity transformation (U * 0 --> 0)
+	if (operands.find((operand) => isZero(operand))) {
+		return new Int(0);
 	}
 
-	return mergeNaryExprs([firstOperand], rest, simplifyProductRec);
+	if (operands.length === 0) {
+		return new Int(1);
+	}
+
+	if (operands.length === 1) {
+		return operands[0];
+	}
+
+	return new Product(operands);
+}
+
+function simplifyBinaryProduct(
+	operands: [Expression | undefined, Expression | undefined],
+): (Expression | undefined)[] | undefined {
+	const factorOne = operands[0];
+	const factorTwo = operands[1];
+
+	if (!factorOne || !factorTwo) {
+		return undefined;
+	}
+
+	if (isRationalNumber(factorOne) && isRationalNumber(factorTwo)) {
+		const result = simplifyRNE(new Product(operands));
+
+		if (!result) {
+			return undefined;
+		}
+
+		return [result];
+	}
+
+	if (factorOne.base()?.equals(factorTwo.base())) {
+		// simplify the sum of the exponents, then simplify the new power
+		const exponentSum = simplifySum(
+			new Sum([factorOne.exponent(), factorTwo.exponent()]),
+		);
+
+		if (!exponentSum) {
+			return undefined;
+		}
+
+		const power = simplifyPower(new Power(factorOne.base()!, exponentSum));
+
+		return [power];
+	}
+
+	return operands;
 }

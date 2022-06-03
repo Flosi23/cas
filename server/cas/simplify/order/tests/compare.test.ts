@@ -4,7 +4,7 @@ import Fraction from "$cas/expressions/binary/Fraction";
 import Product from "$cas/expressions/n-ary/Product";
 import Sum from "$cas/expressions/n-ary/Sum";
 import parseExpression from "$cas/parse";
-import { uSmallerV } from "$cas/simplify/order";
+import { uSmallerV } from "$cas/simplify/order/compare";
 
 /*
 These tests are based on the table at page 109 of Mathematical Methods.

@@ -1,3 +1,4 @@
+import type { RationalNumber } from "../types/RNE";
 import { Expression, GenericExpression } from "../Expression";
 import { ExprType, isInt } from "../types";
 
@@ -25,5 +26,14 @@ export default class Int extends GenericExpression<never> {
 	// eslint-disable-next-line class-methods-use-this
 	public exponent(): Expression | undefined {
 		return new Int(1);
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	public factor(): RationalNumber {
+		return new Int(1);
+	}
+
+	public rest(): Expression | undefined {
+		return this;
 	}
 }

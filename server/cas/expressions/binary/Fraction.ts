@@ -1,4 +1,5 @@
 import type { Expression } from "../Expression";
+import type { RationalNumber } from "../types/RNE";
 import BinaryOperator from "../BinaryOperator";
 import Int from "../atomic/Int";
 import { ExprType } from "../types";
@@ -29,5 +30,14 @@ export default class Fraction extends BinaryOperator<Int, Int> {
 	// eslint-disable-next-line class-methods-use-this
 	public exponent(): Expression | undefined {
 		return new Int(1);
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	public factor(): RationalNumber {
+		return new Int(1);
+	}
+
+	public rest(): Expression | undefined {
+		return this;
 	}
 }

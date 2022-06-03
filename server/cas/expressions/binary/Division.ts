@@ -1,4 +1,5 @@
 import type { Expression } from "../Expression";
+import type { RationalNumber } from "../types/RNE";
 import { ExprType } from "$cas/expressions/types";
 import BinaryOperator from "../BinaryOperator";
 import Int from "../atomic/Int";
@@ -32,5 +33,14 @@ export default class Division<
 	// eslint-disable-next-line class-methods-use-this
 	public exponent(): Expression | undefined {
 		return new Int(1);
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	public factor(): RationalNumber {
+		return new Int(1);
+	}
+
+	public rest(): Expression | undefined {
+		return this;
 	}
 }

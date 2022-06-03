@@ -6,6 +6,7 @@
         "exponentiate",
         "linebreak",
         "Parens",
+        "summands",
         "trpc",
         "tsbuildinfo"
     ],

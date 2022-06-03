@@ -60,7 +60,9 @@ function simplifyIntegerPower(
 			return undefined;
 		}
 
-		const newExponent = new Product([baseExponent, exponent]);
+		const newExponent = simplifyProduct(
+			new Product([baseExponent, exponent]),
+		);
 
 		if (isInt(newExponent)) {
 			return simplifyIntegerPower(baseBase, newExponent);
