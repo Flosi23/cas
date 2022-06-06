@@ -2,6 +2,7 @@ import * as trpc from "@trpc/server";
 import { z } from "zod";
 import { calcTreeSpacing } from "$tree";
 import parseExpression from "$cas/parse";
+import simplify from "$cas/simplify/simplify";
 
 /**
  * Create your application's root router
@@ -16,6 +17,19 @@ export const appRouter = trpc
 		resolve({ input }) {
 			const exp = parseExpression(input.expr.trim().replace(/\s/g, ""));
 			return calcTreeSpacing(exp);
+		},
+	})
+	.mutation("simplifiedTree", {
+		input: z.object({ expr: z.string() }),
+		resolve({ input }) {
+			const expr = parseExpression(input.expr.trim().replace(/\s/g, ""));
+			const simplifiedExpr = simplify(expr);
+
+			if (!simplifiedExpr) {
+				throw new Error("Invalid Expression!");
+			}
+
+			return calcTreeSpacing(simplifiedExpr);
 		},
 	});
 
