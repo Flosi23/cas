@@ -73,7 +73,7 @@ function getDisplayValue(expr: Expression): string {
 	if (isDivision(expr)) return "/";
 	if (isProduct(expr)) return "*";
 	if (isPower(expr)) return "^";
-	if (isFraction(expr)) return "Fraction";
+	if (isFraction(expr)) return "Frac";
 	return "";
 }
 
