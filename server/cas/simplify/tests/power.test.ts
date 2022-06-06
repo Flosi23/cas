@@ -40,6 +40,12 @@ test("Base and exponent are positive integers 2 ^ 3 --> 8", () => {
 	const expected = new Int(8);
 	expect(result?.equals(expected)).toBe(true);
 });
+test("Base is a fraction and exponent a positive integer (2/3)^2 --> 1/4", () => {
+	const power = new Power(new Fraction(new Int(2), new Int(3)), new Int(2));
+	const result = simplifyPower(power);
+	const expected = new Fraction(new Int(4), new Int(9));
+	expect(result?.equals(expected)).toBe(true);
+});
 test("Exponent is zero a ^ 0 --> 1", () => {
 	const power = new Power(new Symbol("a"), new Int(0));
 	const result = simplifyPower(power);

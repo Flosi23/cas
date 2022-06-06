@@ -3,12 +3,15 @@ import Int from "$cas/expressions/atomic/Int";
 import Power from "$cas/expressions/binary/Power";
 import Product from "$cas/expressions/n-ary/Product";
 import {
+	isFraction,
 	isInt,
 	isPositiveFraction,
 	isPositiveInt,
 	isPower,
 	isProduct,
 } from "$cas/expressions/types";
+// eslint-disable-next-line import/no-cycle
+import simplifyRNE from "./RNE";
 // eslint-disable-next-line import/no-cycle
 import simplifyProduct from "./n-ary/product";
 
@@ -41,16 +44,18 @@ function simplifyIntegerPower(
 	if (!base) {
 		return undefined;
 	}
-
-	if (isInt(base)) {
-		const value = base.value ** exponent.value;
-		return Number.isNaN(value) ? undefined : new Int(value);
-	}
 	if (exponent.value === 0) {
 		return new Int(1);
 	}
 	if (exponent.value === 1) {
 		return base;
+	}
+	if (isInt(base)) {
+		const value = base.value ** exponent.value;
+		return Number.isNaN(value) ? undefined : new Int(value);
+	}
+	if (isFraction(base)) {
+		return simplifyRNE(new Power(base, exponent));
 	}
 	if (isPower(base)) {
 		const baseExponent = base.exponent();
