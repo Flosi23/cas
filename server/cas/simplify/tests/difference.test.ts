@@ -26,3 +26,9 @@ test("Resulting sum is simplified a - a --> 0", () => {
 	const expected = new Int(0);
 	expect(result?.equals(expected)).toBe(true);
 });
+test("Resulting sum is simplified to maximum extend 2-3 -> -1", () => {
+	const difference = new Difference([new Int(2), new Int(3)]);
+	const result = simplifyDifference(difference);
+	const expected = new Int(-1);
+	expect(result?.equals(expected)).toBe(true);
+});

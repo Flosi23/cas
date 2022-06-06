@@ -16,6 +16,9 @@ export default function simplifyDifference(
 	}
 
 	return simplifySum(
-		new Sum([operands[0], new Product([new Int(-1), operands[1]])]),
+		new Sum([
+			operands[0],
+			simplifyProduct(new Product([new Int(-1), operands[1]])),
+		]),
 	);
 }
