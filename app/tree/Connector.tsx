@@ -5,6 +5,7 @@ function Path({
 	depth,
 	width,
 	arcRad,
+	strokeWidth,
 	nodeAnimDuration,
 	pathAnimDuration,
 }: {
@@ -12,6 +13,7 @@ function Path({
 	depth: number;
 	width: number;
 	arcRad: number;
+	strokeWidth: number;
 	nodeAnimDuration: number;
 	pathAnimDuration: number;
 }) {
@@ -21,7 +23,7 @@ function Path({
 		<>
 			<path
 				strokeDashoffset={width + 2 * arcRad}
-				strokeWidth={2}
+				strokeWidth={strokeWidth}
 				fill="none"
 				stroke={`var(--chakra-colors-${strokeColor})`}
 				strokeDasharray={width + 2 * arcRad}
@@ -70,10 +72,11 @@ export default function TestConnector({
 	const lineWidth = width - 2 * arcRad;
 
 	let svg = (
-		<svg width={`${width}`} height={`${height}`}>
+		<svg width="10px" height={`${height}`}>
 			<Path
 				arcRad={arcRad}
-				width={width}
+				width={4}
+				strokeWidth={4}
 				pathAnimDuration={pathAnimDuration}
 				nodeAnimDuration={nodeAnimDuration}
 				depth={depth}
@@ -88,6 +91,7 @@ export default function TestConnector({
 				<Path
 					arcRad={arcRad}
 					width={width}
+					strokeWidth={2}
 					pathAnimDuration={pathAnimDuration}
 					nodeAnimDuration={nodeAnimDuration}
 					depth={depth}
@@ -105,6 +109,7 @@ export default function TestConnector({
 				<Path
 					arcRad={arcRad}
 					width={width}
+					strokeWidth={2}
 					pathAnimDuration={pathAnimDuration}
 					nodeAnimDuration={nodeAnimDuration}
 					depth={depth}
