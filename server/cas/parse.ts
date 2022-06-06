@@ -74,11 +74,15 @@ function isPower(expr: string): Expression | Operator<Expression> | null {
 
 function isMultiplication(expr: string): Operator<Expression> | null {
 	return tryOperator(expr, "*", (left, right) => {
-		const leftExpr = isTerm(left);
-		if (!leftExpr) return null;
-
 		const rightExpr = isPower(right);
 		if (!rightExpr) return null;
+
+		if (left.length === 0) {
+			return new Product([rightExpr]);
+		}
+
+		const leftExpr = isTerm(left);
+		if (!leftExpr) return null;
 
 		return new Product([leftExpr, rightExpr]);
 	});
@@ -102,11 +106,15 @@ function isTerm(expr: string): Expression | Operator<Expression> | null {
 
 function isAddition(expr: string): Operator<Expression> | null {
 	return tryOperator(expr, "+", (left, right) => {
-		const leftExpr = isExpression(left);
-		if (!leftExpr) return null;
-
 		const rightExpr = isTerm(right);
 		if (!rightExpr) return null;
+
+		if (left.length === 0) {
+			return new Sum([rightExpr]);
+		}
+
+		const leftExpr = isExpression(left);
+		if (!leftExpr) return null;
 
 		return new Sum([leftExpr, rightExpr]);
 	});
@@ -114,11 +122,15 @@ function isAddition(expr: string): Operator<Expression> | null {
 
 function isSubtraction(expr: string): Operator<Expression> | null {
 	return tryOperator(expr, "-", (left, right) => {
-		const leftExpr = isExpression(left);
-		if (!leftExpr) return null;
-
 		const rightExpr = isExpression(right);
 		if (!rightExpr) return null;
+
+		if (left.length === 0) {
+			return new Difference([rightExpr]);
+		}
+
+		const leftExpr = isExpression(left);
+		if (!leftExpr) return null;
 
 		return new Difference([leftExpr, rightExpr]);
 	});

@@ -96,7 +96,7 @@ function simplifyBinaryProduct(
 			return undefined;
 		}
 
-		const power = simplifyPower(new Power(factorOne.base()!, exponentSum));
+		const power = simplifyPower(new Power(factorOne.base(), exponentSum));
 
 		return [power];
 	}
