@@ -1,10 +1,11 @@
-import ExprType, { isInt } from "../ExprType";
-import Expression from "../Expression";
+import type { RationalNumber } from "../types/RNE";
+import { Expression, GenericExpression } from "../Expression";
+import { ExprType, isInt } from "../types";
 
-export default class Int extends Expression {
+export default class Int extends GenericExpression<never> {
+	public readonly type: ExprType = ExprType.Int;
+
 	public value: number;
-
-	public type = ExprType.Int;
 
 	constructor(value: number) {
 		super();
@@ -12,17 +13,27 @@ export default class Int extends Expression {
 	}
 
 	override equals(expr: Expression | undefined): boolean {
-		if (!expr) {
-			return false;
+		if (isInt(expr) && expr.value === this.value) {
+			return true;
 		}
-
-		if (isInt(expr) && expr.value !== this.value) {
-			return false;
-		}
-		return super.equals(expr);
+		return false;
 	}
 
-	public multiply(number: Int) {
-		this.value *= number.value;
+	public base(): Expression | undefined {
+		return this;
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	public exponent(): Expression | undefined {
+		return new Int(1);
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	public factor(): RationalNumber {
+		return new Int(1);
+	}
+
+	public rest(): Expression | undefined {
+		return this;
 	}
 }

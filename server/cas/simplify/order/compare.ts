@@ -1,17 +1,17 @@
-import type Expression from "$cas/expressions/Expression";
+import type { Expression } from "$cas/expressions/Expression";
+import Int from "$cas/expressions/atomic/Int";
+import Fraction from "$cas/expressions/binary/Fraction";
+import Power from "$cas/expressions/binary/Power";
+import Product from "$cas/expressions/n-ary/Product";
+import Sum from "$cas/expressions/n-ary/Sum";
 import {
 	isSum,
 	isProduct,
 	isPower,
 	isInt,
 	isSymbol,
-	isConstant,
-} from "$cas/expressions/ExprType";
-import Int from "$cas/expressions/atomic/Int";
-import Fraction from "$cas/expressions/compound/Fraction";
-import Power from "$cas/expressions/compound/Power";
-import Product from "$cas/expressions/compound/Product";
-import Sum from "$cas/expressions/compound/Sum";
+} from "$cas/expressions/types";
+import { isRationalNumber } from "$cas/expressions/types/RNE";
 
 export function uSmallerV(
 	u: Expression | undefined,
@@ -20,12 +20,12 @@ export function uSmallerV(
 	if (!u || !v) {
 		return !u;
 	}
-	// if U is a integer and V is not, it must be smaller than V
-	if (isConstant(u) && !isConstant(v)) {
+	// if U is a number and V is not, it must be smaller than V
+	if (isRationalNumber(u) && !isRationalNumber(v)) {
 		return true;
 	}
-	// if both are fractions or integers, their order is their value (numerical order)
-	if (isConstant(u) && isConstant(v)) {
+	// if both are rational numbers, their order is their value (numerical order)
+	if (isRationalNumber(u) && isRationalNumber(v)) {
 		/*
 		In order to simplify the comparison between integers and fractions, every Integer is converted
 		to a fraction
@@ -51,19 +51,19 @@ export function uSmallerV(
 		 */
 		for (
 			let i = 1;
-			i <= Math.min(v.children.length, u.children.length);
+			i <= Math.min(v.operands.length, u.operands.length);
 			i += 1
 		) {
-			const uChild = u.children[u.children.length - i];
-			const vChild = v.children[v.children.length - i];
+			const uOperand = u.operands[u.operands.length - i];
+			const vOperand = v.operands[v.operands.length - i];
 
-			if (uChild && vChild && !uChild.equals(vChild)) {
-				return uSmallerV(uChild, vChild);
+			if (uOperand && vOperand && !uOperand.equals(vOperand)) {
+				return uSmallerV(uOperand, vOperand);
 			}
 		}
 		//
 
-		return u.children.length < v.children.length;
+		return u.operands.length < v.operands.length;
 	}
 	if (isPower(u) && isPower(v)) {
 		// compare powers using their base unless the base is equal
@@ -81,7 +81,7 @@ export function uSmallerV(
 	}
 	if (isPower(u) && (isSum(v) || isSymbol(v))) {
 		// the order is determined by viewing both expression as powers
-		return uSmallerV(u, new Power([v, new Int(1)]));
+		return uSmallerV(u, new Power(v, new Int(1)));
 	}
 	if (isSum(u) && isSymbol(v)) {
 		return uSmallerV(u, new Sum([v]));

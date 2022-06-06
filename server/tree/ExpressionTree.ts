@@ -1,4 +1,4 @@
-import type Expression from "$cas/expressions/Expression";
+import type { Expression } from "$cas/expressions/Expression";
 import {
 	isInt,
 	isSymbol,
@@ -8,7 +8,7 @@ import {
 	isProduct,
 	isSum,
 	isFraction,
-} from "$cas/expressions/ExprType";
+} from "$cas/expressions/types";
 
 export default class ExpressionTree {
 	public displayValue: string;
@@ -82,8 +82,8 @@ export function exprToDisplayExpr(
 	parent: ExpressionTree | null = null,
 ): ExpressionTree {
 	const dExpr = new ExpressionTree(getDisplayValue(expr), parent);
-	dExpr.children = expr.children.map((child) =>
-		exprToDisplayExpr(child, dExpr),
+	dExpr.children = expr.operands.map((operand) =>
+		exprToDisplayExpr(operand!, dExpr),
 	);
 	return dExpr;
 }

@@ -5,8 +5,6 @@
 	"scripts": {
 		"build": "cross-env NODE_ENV=production run-s next:build",
 		"check": "tsc --noEmit",
-		"test": "jest",
-		"test:coverage": "jest --coverage",
 		"dev": "cross-env NODE_ENV=development run-s next:dev",
 		"eslint:fix": "npm run eslint:template -- --fix .",
 		"eslint:individual": "npm run eslint:template -- --fix",
@@ -24,7 +22,9 @@
 		"prettier:report": "npm run prettier:template -- --check .",
 		"prettier:template": "prettier --plugin-search-dir=. --ignore-unknown",
 		"production": "cross-env NODE_ENV=production run-s build start",
-		"start": "cross-env NODE_ENV=production npm next:start"
+		"start": "cross-env NODE_ENV=production npm run next:start",
+		"test": "jest",
+		"test:coverage": "jest --coverage"
 	},
 	"dependencies": {
 		"@chakra-ui/icons": "^1.1.7",

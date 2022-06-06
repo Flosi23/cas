@@ -1,13 +1,16 @@
-import type Expression from "$cas/expressions/Expression";
+import type { Expression } from "$cas/expressions/Expression";
+import Int from "$cas/expressions/atomic/Int";
+import Power from "$cas/expressions/binary/Power";
+import Product from "$cas/expressions/n-ary/Product";
 import {
 	isInt,
 	isPositiveFraction,
 	isPositiveInt,
 	isPower,
 	isProduct,
-} from "$cas/expressions/ExprType";
-import Int from "$cas/expressions/atomic/Int";
-import Power from "$cas/expressions/compound/Power";
+} from "$cas/expressions/types";
+// eslint-disable-next-line import/no-cycle
+import simplifyProduct from "./n-ary/product";
 
 export default function simplifyPower(power: Power): Expression | undefined {
 	const base = power.base();
@@ -32,9 +35,13 @@ export default function simplifyPower(power: Power): Expression | undefined {
 }
 
 function simplifyIntegerPower(
-	base: Expression,
+	base: Expression | undefined,
 	exponent: Int,
 ): Expression | undefined {
+	if (!base) {
+		return undefined;
+	}
+
 	if (isInt(base)) {
 		const value = base.value ** exponent.value;
 		return Number.isNaN(value) ? undefined : new Int(value);
@@ -46,11 +53,31 @@ function simplifyIntegerPower(
 		return base;
 	}
 	if (isPower(base)) {
-		// simplify with simplify product
+		const baseExponent = base.exponent();
+		const baseBase = base.base();
+
+		if (!baseExponent || !baseBase) {
+			return undefined;
+		}
+
+		const newExponent = simplifyProduct(
+			new Product([baseExponent, exponent]),
+		);
+
+		if (isInt(newExponent)) {
+			return simplifyIntegerPower(baseBase, newExponent);
+		}
+
+		return new Power(baseBase, newExponent);
 	}
 	if (isProduct(base)) {
-		base.children.map((child) => simplifyIntegerPower(child, exponent));
-		// return simplify_product(base)
+		base.setOperands(
+			base.operands.map((operand) =>
+				simplifyIntegerPower(operand, exponent),
+			),
+		);
+
+		return simplifyProduct(base);
 	}
-	return new Power([base, exponent]);
+	return new Power(base, exponent);
 }

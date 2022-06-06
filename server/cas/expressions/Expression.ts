@@ -1,17 +1,23 @@
-import type ExprType from "./ExprType";
-import type Operator from "./compound/Operator";
+/* eslint-disable max-classes-per-file */
+import type { ExprType } from "$cas/expressions/types";
+import type Operator from "./Operator";
+import type { RationalNumber } from "./types/RNE";
 
-export default abstract class Expression {
-	public parent: Operator | null;
+export abstract class Expression {
+	public parent: Operator<Expression> | null = null;
 
-	public children: Expression[];
+	protected _operands: (Expression | undefined)[] = [];
 
-	public abstract type: ExprType;
-
-	constructor() {
-		this.children = [];
-		this.parent = null;
+	get operands(): readonly (Expression | undefined)[] {
+		return this._operands;
 	}
+
+	public abstract readonly type: ExprType;
+
+	public abstract base(): Expression | undefined;
+	public abstract exponent(): Expression | undefined;
+	public abstract factor(): RationalNumber;
+	public abstract rest(): Expression | undefined;
 
 	equals(expr: Expression | undefined): boolean {
 		if (!expr) {
@@ -22,21 +28,36 @@ export default abstract class Expression {
 			return false;
 		}
 
-		if (expr.children.length !== this.children.length) {
+		if (expr.operands.length !== this.operands.length) {
 			return false;
 		}
 
-		for (let i = 0; i < this.children.length; i += 1) {
-			// if any of the children is undefined --> return false
-			if (!this.children[i] || !expr.children[i]) {
+		let allChildrenEqual = true;
+
+		for (let i = 0; i < this.operands.length; i += 1) {
+			const thisChild = this.operands[i];
+			const exprChild = expr.operands[i];
+
+			if (!thisChild || !exprChild) {
 				return false;
 			}
 
-			if (!this.children[i]!.equals(expr.children[i])) {
-				return false;
+			if (allChildrenEqual && !thisChild.equals(exprChild)) {
+				allChildrenEqual = false;
+				break;
 			}
 		}
 
-		return true;
+		return allChildrenEqual;
+	}
+}
+
+export abstract class GenericExpression<
+	Operand extends Expression | never,
+> extends Expression {
+	protected override _operands: (Operand | undefined)[] = [];
+
+	override get operands(): (Operand | undefined)[] {
+		return this._operands;
 	}
 }

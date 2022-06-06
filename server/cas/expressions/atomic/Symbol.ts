@@ -1,10 +1,12 @@
-import ExprType from "../ExprType";
-import Expression from "../Expression";
+import type { RationalNumber } from "../types/RNE";
+import { Expression, GenericExpression } from "../Expression";
+import { ExprType, isSymbol } from "../types";
+import Int from "./Int";
 
-export default class Symbol extends Expression {
+export default class Symbol extends GenericExpression<never> {
+	public readonly type: ExprType = ExprType.Symbol;
+
 	public value: string;
-
-	public type = ExprType.Symbol;
 
 	constructor(value: string) {
 		super();
@@ -12,17 +14,27 @@ export default class Symbol extends Expression {
 	}
 
 	override equals(expr: Expression | undefined): boolean {
-		if (!expr) {
-			return false;
+		if (isSymbol(expr) && expr.value === this.value) {
+			return true;
 		}
-		if (isSymbol(expr) && expr.value !== this.value) {
-			return false;
-		}
-		return super.equals(expr);
+		return false;
 	}
-}
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function isSymbol(expr: Expression): expr is Symbol {
-	return expr.type === ExprType.Symbol;
+	public base(): Expression | undefined {
+		return this;
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	public exponent(): Expression | undefined {
+		return new Int(1);
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	public factor(): RationalNumber {
+		return new Int(1);
+	}
+
+	public rest(): Expression | undefined {
+		return this;
+	}
 }

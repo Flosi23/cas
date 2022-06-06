@@ -18,9 +18,11 @@ export default function Index() {
 	const { colorMode, toggleColorMode } = useColorMode();
 	const [expr, setExpr] = useState("");
 	const treeMutation = trpc.useMutation(["tree"]);
+	const simplifiedTreeMutation = trpc.useMutation(["simplifiedTree"]);
 
 	function handleCalc() {
 		treeMutation.mutate({ expr });
+		simplifiedTreeMutation.mutate({ expr });
 	}
 
 	return (
@@ -64,7 +66,12 @@ export default function Index() {
 					</Button>
 				</HStack>
 			</VStack>
-			{treeMutation.data && <Results tree={treeMutation.data} />}
+			{treeMutation.data && simplifiedTreeMutation.data && (
+				<Results
+					tree={treeMutation.data}
+					simplifiedTree={simplifiedTreeMutation.data}
+				/>
+			)}
 		</Container>
 	);
 }

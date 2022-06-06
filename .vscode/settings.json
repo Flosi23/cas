@@ -1,13 +1,15 @@
 {
 	"cSpell.words": [
-        "autofix",
-        "Chakra",
-        "codepaths",
-        "linebreak",
-        "Parens",
-        "trpc",
-        "tsbuildinfo"
-    ],
+		"autofix",
+		"Chakra",
+		"codepaths",
+		"exponentiate",
+		"linebreak",
+		"Parens",
+		"summands",
+		"trpc",
+		"tsbuildinfo"
+	],
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
 	},
