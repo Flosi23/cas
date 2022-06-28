@@ -34,7 +34,7 @@ export default function simplifyProduct(
 				operands.splice(i, 1);
 				operands.splice(j - 1, 1);
 				operands.push(result[0]);
-				i = 0;
+				i = -1;
 				break;
 			}
 		}

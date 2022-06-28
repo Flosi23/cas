@@ -71,10 +71,26 @@ describe("Exponentiate (Power)", () => {
 
 		return expect(expected.equals(result)).toBe(true);
 	});
-	test("1/9 ^ -4", () => {
-		const base = new Fraction(new Int(1), new Int(9));
-		const exponent = new Int(-4);
+	test("2/9 ^ -1 = 9/2", () => {
+		const base = new Fraction(new Int(2), new Int(9));
+		const exponent = new Int(-1);
 
-		return expect(exponentiate(base, exponent)).toBe(undefined);
+		const expected = new Fraction(new Int(9), new Int(2));
+		const result = exponentiate(base, exponent);
+
+		return expect(expected.equals(result)).toBe(true);
+	});
+	test("-2/3 ^ -3 = -27/8", () => {
+		const base = new Fraction(new Int(-2), new Int(3));
+		const exponent = new Int(-3);
+
+		/*
+		The resulting fraction is not simplified by exponentiate()
+		because of that the result is 27/-8 instead of -8/27
+		*/
+		const expected = new Fraction(new Int(27), new Int(-8));
+		const result = exponentiate(base, exponent);
+
+		return expect(expected.equals(result)).toBe(true);
 	});
 });

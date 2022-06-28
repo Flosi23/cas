@@ -1,7 +1,7 @@
 import type { RationalNumber } from "$cas/expressions/types/RNE";
 import Int from "$cas/expressions/atomic/Int";
 import Fraction from "$cas/expressions/binary/Fraction";
-import { isPositiveInt, isInt } from "$cas/expressions/types";
+import { isInt } from "$cas/expressions/types";
 
 function toFraction(rn: RationalNumber): Fraction {
 	if (isInt(rn)) {
@@ -73,8 +73,17 @@ export function exponentiate(
 ): Fraction | undefined {
 	base = toFraction(base);
 
-	if (!isPositiveInt(exponent)) {
-		return undefined;
+	if (exponent.value < 0) {
+		const dividend = new Fraction(
+			new Int(1),
+			new Int(base.numerator().value ** Math.abs(exponent.value)),
+		);
+		const divisor = new Fraction(
+			new Int(1),
+			new Int(base.denominator().value ** Math.abs(exponent.value)),
+		);
+
+		return divide(dividend, divisor);
 	}
 
 	return new Fraction(

@@ -26,10 +26,13 @@ describe("Fractions and Integers", () => {
 	});
 });
 describe("Invalid inputs", () => {
-	test("Negative exponent --> 2+3^-2 = undefined ", () => {
+	test("Negative exponent --> (2+3)^-2 = 1/25 ", () => {
 		const expr = new Power(parseExpression("2+3"), new Int(-2));
 
-		expect(simplifyRNE(expr)).toBe(undefined);
+		const expected = new Fraction(new Int(1), new Int(25));
+		const result = simplifyRNE(expr);
+
+		expect(expected.equals(result)).toBe(true);
 	});
 	test("Non integer exponent --> 2^3/4 = undefined", () => {
 		const expr = new Power(
