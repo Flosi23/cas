@@ -24,12 +24,11 @@ export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
 		return n.yUnits * height + vGap * n.yUnits;
 	};
 
-	const getType = (i: number, children: number) => {
-		const mid = (children - 1) / 2;
+	const getType = (i: number) => {
+		const childX = node.children[i]!.xUnits;
+		const parentX = node.xUnits;
 
-		if (i === mid) return 0;
-
-		return i < mid ? -1 : 1;
+		return childX - parentX;
 	};
 
 	const changeOpacity = keyframes`
@@ -65,11 +64,11 @@ export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
 				<Box key={i}>
 					<Connector
 						depth={node.yUnits}
-						type={getType(i, node.children.length)}
+						type={getType(i)}
 						height={vGap}
 						top={calcTop(node) + height}
 						left={
-							getType(i, node.children.length) >= 0
+							getType(i) >= 0
 								? calcLeft(node) + width / 2
 								: calcLeft(child) + width / 2
 						}
