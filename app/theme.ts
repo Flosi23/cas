@@ -13,7 +13,9 @@ export default extendTheme(
 	{ config },
 	{
 		colors: {
-			...theme.colors.blue,
+			brand: {
+				...theme.colors.blue,
+			},
 		},
 	},
 	withDefaultColorScheme({
