@@ -22,6 +22,7 @@ export default function simplifyProduct(
 		isProduct(operand) ? operand.operands : operand,
 	);
 
+	// Numeric Transformation and collection of like terms
 	for (let i = 0; i < operands.length; i += 1) {
 		for (let j = i + 1; j < operands.length; j += 1) {
 			const result = simplifyBinaryProduct([operands[i], operands[j]]);
