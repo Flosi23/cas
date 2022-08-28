@@ -12,11 +12,12 @@ import simplifyProduct from "./product";
 export default function simplifySum(sum: Sum): Expression | undefined {
 	let { operands } = sum;
 
+	// Associative Transformation
 	operands = operands.flatMap((operand) =>
 		isSum(operand) ? operand.operands : operand,
 	);
 
-	// collect all rational numbers and add them up
+	// Numeric Transformation
 	operands.push(
 		operands.reduceRight((value, currentOperand) => {
 			if (isRationalNumber(currentOperand) && isRationalNumber(value)) {
@@ -29,6 +30,7 @@ export default function simplifySum(sum: Sum): Expression | undefined {
 
 	const newOperands: (Product | undefined)[] = [];
 
+	// Distributive Transformation
 	operands.forEach((operand) => {
 		const existingRest = newOperands.find((newOp) =>
 			newOp?.rest()?.equals(operand?.rest()),
@@ -51,7 +53,6 @@ export default function simplifySum(sum: Sum): Expression | undefined {
 			newOperands.push(new Product([operand?.factor(), operand?.rest()]));
 		}
 	});
-
 	operands = newOperands.map((newOp) =>
 		newOp ? simplifyProduct(newOp) : undefined,
 	);
@@ -59,12 +60,13 @@ export default function simplifySum(sum: Sum): Expression | undefined {
 	// Identity Transformation (U + 0 --> U)
 	operands = operands.filter((operand) => !isZero(operand));
 
-	operands = sort(operands);
-
 	// Identity transformation (U * undefined --> undefined)
 	if (!operands.every((operand) => operand !== undefined)) {
 		return undefined;
 	}
+
+	// Commutative Transformation
+	operands = sort(operands);
 
 	if (operands.length === 0) {
 		return new Int(0);

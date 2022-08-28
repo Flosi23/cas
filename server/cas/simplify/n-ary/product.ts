@@ -43,8 +43,6 @@ export default function simplifyProduct(
 	// Identity Transformation (U * 1 --> U)
 	operands = operands.filter((operand) => !isOne(operand));
 
-	operands = sort(operands);
-
 	// Identity transformation (U * undefined --> undefined)
 	if (!operands.every((operand) => operand !== undefined)) {
 		return undefined;
@@ -54,6 +52,9 @@ export default function simplifyProduct(
 	if (operands.find((operand) => isZero(operand))) {
 		return new Int(0);
 	}
+
+	// Commutative Transformation
+	operands = sort(operands);
 
 	if (operands.length === 0) {
 		return new Int(1);
