@@ -12,17 +12,23 @@ import {
 import { isRationalNumber, RationalNumber } from "$cas/expressions/types/RNE";
 import { add, divide, exponentiate, multiply, subtract } from "./evaluate";
 import { simplifyRationalNumber } from "./number";
+import { getTracer } from "$/server/tracing/Tracer";
 
 export default function simplifyRNE(
 	expr: Expression | undefined,
 ): RationalNumber | undefined {
+	const span = getTracer().StartSpan("Simplify RNE").SetTree(expr)
+
 	const result = simplifyRneRec(expr);
 
 	if (!result) {
 		return undefined;
 	}
 
-	return simplifyRationalNumber(result);
+	const r = simplifyRationalNumber(result);
+	getTracer().StartSpan("Simplified RNE").SetTree(r).End()
+	span.End()
+	return r;
 }
 
 function simplifyRneRec(

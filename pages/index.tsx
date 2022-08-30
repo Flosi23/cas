@@ -69,7 +69,8 @@ export default function Index() {
 			{treeMutation.data && simplifiedTreeMutation.data && (
 				<Results
 					tree={treeMutation.data}
-					simplifiedTree={simplifiedTreeMutation.data}
+					simplifiedTree={simplifiedTreeMutation.data.tree}
+					spans={simplifiedTreeMutation.data.spans}
 				/>
 			)}
 		</Container>
