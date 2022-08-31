@@ -1,4 +1,5 @@
 import type { Expression } from "$cas/expressions/Expression";
+import { getTracer } from "$/server/tracing/Tracer";
 import Int from "$cas/expressions/atomic/Int";
 import Product from "$cas/expressions/n-ary/Product";
 import Sum from "$cas/expressions/n-ary/Sum";
@@ -8,21 +9,22 @@ import simplifyRNE from "../RNE";
 import sort from "../order/sort";
 // eslint-disable-next-line import/no-cycle
 import simplifyProduct from "./product";
-import { getTracer } from "$/server/tracing/Tracer";
 
 export default function simplifySum(sum: Sum): Expression | undefined {
 	let { operands } = sum;
 
-	const span = getTracer().StartSpan("Simplify Sum").SetTree(sum)
+	const span = getTracer().StartSpan("Simplify Sum").SetTree(sum);
 
 	// Associative Transformation
 	operands = operands.flatMap((operand) =>
 		isSum(operand) ? operand.operands : operand,
 	);
 
-	getTracer().StartSpan("Associative Transformation").SetTree(new Sum(operands)).End()
+	getTracer()
+		.StartSpan("Associative Transformation")
+		.SetTree(new Sum(operands))
+		.End();
 
-	const nSpan = getTracer().StartSpan("Numeric Transformation").SetTree(new Sum(operands))
 	// Numeric Transformation
 	operands.push(
 		operands.reduceRight((value, currentOperand) => {
@@ -34,11 +36,14 @@ export default function simplifySum(sum: Sum): Expression | undefined {
 		}, new Int(0)),
 	);
 
-	nSpan.End()
+	getTracer()
+		.StartSpan("Numeric Transformation")
+		.SetTree(new Sum(operands))
+		.End();
 
 	const newOperands: (Product | undefined)[] = [];
 
-	const dSpan = getTracer().StartSpan("Distributive Transformation")
+	const dSpan = getTracer().StartSpan("Distributive Transformation");
 	// Distributive Transformation
 	operands.forEach((operand) => {
 		const existingRest = newOperands.find((newOp) =>
@@ -66,35 +71,41 @@ export default function simplifySum(sum: Sum): Expression | undefined {
 		newOp ? simplifyProduct(newOp) : undefined,
 	);
 
-	dSpan.SetTree(new Sum(operands)).End()
+	dSpan.SetTree(new Sum(operands)).End();
 
 	// Identity Transformation (U + 0 --> U)
 	operands = operands.filter((operand) => !isZero(operand));
-	
-	getTracer().StartSpan("Identity Transformation 1").SetTree(new Sum(operands)).End()
 
-	// Identity transformation (U * undefined --> undefined)
+	getTracer()
+		.StartSpan("Identity Transformation 1")
+		.SetTree(new Sum(operands))
+		.End();
+
+	// Identity transformation (U + undefined --> undefined)
 	if (!operands.every((operand) => operand !== undefined)) {
-		span.End()
+		span.End();
 		return undefined;
 	}
 
 	// Commutative Transformation
 	operands = sort(operands);
 
-	getTracer().StartSpan("Commutative Transformation").SetTree(new Sum(operands)).End()
+	getTracer()
+		.StartSpan("Commutative Transformation")
+		.SetTree(new Sum(operands))
+		.End();
 
 	if (operands.length === 0) {
-		span.End()
+		span.End();
 		return new Int(0);
 	}
 
 	if (operands.length === 1) {
-		span.End()
+		span.End();
 		return operands[0];
 	}
 
-	span.End()
+	span.End();
 
 	return new Sum(operands);
 }

@@ -1,4 +1,5 @@
 import type { Expression } from "$cas/expressions/Expression";
+import { getTracer } from "$/server/tracing/Tracer";
 import Int from "$cas/expressions/atomic/Int";
 import Power from "$cas/expressions/binary/Power";
 import Product from "$cas/expressions/n-ary/Product";
@@ -11,23 +12,27 @@ import sort from "../order/sort";
 import simplifyPower from "../power";
 // eslint-disable-next-line import/no-cycle
 import simplifySum from "./sum";
-import { getTracer } from "$/server/tracing/Tracer";
 
 export default function simplifyProduct(
 	product: Product,
 ): Expression | undefined {
 	let { operands } = product;
 
-	const span = getTracer().StartSpan("Simplify Product").SetTree(product)
+	const span = getTracer().StartSpan("Simplify Product").SetTree(product);
 
 	// Associative transformation (a * (b * c) --> a * b * c)
 	operands = operands.flatMap((operand) =>
 		isProduct(operand) ? operand.operands : operand,
 	);
 
-	getTracer().StartSpan("Associative Transformation").SetTree(product).End()
+	getTracer()
+		.StartSpan("Associative Transformation")
+		.SetTree(new Product(operands))
+		.End();
 
-	const nSpan = getTracer().StartSpan("Numeric Transformation / Collection of Term")
+	const nSpan = getTracer().StartSpan(
+		"Numeric Transformation / Collection of Term",
+	);
 	// Numeric Transformation and collection of like terms
 	for (let i = 0; i < operands.length; i += 1) {
 		for (let j = i + 1; j < operands.length; j += 1) {
@@ -47,44 +52,51 @@ export default function simplifyProduct(
 		}
 	}
 
-	nSpan.SetTree(new Product(operands)).End()
-
+	nSpan.SetTree(new Product(operands)).End();
 
 	// Identity Transformation (U * 1 --> U)
 	operands = operands.filter((operand) => !isOne(operand));
 
-	getTracer().StartSpan("Identity Transformation 3").SetTree(new Product(operands)).End()
+	getTracer()
+		.StartSpan("Identity Transformation 3")
+		.SetTree(new Product(operands))
+		.End();
 
 	// Identity transformation (U * undefined --> undefined)
 	if (!operands.every((operand) => operand !== undefined)) {
-		span.End()
+		span.End();
 		return undefined;
 	}
 
 	// Identity transformation (U * 0 --> 0)
 	if (operands.find((operand) => isZero(operand))) {
-		getTracer().StartSpan("Identity Transformation 2").SetTree(new Int(0)).End()
-		span.End()
+		getTracer()
+			.StartSpan("Identity Transformation 2")
+			.SetTree(new Int(0))
+			.End();
+		span.End();
 		return new Int(0);
 	}
-
 
 	// Commutative Transformation
 	operands = sort(operands);
 
-	getTracer().StartSpan("Commutative Transformation").SetTree(new Product(operands)).End()
+	getTracer()
+		.StartSpan("Commutative Transformation")
+		.SetTree(new Product(operands))
+		.End();
 
 	if (operands.length === 0) {
-		span.End()
+		span.End();
 		return new Int(1);
 	}
 
 	if (operands.length === 1) {
-		span.End()
+		span.End();
 		return operands[0];
 	}
 
-	span.End()
+	span.End();
 
 	return new Product(operands);
 }
