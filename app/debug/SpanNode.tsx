@@ -1,5 +1,5 @@
 import type { FrontEndSpan } from "$/server/tracing/FrontendSpan";
-import { Box, HStack, VStack } from "@chakra-ui/react";
+import { Box, HStack, useColorModeValue, VStack } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 
 export default function SpanNode({
@@ -11,6 +11,8 @@ export default function SpanNode({
     selected: number,
     setSelected: Dispatch<SetStateAction<number>>
 }) {
+    const bgColor = useColorModeValue("gray.100", "gray.700")
+
     return(
     <VStack alignItems="start">
         <HStack 
@@ -19,7 +21,7 @@ export default function SpanNode({
             border="1px" 
             rounded="3xl" 
             justifyContent="space-between"
-            backgroundColor={span.id == selected ? "gray.200" : "transparent"}
+            backgroundColor={span.id == selected ? bgColor : "transparent"}
         >
             <Box onClick={() => {setSelected(span.id)}} flex='1' textAlign='left'>
                 {span.id + 1}. {span.name}
