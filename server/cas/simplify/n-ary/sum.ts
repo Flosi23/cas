@@ -60,7 +60,7 @@ export default function simplifySum(sum: Sum): Expression | undefined {
 	// Identity Transformation (U + 0 --> U)
 	operands = operands.filter((operand) => !isZero(operand));
 
-	// Identity transformation (U * undefined --> undefined)
+	// Identity transformation (U + undefined --> undefined)
 	if (!operands.every((operand) => operand !== undefined)) {
 		return undefined;
 	}

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { calcTreeSpacing } from "$tree";
 import parseExpression from "$cas/parse";
 import simplify from "$cas/simplify/simplify";
+import { getTracer, newTracer } from "../tracing/Tracer";
 
 /**
  * Create your application's root router
@@ -23,14 +24,18 @@ export const appRouter = trpc
 		input: z.object({ expr: z.string() }),
 		resolve({ input }) {
 			const expr = parseExpression(input.expr.trim().replace(/\s/g, ""));
+			newTracer()
 			const simplifiedExpr = simplify(expr);
 
 			if (!simplifiedExpr) {
 				throw new Error("Invalid Expression!");
 			}
 
-			return calcTreeSpacing(simplifiedExpr);
+			return {
+				tree: calcTreeSpacing(simplifiedExpr),
+				spans: getTracer().GetSpans()
+			}
 		},
-	});
+	})	
 
 export type AppRouter = typeof appRouter;

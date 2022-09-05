@@ -3,7 +3,7 @@ import Int from "$cas/expressions/atomic/Int";
 import Power from "$cas/expressions/binary/Power";
 import Product from "$cas/expressions/n-ary/Product";
 import Sum from "$cas/expressions/n-ary/Sum";
-import { isOne, isProduct, isZero } from "$cas/expressions/types";
+import { isOne, isProduct, isSum, isZero } from "$cas/expressions/types";
 import { isRationalNumber } from "$cas/expressions/types/RNE";
 import simplifyRNE from "../RNE";
 import sort from "../order/sort";
@@ -86,6 +86,25 @@ function simplifyBinaryProduct(
 		}
 
 		return [result];
+	}
+
+	if (isSum(factorOne) || isSum(factorTwo)) {
+		const sum = isSum(factorOne) ? factorOne : factorTwo;
+		const other = isSum(factorOne) ? factorTwo : factorOne;
+
+		const expressions = isSum(other) ? other.operands : [other]
+
+		return [
+			simplifySum(
+				new Sum(
+					sum.operands.flatMap((sumExpr) => 
+						expressions.map((otherExpr) => 
+							simplifyProduct(new Product([sumExpr, otherExpr]))
+						)
+					)
+				)	
+			)
+		]
 	}
 
 	if (factorOne.base()?.equals(factorTwo.base())) {

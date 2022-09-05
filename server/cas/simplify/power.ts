@@ -68,7 +68,7 @@ function simplifyIntegerPower(
 		if (isInt(newExponent)) {
 			return simplifyIntegerPower(baseBase, newExponent);
 		}
-
+		
 		return new Power(baseBase, newExponent);
 	}
 	if (isProduct(base)) {
