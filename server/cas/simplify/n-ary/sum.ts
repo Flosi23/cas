@@ -1,5 +1,4 @@
 import type { Expression } from "$cas/expressions/Expression";
-import { getTracer } from "$/server/tracing/Tracer";
 import Int from "$cas/expressions/atomic/Int";
 import Product from "$cas/expressions/n-ary/Product";
 import Sum from "$cas/expressions/n-ary/Sum";
@@ -13,17 +12,10 @@ import simplifyProduct from "./product";
 export default function simplifySum(sum: Sum): Expression | undefined {
 	let { operands } = sum;
 
-	const span = getTracer().StartSpan("Simplify Sum").SetTree(sum);
-
 	// Associative Transformation
 	operands = operands.flatMap((operand) =>
 		isSum(operand) ? operand.operands : operand,
 	);
-
-	getTracer()
-		.StartSpan("Associative Transformation")
-		.SetTree(new Sum(operands))
-		.End();
 
 	// Numeric Transformation
 	operands.push(
@@ -36,14 +28,8 @@ export default function simplifySum(sum: Sum): Expression | undefined {
 		}, new Int(0)),
 	);
 
-	getTracer()
-		.StartSpan("Numeric Transformation")
-		.SetTree(new Sum(operands))
-		.End();
-
 	const newOperands: (Product | undefined)[] = [];
 
-	const dSpan = getTracer().StartSpan("Distributive Transformation");
 	// Distributive Transformation
 	operands.forEach((operand) => {
 		const existingRest = newOperands.find((newOp) =>
@@ -71,41 +57,24 @@ export default function simplifySum(sum: Sum): Expression | undefined {
 		newOp ? simplifyProduct(newOp) : undefined,
 	);
 
-	dSpan.SetTree(new Sum(operands)).End();
-
 	// Identity Transformation (U + 0 --> U)
 	operands = operands.filter((operand) => !isZero(operand));
 
-	getTracer()
-		.StartSpan("Identity Transformation 1")
-		.SetTree(new Sum(operands))
-		.End();
-
 	// Identity transformation (U + undefined --> undefined)
 	if (!operands.every((operand) => operand !== undefined)) {
-		span.End();
 		return undefined;
 	}
 
 	// Commutative Transformation
 	operands = sort(operands);
 
-	getTracer()
-		.StartSpan("Commutative Transformation")
-		.SetTree(new Sum(operands))
-		.End();
-
 	if (operands.length === 0) {
-		span.End();
 		return new Int(0);
 	}
 
 	if (operands.length === 1) {
-		span.End();
 		return operands[0];
 	}
-
-	span.End();
 
 	return new Sum(operands);
 }

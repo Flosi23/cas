@@ -9,10 +9,10 @@ import type { FrontendExpressionTree } from "$tree";
 import Connector from "./Connector";
 
 export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
-	const width = 120;
-	const height = 75;
-	const hGap = 15;
-	const vGap = 30;
+	const width = 80;
+	const height = 50;
+	const hGap = 8;
+	const vGap = 15;
 	const nodeAnimDuration = 0.05;
 	const pathAnimDuration = 0.1;
 
@@ -54,7 +54,7 @@ export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
 					}s`,
 				}}
 				animation={`${changeOpacity} ${nodeAnimDuration}s linear forwards`}>
-				<Text fontWeight="bold" fontSize="2xl">
+				<Text fontWeight="bold">
 					{node.displayValue}
 				</Text>
 			</Center>
