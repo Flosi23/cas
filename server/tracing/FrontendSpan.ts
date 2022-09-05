@@ -3,7 +3,7 @@ import type Span from "./Span"
 
 export interface FrontEndSpan {
     children: FrontEndSpan[]
-    tree: FrontendExpressionTree
+    tree: FrontendExpressionTree | null | undefined,
     name: string
     id: number
 }

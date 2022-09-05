@@ -1,5 +1,3 @@
-import type { Expression } from "$cas/expressions/Expression";
-import { calcTreeSpacing } from "../tree/tree";
 import toFrontSpan, { FrontEndSpan } from "./FrontendSpan";
 import Span from "./Span";
 
