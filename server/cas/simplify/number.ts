@@ -39,13 +39,10 @@ export function simplifyRationalNumber(
 	return simpleFrac;
 }
 
-function greatestCommonDivisor(n1: number, n2: number): number {
-	const a = Math.max(n1, n2);
-	const b = Math.min(n1, n2);
-
-	if (a === b) {
+function greatestCommonDivisor(a: number, b: number): number {
+	if (b === 0) {
 		return a;
 	}
 
-	return greatestCommonDivisor(a - b, b);
+	return greatestCommonDivisor(b, a % b);
 }
