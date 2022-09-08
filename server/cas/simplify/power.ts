@@ -8,6 +8,7 @@ import {
 	isPositiveInt,
 	isPower,
 	isProduct,
+	isSum,
 } from "$cas/expressions/types";
 import { isRationalNumber } from "$cas/expressions/types/RNE";
 import simplifyRNE from "./RNE";
@@ -78,6 +79,9 @@ function simplifyIntegerPower(
 		);
 
 		return simplifyProduct(base);
+	}
+	if (exponent.value === 2 && isSum(base)) {
+		return simplifyProduct(new Product([base, base]));
 	}
 	return new Power(base, exponent);
 }

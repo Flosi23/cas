@@ -3,6 +3,7 @@ import Symbol from "$cas/expressions/atomic/Symbol";
 import Fraction from "$cas/expressions/binary/Fraction";
 import Power from "$cas/expressions/binary/Power";
 import Product from "$cas/expressions/n-ary/Product";
+import Sum from "$cas/expressions/n-ary/Sum";
 import simplifyPower from "../power";
 
 describe("Base or exponent is undefined --> undefined", () => {
@@ -33,6 +34,16 @@ describe("Base is zero", () => {
 		const power = new Power(new Int(0), new Symbol("a"));
 		expect(simplifyPower(power)).toBe(undefined);
 	});
+});
+test("Exponent is 2 and base is a Sum (x+3)^2", () => {
+	const power = new Power(new Sum([new Symbol("x"), new Int(3)]), new Int(2));
+	const result = simplifyPower(power);
+	const expected = new Sum([
+		new Int(9),
+		new Product([new Int(6), new Symbol("x")]),
+		new Power(new Symbol("x"), new Int(2)),
+	]);
+	expect(result?.equals(expected)).toBe(true);
 });
 test("Base and exponent are positive integers 2 ^ 3 --> 8", () => {
 	const power = new Power(new Int(2), new Int(3));
