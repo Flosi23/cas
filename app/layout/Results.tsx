@@ -1,17 +1,17 @@
+import type { FrontEndSpan } from "$/server/tracing/FrontendSpan";
 import { Tabs, Tab, TabList, TabPanel, TabPanels } from "@chakra-ui/react";
 import type { FrontendExpressionTree } from "$tree";
-import TreeWrapper from "$app/tree/TreeWrapper";
 import Debug from "$app/debug/Debug";
-import type { FrontEndSpan } from "$/server/tracing/FrontendSpan";
+import TreeWrapper from "$app/tree/TreeWrapper";
 
 export default function Results({
 	tree,
 	simplifiedTree,
-	spans
+	spans,
 }: {
 	tree: FrontendExpressionTree;
 	simplifiedTree: FrontendExpressionTree;
-	spans: FrontEndSpan[] | null
+	spans: FrontEndSpan[] | null;
 }) {
 	return (
 		<Tabs align="center" variant="soft-rounded">
@@ -23,13 +23,13 @@ export default function Results({
 
 			<TabPanels>
 				<TabPanel>
-					<TreeWrapper rootNode={tree} />
+					<TreeWrapper rootNode={tree} animate={false} />
 				</TabPanel>
 				<TabPanel>
-					<TreeWrapper rootNode={simplifiedTree} />
+					<TreeWrapper rootNode={simplifiedTree} animate={false} />
 				</TabPanel>
 				<TabPanel>
-					<Debug spans={spans}/>
+					<Debug spans={spans} />
 				</TabPanel>
 			</TabPanels>
 		</Tabs>

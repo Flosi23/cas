@@ -8,13 +8,19 @@ import {
 import type { FrontendExpressionTree } from "$tree";
 import Connector from "./Connector";
 
-export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
+export default function TreeNode({
+	node,
+	animate,
+}: {
+	node: FrontendExpressionTree;
+	animate: boolean;
+}) {
 	const width = 80;
 	const height = 50;
 	const hGap = 8;
 	const vGap = 15;
-	const nodeAnimDuration = 0.05;
-	const pathAnimDuration = 0.1;
+	const nodeAnimDuration = animate ? 0.05 : 0;
+	const pathAnimDuration = animate ? 0.1 : 0;
 
 	const calcLeft = (n: FrontendExpressionTree) => {
 		return n.xUnits * width + hGap * n.xUnits - width / 2;
@@ -54,9 +60,7 @@ export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
 					}s`,
 				}}
 				animation={`${changeOpacity} ${nodeAnimDuration}s linear forwards`}>
-				<Text fontWeight="bold">
-					{node.displayValue}
-				</Text>
+				<Text fontWeight="bold">{node.displayValue}</Text>
 			</Center>
 
 			{node.children.map((child, i) => (
@@ -76,7 +80,7 @@ export default function TreeNode({ node }: { node: FrontendExpressionTree }) {
 						nodeAnimDuration={nodeAnimDuration}
 						pathAnimDuration={pathAnimDuration}
 					/>
-					<TreeNode node={child} />
+					<TreeNode node={child} animate={animate} />
 				</Box>
 			))}
 		</Box>

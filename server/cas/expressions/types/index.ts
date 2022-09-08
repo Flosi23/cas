@@ -79,5 +79,3 @@ export function isProduct(expr: Expression | undefined): expr is Product {
 export function isSum(expr: Expression | undefined): expr is Sum {
 	return expr?.type === ExprType.Sum;
 }
-
-export default ExprType;

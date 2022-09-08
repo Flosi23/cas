@@ -103,7 +103,7 @@ function isTerm(expr: string): Expression | Operator<Expression> | null {
 function isAddition(expr: string): Operator<Expression> | null {
 	return tryOperator(expr, "+", (left, right) => {
 		if (left.length === 0) {
-			const rightExpr = isExpression(right);
+			const rightExpr = isTerm(right);
 			if (!rightExpr) return null;
 
 			return new Sum([rightExpr]);
@@ -122,7 +122,7 @@ function isAddition(expr: string): Operator<Expression> | null {
 function isSubtraction(expr: string): Operator<Expression> | null {
 	return tryOperator(expr, "-", (left, right) => {
 		if (left.length === 0) {
-			const rightExpr = isExpression(right);
+			const rightExpr = isTerm(right);
 			if (!rightExpr) return null;
 
 			return new Difference([rightExpr]);
