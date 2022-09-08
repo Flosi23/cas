@@ -8,11 +8,18 @@ import {
 	useColorMode,
 	HStack,
 	Button,
+	Tabs,
+	Tab,
+	TabList,
+	TabPanel,
+	TabPanels,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { trpc } from "$/lib/trpc";
+import Debug from "$app/debug/Debug";
+import ErrorScreen from "$app/error/ErrorScreen";
 import Container from "$app/layout/Container";
-import Results from "$app/layout/Results";
+import TreeWrapper from "$app/tree/TreeWrapper";
 
 export default function Index() {
 	const { colorMode, toggleColorMode } = useColorMode();
@@ -66,13 +73,50 @@ export default function Index() {
 					</Button>
 				</HStack>
 			</VStack>
-			{treeMutation.data && simplifiedTreeMutation.data && (
-				<Results
-					tree={treeMutation.data}
-					simplifiedTree={simplifiedTreeMutation.data.tree}
-					spans={simplifiedTreeMutation.data.spans}
-				/>
-			)}
+			<Tabs align="center" variant="soft-rounded">
+				<TabList>
+					<Tab mx={2}>Expression Tree</Tab>
+					<Tab mx={2}>Simplified Expression Tree</Tab>
+					<Tab mx={2}>Debug</Tab>
+				</TabList>
+
+				<TabPanels>
+					<TabPanel>
+						{treeMutation.data && (
+							<TreeWrapper
+								rootNode={treeMutation.data}
+								animate={false}
+							/>
+						)}
+						{treeMutation.error && (
+							<ErrorScreen message={treeMutation.error.message} />
+						)}
+					</TabPanel>
+					<TabPanel>
+						{simplifiedTreeMutation.data?.tree && (
+							<TreeWrapper
+								rootNode={simplifiedTreeMutation.data.tree}
+								animate={false}
+							/>
+						)}
+						{simplifiedTreeMutation.error && (
+							<ErrorScreen
+								message={simplifiedTreeMutation.error.message}
+							/>
+						)}
+					</TabPanel>
+					<TabPanel>
+						{simplifiedTreeMutation.data?.spans && (
+							<Debug spans={simplifiedTreeMutation.data.spans} />
+						)}
+						{simplifiedTreeMutation.error && (
+							<ErrorScreen
+								message={simplifiedTreeMutation.error.message}
+							/>
+						)}
+					</TabPanel>
+				</TabPanels>
+			</Tabs>
 		</Container>
 	);
 }
