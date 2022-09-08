@@ -1,0 +1,13 @@
+{
+	"configurations": [
+		{
+			"name": "Run Dev",
+			"cwd": "${workspaceFolder}",
+			"args": ["run", "dev"],
+			"runtimeExecutable": "npm",
+			"type": "node",
+			"request": "launch",
+			"console": "integratedTerminal"
+		}
+	]
+}
