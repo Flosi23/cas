@@ -40,6 +40,8 @@
 			"$cas": ["server/cas"],
 			"$cas/*": ["server/cas/*"],
 			"$tree": ["server/tree"],
+			"$tracing": ["server/tracing"],
+			"$tracing/*": ["server/tracing/*"],
 			"$routers": ["server/routers"],
 			"$routers/*": ["server/routers/*"],
 			"$/*": ["*"],

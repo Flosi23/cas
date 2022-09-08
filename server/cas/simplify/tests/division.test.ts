@@ -8,7 +8,9 @@ import simplifyDivision from "../division";
 
 test("One of the operands is undefined --> undefined", () => {
 	const division = new Division(undefined, undefined);
-	expect(simplifyDivision(division)).toBe(undefined);
+	const result = simplifyDivision(division);
+	console.log("result", result);
+	expect(result).toBe(undefined);
 });
 describe("Fraction is created when both operands are rational numbers", () => {
 	test("2/3 --> 2/3", () => {

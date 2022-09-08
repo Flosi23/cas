@@ -92,19 +92,19 @@ function simplifyBinaryProduct(
 		const sum = isSum(factorOne) ? factorOne : factorTwo;
 		const other = isSum(factorOne) ? factorTwo : factorOne;
 
-		const expressions = isSum(other) ? other.operands : [other]
+		const expressions = isSum(other) ? other.operands : [other];
 
 		return [
 			simplifySum(
 				new Sum(
-					sum.operands.flatMap((sumExpr) => 
-						expressions.map((otherExpr) => 
-							simplifyProduct(new Product([sumExpr, otherExpr]))
-						)
-					)
-				)	
-			)
-		]
+					sum.operands.flatMap((sumExpr) =>
+						expressions.map((otherExpr) =>
+							simplifyProduct(new Product([sumExpr, otherExpr])),
+						),
+					),
+				),
+			),
+		];
 	}
 
 	if (factorOne.base()?.equals(factorTwo.base())) {

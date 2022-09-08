@@ -1,6 +1,5 @@
 /* eslint-disable import/no-cycle */
 import type { Expression } from "$cas/expressions/Expression";
-import { getTracer } from "$/server/tracing/Tracer";
 import {
 	ExprType,
 	isDifference,
@@ -12,6 +11,7 @@ import {
 	isSum,
 	isSymbol,
 } from "$cas/expressions/types";
+import { getTracer } from "$tracing/Tracer";
 import simplifyRNE from "./RNE";
 import simplifyDifference from "./difference";
 import simplifyDivision from "./division";

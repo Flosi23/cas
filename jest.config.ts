@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 const config = {
 	collectCoverageFrom: ["<rootDir>/server/cas/**/*.{js,jsx,ts,tsx}"],
 	moduleNameMapper: {
@@ -22,6 +23,8 @@ const config = {
 		"^\\$routers/(.*)$": "<rootDir>/server/routers/$1",
 		"^\\$tree$": "<rootDir>/server/tree",
 		"^\\$tree/(.*)$": "<rootDir>/server/tree/$1",
+		"^\\$tracing$": "<rootDir>/server/tracing",
+		"^\\$tracing/(.*)$": "<rootDir>/server/tracing/$1",
 	},
 	// Add more setup options before each test is run
 	// setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],

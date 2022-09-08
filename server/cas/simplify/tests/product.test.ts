@@ -2,6 +2,7 @@ import Int from "$cas/expressions/atomic/Int";
 import Symbol from "$cas/expressions/atomic/Symbol";
 import Power from "$cas/expressions/binary/Power";
 import Product from "$cas/expressions/n-ary/Product";
+import Sum from "$cas/expressions/n-ary/Sum";
 import parseExpression from "$cas/parse";
 import simplifyProduct from "../n-ary/product";
 
@@ -29,20 +30,6 @@ test("Product consists of two constants --> 4 * 2 = 8", () => {
 	const result = simplifyProduct(product);
 	const expected = new Int(8);
 	expect(result?.equals(expected)).toBe(true);
-});
-describe("One of the factors is one --> return the other one", () => {
-	test("First factor is one", () => {
-		const product = new Product([new Int(1), parseExpression("3+2")]);
-		const result = simplifyProduct(product);
-		const expected = parseExpression("3+2");
-		expect(result?.equals(expected)).toBe(true);
-	});
-	test("Second factor is one", () => {
-		const product = new Product([parseExpression("2^4"), new Int(1)]);
-		const result = simplifyProduct(product);
-		const expected = parseExpression("2^4");
-		expect(result?.equals(expected)).toBe(true);
-	});
 });
 test("factors are in order: product b * a but a < b --> a * b", () => {
 	const product = new Product([new Symbol("b"), new Symbol("a")]);
@@ -77,6 +64,17 @@ test("Like terms can cancel themselves out a^-1 * a --> 1", () => {
 	const result = simplifyProduct(product);
 	const expected = new Int(1);
 	expect(result?.equals(expected)).toBe(true);
+});
+describe("Distributive Transformation is applied", () => {
+	test("3 * (x+y) --> 3x + 3y", () => {
+		const product = new Product([
+			new Int(3),
+			new Sum([new Symbol("x"), new Symbol("y")]),
+		]);
+		const result = simplifyProduct(product);
+		const expected = parseExpression("3*x+3*y");
+		expect(result?.equals(expected)).toBe(true);
+	});
 });
 test("(a * c * e) * (f * c^-1) --> a * e * f", () => {
 	const product = new Product([

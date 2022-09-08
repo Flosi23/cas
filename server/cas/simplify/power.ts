@@ -9,7 +9,6 @@ import {
 	isPower,
 	isProduct,
 } from "$cas/expressions/types";
-// eslint-disable-next-line import/no-cycle
 import { isRationalNumber } from "$cas/expressions/types/RNE";
 import simplifyRNE from "./RNE";
 // eslint-disable-next-line import/no-cycle
