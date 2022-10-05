@@ -49,7 +49,7 @@ export default function Index() {
 					textAlign="center"
 					fontWeight="extrabold"
 					fontSize="6xl">
-					Computer Algebra System
+					Simplify Terms
 				</Text>
 				<HStack w="100%">
 					<Input
@@ -69,7 +69,7 @@ export default function Index() {
 						onClick={() => {
 							handleCalc();
 						}}>
-						Calculate
+						Simplify
 					</Button>
 				</HStack>
 			</VStack>
